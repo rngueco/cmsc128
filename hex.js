@@ -2,7 +2,7 @@ var hexagonRadius = 50;
 var hexagonHeight = hexagonRadius * Math.sqrt(3);
 var height=20;
 
-var app = new PIXI.Application(hexagonHeight*(height+2), 2*hexagonRadius*(height+2), {backgroundColor : 0x1099bb});
+var app = new PIXI.Application(hexagonHeight*(height+3), 1.5*hexagonRadius*(height+2), {backgroundColor : 0x1099bb});
 document.body.appendChild(app.view);
 
 for (var i=0;i<=height;i++){
@@ -13,12 +13,12 @@ for (var i=0;i<=height;i++){
 		if(i%2==0){
 			var hexaP = toHexagonPosition({
 				x: app.renderer.width/2 + hexagonHeight*(j-(i/2)),
-				y: hexagonRadius*2*(i+1)
+				y: hexagonRadius*1.5*(i+1)
 			});
 		}else{
 			var hexaP = toHexagonPosition({
 				x: app.renderer.width/2 + hexagonHeight*(0.5 + j-((i+1)/2)),
-				y: hexagonRadius*2*(i+1)
+				y: hexagonRadius*1.5*(i+1)
 			});
 		}
 		
