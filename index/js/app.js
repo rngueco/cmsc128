@@ -1,6 +1,12 @@
-PIXI.utils.sayHello();
+var type = "WebGL";
 
-var renderer = PIXI.autoDetectRenderer(512, 512, {
+if(!PIXI.utils.isWebGLSupported()){
+  type = "canvas";
+}
+
+PIXI.utils.sayHello(type);
+
+var renderer = PIXI.autoDetectRenderer(1024, 1024, {
 	transparent: true,
 	resolution: 1,
 	antialias: true
@@ -11,23 +17,64 @@ document.getElementById('display').appendChild(renderer.view);
 var stage = new PIXI.Container();
 stage.interactive = true;
 
+var n = 10;
+
+var hexagons = [];
+var size = 60;
+var fWid = n*size;
+
+var offX = fWid/2+100;
+var offY = 100;
+
+var tempX = offX;
+for (var i = 0; i<n; i++) {
+	var row = [];
+
+	offX = tempX-(i-1)*size/2;
+
+	for (var j = 0; j<=i; j++) {
+		var newhex = new hexagon();
+		newhex.setup(stage);
+		newhex.size = size;
+
+		newhex.x = offX;
+		newhex.y = offY;
+
+		newhex.row = i;
+		newhex.column = j;
+
+		row.push(newhex);
+
+		offX += size;
+	}
+
+	offY += size;
+
+	hexagons.push(row);
+}
+
+var lastTime = 0;
+
 PIXI.loader.load(setup);
 
 function setup() {
 
-	animate();
+	// update
+	animate(0);
 }
 
-function animate() {
+function animate(time) {
 	// input
-	//requestAnimationFrame(animate);
+	requestAnimationFrame(animate);
 
-	// update
-	var thex = new hexagon();
-	thex.setup(stage);
-	thex.x = 200;
-	thex.y = 200;
-	thex.update();
+	var delta = time - lastTime; // in ms
+	lastTime = time;
+	
+	for (var i = 0; i<hexagons.length; i++) {
+		for (var j = 0; j<hexagons[i].length; j++) {
+			hexagons[i][j].update(delta);
+		}
+	}
 
 	// render
 	renderer.render(stage);
