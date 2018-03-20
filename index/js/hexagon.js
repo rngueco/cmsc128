@@ -15,11 +15,13 @@ function hexagon () {
 
 	// Settings
 	hex.textColor = 0xffffff;
+	hex.value = 1;
+
 	hex.bgColor = 0x222222;
 	hex.lineColor = 0xff0000;
-	hex.value = 1;
 	hex.size = 100;
 	hex.lineWidth = 5;
+
 	hex.fontSize = 26;
 	hex.x = 0;
 	hex.y = 0;
@@ -40,6 +42,8 @@ function hexagon () {
 	hex.text = new PIXI.Text();
 	hex.text.anchor.x = 0.5;
 	hex.text.anchor.y = 0.5;
+
+	hex.interactive = hex.buttonMode = true;
 
 	// Updater
 	hex.update = function(delta) {
@@ -70,8 +74,6 @@ function hexagon () {
 		hex.graphics.lineTo(hex.x,              hex.y-hex.size*0.5);
 
 		hex.graphics.endFill();
-		
-		hex.interactive = hex.buttonMode = true;
 
 		hex.text.text = hex.value;
 		hex.text.style.fill = hex.textColor;

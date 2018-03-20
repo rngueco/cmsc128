@@ -29,6 +29,7 @@ var offY = 100;
 var tempX = offX;
 for (var i = 0; i<n; i++) {
 	var row = [];
+	var c = 1;
 
 	offX = tempX-(i-1)*size/2;
 
@@ -43,6 +44,9 @@ for (var i = 0; i<n; i++) {
 		newhex.row = i;
 		newhex.column = j;
 
+		newhex.value = c;
+		c = parseInt(c*((i+1)-(j+1))/(j+1));
+
 		row.push(newhex);
 
 		offX += size;
@@ -54,18 +58,28 @@ for (var i = 0; i<n; i++) {
 }
 
 var lastTime = 0;
+var frameskip = 2;
+var framecounter;
 
 PIXI.loader.load(setup);
 
 function setup() {
 
 	// update
+	framecounter = 0;
 	animate(0);
 }
 
 function animate(time) {
 	// input
 	requestAnimationFrame(animate);
+
+	if (framecounter < frameskip) {
+		framecounter++;
+		return;
+	}
+
+	framecounter = 0;
 
 	var delta = time - lastTime; // in ms
 	lastTime = time;
@@ -78,4 +92,6 @@ function animate(time) {
 
 	// render
 	renderer.render(stage);
+
+	console.log((1000/delta)+' fps');
 }
