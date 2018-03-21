@@ -11,108 +11,122 @@ p6 = offset, offset+hexSize*0.25;
 
 function hexagon () {
 
-	var hex = this;
+	var me = this;
 
 	// Settings
-	hex.textColor = 0xffffff;
-	hex.value = 1;
+	me.textColor = 0xffffff;
+	me.value = 1;
 
-	hex.bgColor = 0x222222;
-	hex.lineColor = 0xff0000;
-	hex.size = 100;
-	hex.lineWidth = 5;
+	me.bgColor = 0x222222;
+	me.highlightColor = 0x000fff;
+	me.lineColor = 0xff0000;
+	me.size = 100;
+	me.lineWidth = 5;
 
-	hex.fontSize = 26;
-	hex.x = 0;
-	hex.y = 0;
-
-	hex.future = {};
-	hex.futureTime = null;
+	me.fontSize = 15;
+	me.x = 0;
+	me.y = 0;
 
 	// Location
-	hex.row = 0;
-	hex.column = 0;
+	me.row = 0;
+	me.column = 0;
 
 	// Delegate
-	hex.delegate = null;
+	me.delegate = null;
+
+	me.changed = true;
 
 	// Renderable
-	hex.graphics = new PIXI.Graphics();
-	hex.graphics.interactive = true;
-	hex.text = new PIXI.Text();
-	hex.text.anchor.x = 0.5;
-	hex.text.anchor.y = 0.5;
+	me.graphics = new PIXI.Graphics();
+	me.graphics.interactive = true;
+	me.text = new PIXI.Text();
+	me.text.anchor.x = 0.5;
+	me.text.anchor.y = 0.5;
 
-	hex.interactive = hex.buttonMode = true;
+	me.interactive = me.buttonMode = true;
+
+	me.selected = false;
+
+	// Some animation
+
+	me.future = {};
+	me.futureTime = null;
 
 	// Updater
-	hex.update = function(delta) {
+	me.update = function(delta) {
 
 		if (delta === undefined)
 			delta = 0;
 
-		if (hex.futureTime !== null)
-			hex._animate(delta);
+		if (me.futureTime !== null)
+			me._animate(delta);
+		else 
+			if (!me.changed)
+				return;
 		
-		if (hex.futureTime < 0) {
-			hex.futureTime = null;
-		}
+		if (me.futureTime < 0) 
+			me.futureTime = null;
 
-		hex.graphics.clear();
+		me.graphics.clear();
 
-		var hexWidth = hex.size*0.866;
+		var hexWidth = me.size*0.866;
 
-		hex.graphics.lineStyle(hex.lineWidth, hex.lineColor);
-		hex.graphics.beginFill(hex.bgColor);
+		me.graphics.lineStyle(me.lineWidth, me.lineColor);
+		me.graphics.beginFill(me.selected ? me.highlightColor : me.bgColor);
 
-		hex.graphics.moveTo(hex.x,              hex.y-hex.size*0.5);
-		hex.graphics.lineTo(hex.x+hexWidth*0.5, hex.y-hex.size*0.25);
-		hex.graphics.lineTo(hex.x+hexWidth*0.5, hex.y+hex.size*0.25);
-		hex.graphics.lineTo(hex.x,              hex.y+hex.size*0.5);
-		hex.graphics.lineTo(hex.x-hexWidth*0.5, hex.y+hex.size*0.25);
-		hex.graphics.lineTo(hex.x-hexWidth*0.5, hex.y-hex.size*0.25);
-		hex.graphics.lineTo(hex.x,              hex.y-hex.size*0.5);
+		me.graphics.moveTo(me.x,              me.y-me.size*0.5);
+		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-me.size*0.25);
+		me.graphics.lineTo(me.x+hexWidth*0.5, me.y+me.size*0.25);
+		me.graphics.lineTo(me.x,              me.y+me.size*0.5);
+		me.graphics.lineTo(me.x-hexWidth*0.5, me.y+me.size*0.25);
+		me.graphics.lineTo(me.x-hexWidth*0.5, me.y-me.size*0.25);
+		me.graphics.lineTo(me.x,              me.y-me.size*0.5);
 
-		hex.graphics.endFill();
+		me.graphics.endFill();
 
-		hex.text.text = hex.value;
-		hex.text.style.fill = hex.textColor;
-		hex.text.style.fontSize = hex.fontSize;
-		hex.text.x = hex.x;
-		hex.text.y = hex.y;
+		me.text.text = me.value;
+		me.text.style.fill = me.textColor;
+		me.text.style.fontSize = me.fontSize;
+		me.text.x = me.x;
+		me.text.y = me.y;
+
+		me.changed = false;
 	};
 
-	hex._animate = function(delta) {
-		
-		var set = hex.futureTime-delta <= 0;
+	me.graphics.click = function(ev) {
+		// notify delegate
+		me.selected = !me.selected;
+		me.changed = true;
 
-		for (var key in hex.future) {
+		if (me.delegate)
+			me.delegate.notify(me.row, me.column);
+	};
 
-			if (hex.future[key] !== null && hex.future[key] !== undefined) {
+	me.setup = function(stage) {
+		stage.addChild(me.graphics);
+		stage.addChild(me.text);
+	};
+
+	// set values after first render
+	me.set = function(prop, val) {
+		me.changed = true;
+		me[prop] = val;
+	};
+
+	// animate value transition
+	me._animate = function(delta) {
+		var set = me.futureTime-delta <= 0;
+
+		for (var key in me.future) {
+
+			if (me.future[key] !== null && me.future[key] !== undefined) {
 				if (set)
-					hex[key] = hex.future[key];
+					me[key] = me.future[key];
 				else {
-					hex[key] += delta*(hex.future[key]-hex[key])/hex.futureTime;
+					me[key] += delta*(me.future[key]-me[key])/me.futureTime;
 				}
 			}
 		}
-
-		hex.futureTime -= delta;
-	};
-
-	hex.graphics.click = function(ev) {
-		// notify delegate
-		console.log('clicked '+hex.row+' @ '+hex.column);
-		hex.bgColor = 0x000fff;
-	};
-
-	hex.setup = function(stage) {
-		stage.addChild(hex.graphics);
-		stage.addChild(hex.text);
-	};
-
-	hex.set = function(property, value) {
-		hex[property] = value;
-		
+		me.futureTime -= delta;
 	};
 }
