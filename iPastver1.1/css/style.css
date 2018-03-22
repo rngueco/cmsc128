@@ -1,0 +1,7 @@
+#display{
+	border: 1px dotted black;
+}
+#sidebar-wrapper .sidebar-brand, .navbar-brand{
+	font-family: 'Lucida Console';
+	font-weight: bold;
+}
