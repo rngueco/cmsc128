@@ -1,3 +1,12 @@
+function hexindex() {
+	var me = this;
+	// Location
+	me.row = 0;
+	me.column = 0;
+}
+
+
+
 function pascal() {
 	var me = this;
 	var hexagons = [];
@@ -13,7 +22,7 @@ function pascal() {
 		var offY = size/2;
 
 		var tempX = offX;
-		for (var i = 0; i<n; i++) {
+		for (var i = 0; i<=n; i++) {
 			var row = [];
 			var c = 1;
 
@@ -29,8 +38,7 @@ function pascal() {
 
 				newhex.delegate = me;
 
-				newhex.row = i;
-				newhex.column = j;
+				newhex.setIndex(i,j);
 
 				newhex.value = c;
 				c = parseInt(c*((i+1)-(j+1))/(j+1));
@@ -54,7 +62,21 @@ function pascal() {
 		}
 	};
 
-	me.notify = function(row, column) {
-		console.log('clicked '+row+' @ '+column+' selected: '+hexagons[row][column].selected);
+	me.mystery = new mysteryFactory();
+
+	me.selection = [];
+
+	me.notify = function(index, isAdd) {
+		console.log('clicked '+index.row+' @ '+index.column+' selected: '+isAdd);
+		if (isAdd) me.selection.push(index);
+		else for (var i = 0; i < me.selection.length; i++) {
+			if (me.selection[i] === index) {
+				me.selection.splice(i,1);
+			}
+		}
+
+		me.mystery.loadMystery(hexagons, me.selection);
+		// Send to mystery factory
+
 	};
 }

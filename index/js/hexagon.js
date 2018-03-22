@@ -19,6 +19,7 @@ function hexagon () {
 
 	me.bgColor = 0x222222;
 	me.highlightColor = 0x000fff;
+	me.altColor = 0xaaafff;
 	me.lineColor = 0xff0000;
 	me.size = 100;
 	me.lineWidth = 5;
@@ -27,9 +28,7 @@ function hexagon () {
 	me.x = 0;
 	me.y = 0;
 
-	// Location
-	me.row = 0;
-	me.column = 0;
+	me.index = new hexindex();
 
 	// Delegate
 	me.delegate = null;
@@ -43,9 +42,13 @@ function hexagon () {
 	me.text.anchor.x = 0.5;
 	me.text.anchor.y = 0.5;
 
-	me.interactive = me.buttonMode = true;
+	me.state = 0;
 
-	me.selected = false;
+	// 0 normal
+	// 2 selected
+	// 1 alternative
+
+	// disabled
 
 	// Some animation
 
@@ -71,8 +74,9 @@ function hexagon () {
 
 		var hexWidth = me.size*0.866;
 
+
 		me.graphics.lineStyle(me.lineWidth, me.lineColor);
-		me.graphics.beginFill(me.selected ? me.highlightColor : me.bgColor);
+		me.graphics.beginFill(me.state === 0 ? me.bgColor : (me.state === 2? me.highlightColor : me.altColor));
 
 		me.graphics.moveTo(me.x,              me.y-me.size*0.5);
 		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-me.size*0.25);
@@ -95,11 +99,13 @@ function hexagon () {
 
 	me.graphics.click = function(ev) {
 		// notify delegate
-		me.selected = !me.selected;
 		me.changed = true;
 
+		if (me.state != 2) me.state = 2;
+		else me.state = 0;
+
 		if (me.delegate)
-			me.delegate.notify(me.row, me.column);
+			me.delegate.notify(me.index, me.state == 2);
 	};
 
 	me.setup = function(stage) {
@@ -128,5 +134,24 @@ function hexagon () {
 			}
 		}
 		me.futureTime -= delta;
+	};
+
+	me.setIndex = function(y,x) {
+		me.index.row = y;
+		me.index.column = x;
+	};
+
+	me.setAlternative = function(bool) {
+		if (bool && me.state === 0) {
+			me.state = 1;
+			me.changed = true;
+		} else if (!bool && me.state == 1) {
+			me.state = 0;
+			me.changed = true;
+		}
+	};
+
+	me.setDisabled = function(bool) {
+		me.graphics.setInteractive = bool;
 	};
 }
