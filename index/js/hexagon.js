@@ -55,6 +55,8 @@ function hexagon () {
 	me.future = {};
 	me.futureTime = null;
 
+	me.disabled = false;
+
 	// Updater
 	me.update = function(delta) {
 
@@ -98,6 +100,12 @@ function hexagon () {
 	};
 
 	me.graphics.click = function(ev) {
+
+
+		if (me.disabled) return;
+
+		console.log('click');
+
 		// notify delegate
 		me.changed = true;
 
@@ -115,8 +123,8 @@ function hexagon () {
 
 	// set values after first render
 	me.set = function(prop, val) {
-		me.changed = true;
 		me[prop] = val;
+		me.changed = true;
 	};
 
 	// animate value transition
@@ -139,6 +147,7 @@ function hexagon () {
 	me.setIndex = function(y,x) {
 		me.index.row = y;
 		me.index.column = x;
+		me.changed = true;
 	};
 
 	me.setAlternative = function(bool) {
@@ -146,12 +155,21 @@ function hexagon () {
 			me.state = 1;
 			me.changed = true;
 		} else if (!bool && me.state == 1) {
+			me.disabled = false;
 			me.state = 0;
+
 			me.changed = true;
 		}
 	};
 
+	me.deselect = function() {
+		me.disabled = false;
+		me.state = 0;
+
+		me.changed = true;
+	};
+
 	me.setDisabled = function(bool) {
-		me.graphics.setInteractive = bool;
+		me.disabled = bool;
 	};
 }

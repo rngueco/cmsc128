@@ -64,18 +64,10 @@ function pascal() {
 
 	me.mystery = new mysteryFactory();
 
-	me.selection = [];
-
 	me.notify = function(index, isAdd) {
-		console.log('clicked '+index.row+' @ '+index.column+' selected: '+isAdd);
-		if (isAdd) me.selection.push(index);
-		else for (var i = 0; i < me.selection.length; i++) {
-			if (me.selection[i] === index) {
-				me.selection.splice(i,1);
-			}
-		}
+		
 
-		me.mystery.loadMystery(hexagons, me.selection);
+		me.mystery.loadMystery(hexagons, index, isAdd);
 		// Send to mystery factory
 
 	};
