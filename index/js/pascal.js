@@ -13,7 +13,7 @@ function pascal() {
 		var offY = size/2;
 
 		var tempX = offX;
-		for (var i = 0; i<n; i++) {
+		for (var i = 0; i<=n; i++) {
 			var row = [];
 			var c = 1;
 
