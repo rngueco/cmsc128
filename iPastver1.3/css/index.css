@@ -1,0 +1,115 @@
+body{
+	/* Navy Blue and Aqua 
+  	background-color: #001f3f;
+  	color: #7FDBFF; */
+
+  	/* Black and Gray */
+  	background-color: #111111;
+  	color: #AAAAAA; 
+}
+h1{
+	font-family: 'Lucida Console';
+	font-weight: bold;
+	margin-bottom: -5px;
+}
+input{
+	width: 100%;
+	text-align: center;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+   font-variant: small-caps;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;
+   font-variant: small-caps;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;
+   font-variant: small-caps;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center;
+   font-variant: small-caps; 
+}
+
+
+sub{
+	font-size: 20px;
+}
+a{
+	/* Gray */
+	color: #AAAAAA;
+
+	text-transform: lowercase;
+	font-variant: small-caps; 
+}
+a:hover{
+	text-decoration: none;
+	color: #DDDDDD;
+	opacity: 0.5;
+}
+div{
+	height: 200px;
+    width: 400px;
+    text-align: center;
+    padding: 25px;
+
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+}
+#slide-up {
+	opacity: 0;
+    -webkit-animation: slideUp ease-in 1;
+    -moz-animation: slideUp ease-in 1;
+    animation: slideUp ease-in 1;
+
+    -webkit-animation-fill-mode: forwards; 
+    -moz-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+
+    -webkit-animation-duration: 0.8s;
+    -moz-animation-duration: 0.8s;
+    animation-duration: 0.8s;
+}
+
+/*
+ * Keyframes
+ */ 
+@-webkit-keyframes slideUp { 
+	from { 
+		top: 100%;
+		opacity: 0; 
+	} 
+	to { 
+		top: 45%;
+		opacity: 1; 
+	} 
+}
+@-moz-keyframes slideUp { 
+	from { 
+		top: 100%;
+		opacity: 0; 
+	} 
+	to { 
+		top: 45%;
+		opacity: 1; 
+	} 
+}
+@keyframes slideUp { 
+	from { 
+		top: 100%;
+		opacity: 0; 
+	} 
+	to { 
+		top: 45%;
+		opacity: 1; 
+	} 
+}
