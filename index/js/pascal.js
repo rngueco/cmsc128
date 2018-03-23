@@ -55,7 +55,7 @@ function pascal() {
 			hexagons.push(row);
 		}
 
-		me.mystery.setup('divisiblebyprime', hexagons);
+		me.mystery.setup('symmetry', hexagons);
 	};
 
 	me.update = function(delta) {

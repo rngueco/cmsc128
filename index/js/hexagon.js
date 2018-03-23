@@ -20,7 +20,7 @@ function hexagon () {
 	me.bgColor = 0x222222;
 	me.highlightColor = 0x000fff;
 	me.altColor = 0xaaafff;
-	me.disabledColor = 0xeeeeee;
+	me.disabledColor = 0x777777;
 	me.lineColor = 0xff0000;
 	me.size = 100;
 	me.lineWidth = 5;
@@ -77,9 +77,19 @@ function hexagon () {
 
 		var hexWidth = me.size*0.866;
 
-
 		me.graphics.lineStyle(me.lineWidth, me.lineColor);
-		me.graphics.beginFill(me.state === 0 ? me.bgColor : (me.state === 2? me.highlightColor : me.altColor));
+
+		var color = null;
+		if (me.disabled && me.state != 1) color = me.disabledColor;
+		else switch (me.state) {
+			case 0: color = me.bgColor;
+			break;
+			case 1: color = me.altColor;
+			break;
+			case 2: color = me.highlightColor;
+		}
+
+		me.graphics.beginFill(color);
 
 		me.graphics.moveTo(me.x,              me.y-me.size*0.5);
 		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-me.size*0.25);
@@ -101,11 +111,7 @@ function hexagon () {
 	};
 
 	me.graphics.click = function(ev) {
-
-
 		if (me.disabled) return;
-
-		console.log('click');
 
 		// notify delegate
 		me.changed = true;
@@ -172,5 +178,7 @@ function hexagon () {
 
 	me.setDisabled = function(bool) {
 		me.disabled = bool;
+		if (bool) me.state = 0;
+		me.changed = true;
 	};
 }
