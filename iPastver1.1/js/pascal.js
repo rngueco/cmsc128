@@ -1,8 +1,26 @@
+function hexindex() {
+	var me = this;
+	// Location
+	me.row = 0;
+	me.column = 0;
+
+	// Compare locations
+	me.compare = function(index) {
+		var i = me.row*me.row+me.column;
+		var j = index.row*index.row+index.column;
+		return i-j;
+	};
+}
+
+
+
 function pascal() {
 	var me = this;
 	var hexagons = [];
 
 	me.size = 100;
+
+	me.mystery = new mysteryFactory();
 
 	me.setup = function(n, stage) {
 		
@@ -29,8 +47,7 @@ function pascal() {
 
 				newhex.delegate = me;
 
-				newhex.row = i;
-				newhex.column = j;
+				newhex.setIndex(i,j);
 
 				newhex.value = c;
 				c = parseInt(c*((i+1)-(j+1))/(j+1));
@@ -44,6 +61,8 @@ function pascal() {
 
 			hexagons.push(row);
 		}
+
+		me.mystery.setup('symmetry', hexagons);
 	};
 
 	me.update = function(delta) {
@@ -54,7 +73,11 @@ function pascal() {
 		}
 	};
 
-	me.notify = function(row, column) {
-		console.log('clicked '+row+' @ '+column+' selected: '+hexagons[row][column].selected);
+	
+
+	me.notify = function(index, isAdd) {
+		me.mystery.loadMystery(index, isAdd);
+		// Send to mystery factory
+
 	};
 }

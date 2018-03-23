@@ -26,7 +26,7 @@ var framecounter;
 PIXI.loader.load(setup);
 
 function setup() {
-	pascal.setup(document.getElementById("val").value, stage);
+	pascal.setup(10, stage);
 	framecounter = 0;
 
 	animate(0);

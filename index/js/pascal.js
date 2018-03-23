@@ -3,6 +3,13 @@ function hexindex() {
 	// Location
 	me.row = 0;
 	me.column = 0;
+
+	// Compare locations
+	me.compare = function(index) {
+		var i = me.row*me.row+me.column;
+		var j = index.row*index.row+index.column;
+		return i-j;
+	};
 }
 
 
