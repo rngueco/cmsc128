@@ -13,6 +13,8 @@ function pascal() {
 
 	me.size = 100;
 
+	me.mystery = new mysteryFactory();
+
 	me.setup = function(n, stage) {
 		
 		var size = me.size;
@@ -52,6 +54,8 @@ function pascal() {
 
 			hexagons.push(row);
 		}
+
+		me.mystery.setup('divisiblebyprime', hexagons);
 	};
 
 	me.update = function(delta) {
@@ -62,12 +66,10 @@ function pascal() {
 		}
 	};
 
-	me.mystery = new mysteryFactory();
+	
 
 	me.notify = function(index, isAdd) {
-		
-
-		me.mystery.loadMystery(hexagons, index, isAdd);
+		me.mystery.loadMystery(index, isAdd);
 		// Send to mystery factory
 
 	};

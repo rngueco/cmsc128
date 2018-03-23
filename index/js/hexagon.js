@@ -20,6 +20,7 @@ function hexagon () {
 	me.bgColor = 0x222222;
 	me.highlightColor = 0x000fff;
 	me.altColor = 0xaaafff;
+	me.disabledColor = 0xeeeeee;
 	me.lineColor = 0xff0000;
 	me.size = 100;
 	me.lineWidth = 5;
