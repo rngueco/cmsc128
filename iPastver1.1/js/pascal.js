@@ -18,6 +18,8 @@ function pascal() {
 	var me = this;
 	var hexagons = [];
 
+	me.renderX = 0;
+
 	me.size = 100;
 
 	me.mystery = new mysteryFactory();
@@ -27,7 +29,7 @@ function pascal() {
 		var size = me.size;
 		var fWid = n*size;
 
-		var offX = fWid/2;
+		var offX = me.renderX-size/2;
 		var offY = size/2;
 
 		var tempX = offX;

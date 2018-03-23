@@ -6,7 +6,9 @@ if(!PIXI.utils.isWebGLSupported()){
 
 PIXI.utils.sayHello(type);
 
-var renderer = PIXI.autoDetectRenderer(2048, 2048, {
+var be = document.getElementById('display');
+
+var renderer = PIXI.autoDetectRenderer($(be).innerWidth(), $(be).innerWidth(), {
 	transparent: true,
 	resolution: 1,
 	antialias: true
@@ -18,6 +20,11 @@ var stage = new PIXI.Container();
 stage.interactive = true;
 
 var pascal = new pascal();
+
+
+
+pascal.renderX = $(be).innerWidth()/2;
+console.log(pascal.renderX);
 
 var lastTime = 0;
 var frameskip = 5;
