@@ -87,12 +87,6 @@ function pascal() {
 	me.setZoom = function(value) {
 		me.container.scale.x = me.container.scale.y = value;
 		me.container.updateTransform();
-
-		console.log('zooommmmmm');
-	};
-
-	me.scroll = function(x,y) {
-
 	};
 
 	me.notify = function(index, isAdd) {
@@ -106,39 +100,32 @@ function pascal() {
 	    .on('pointerupoutside', onDragEnd)
 	    .on('pointermove', onDragMove);
 
-	function onDragStart(event) {
-	    // store a reference to the data
-	    // the reason for this is because of multitouch
-	    // we want to track the movement of this particular touch
-	    me.container.data = event.data;
-	    var position = event.data.getLocalPosition(me.container);
-	    me.container.position.x += (position.x-me.container.pivot.x)*me.container.scale.x;
-	    me.container.position.y += (position.y-me.container.pivot.y)*me.container.scale.y;
-	    me.container.pivot.x = position.x;
-	    me.container.pivot.y = position.y;
-	    
-	    console.log(position);
 
-	    
-	    me.container.dragging = true;
-	    
+	function onDragStart(event) {
+	    this.data = event.data;
+	    var position = event.data.getLocalPosition(this);
+	    this.position.x += (position.x-me.container.pivot.x)*me.container.scale.x;
+	    this.position.y += (position.y-me.container.pivot.y)*me.container.scale.y;
+	    this.pivot.x = position.x;
+	    this.pivot.y = position.y;
+
+	    this.dragging = true;
 	}
 
 	function onDragEnd() {
-	    me.container.dragging = false;
-	    // set the interaction data to null
-	    me.container.data = null;
-	    me.container.oldPosition = null;
-	    me.container.interactiveChildren = true;
+		this.interactiveChildren = true;
+	    this.dragging = false;
+	    delete this.data;
+
+	    console.log('drag-end');
 	}
 
 	function onDragMove() {
 	    if (this.dragging) {
-	    	me.container.interactiveChildren = false;
+	    	this.interactiveChildren = false;
 	    	var newPosition = this.data.getLocalPosition(this.parent);
-	    	me.container.position.x = newPosition.x;
-	    	me.container.position.y = newPosition.y;
-	    	console.log(newPosition);
+	    	this.position.x = newPosition.x;
+	    	this.position.y = newPosition.y;
 	    }
 	}
 

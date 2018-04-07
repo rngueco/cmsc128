@@ -133,6 +133,7 @@ function mysteryFactory () {
 	//	Powers Of 11
 	me.powersof11 = function () {
 		powersof();
+		if (me.selection.length === 0) return;
 		// write specific text
 		var rr = me.selection[me.selection.length-1].row;
 		var b = [];
@@ -192,6 +193,7 @@ function mysteryFactory () {
 	
 	me.hockey = function () {
 		reset();
+		if (me.selection.length === 0) return;
 		var len = me.selection.length;
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
@@ -222,6 +224,7 @@ function mysteryFactory () {
 	
 	me.combi = function (){
 		reset();
+		if (me.selection.length === 0) return;
 		var len = me.selection.length;
 		for (var i = 0; i < len-1; i++) {
 			me.triangle[me.selection[i].row][me.selection[i].column].deselect();

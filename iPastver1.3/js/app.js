@@ -24,10 +24,11 @@ pascal.side = $(be).innerWidth();
 stage.addChild(pascal.container);
 
 var lastTime = 0;
-var frameskip = 5;
+var frameskip = 1;
 var framecounter;
 
 $('#display').append(renderer.view);
+
 var unbubble = function(event) {
 	event.preventDefault();
 	event.stopPropagation();
