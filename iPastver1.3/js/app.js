@@ -27,7 +27,13 @@ var lastTime = 0;
 var frameskip = 5;
 var framecounter;
 
-document.getElementById('display').appendChild(renderer.view);
+$('#display').append(renderer.view);
+var unbubble = function(event) {
+	event.preventDefault();
+	event.stopPropagation();
+};
+$(renderer.view).mousedown(unbubble).mousemove(unbubble);
+
 
 PIXI.loader.load(setup);
 
