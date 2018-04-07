@@ -39,6 +39,9 @@ function hexagon () {
 	// Renderable
 	me.graphics = new PIXI.Graphics();
 	me.graphics.interactive = true;
+
+	// me.sprite = new PIXI.Sprite();
+
 	me.text = new PIXI.Text();
 	me.text.anchor.x = 0.5;
 	me.text.anchor.y = 0.5;
@@ -73,9 +76,11 @@ function hexagon () {
 		if (me.futureTime < 0) 
 			me.futureTime = null;
 
+		var size = me.size;
+
 		me.graphics.clear();
 
-		var hexWidth = me.size*0.866;
+		var hexWidth = size*0.866;
 
 		me.graphics.lineStyle(me.lineWidth, me.lineColor);
 
@@ -91,13 +96,13 @@ function hexagon () {
 
 		me.graphics.beginFill(color);
 
-		me.graphics.moveTo(me.x,              me.y-me.size*0.5);
-		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-me.size*0.25);
-		me.graphics.lineTo(me.x+hexWidth*0.5, me.y+me.size*0.25);
-		me.graphics.lineTo(me.x,              me.y+me.size*0.5);
-		me.graphics.lineTo(me.x-hexWidth*0.5, me.y+me.size*0.25);
-		me.graphics.lineTo(me.x-hexWidth*0.5, me.y-me.size*0.25);
-		me.graphics.lineTo(me.x,              me.y-me.size*0.5);
+		me.graphics.moveTo(me.x,              me.y-size*0.5);
+		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-size*0.25);
+		me.graphics.lineTo(me.x+hexWidth*0.5, me.y+size*0.25);
+		me.graphics.lineTo(me.x,              me.y+size*0.5);
+		me.graphics.lineTo(me.x-hexWidth*0.5, me.y+size*0.25);
+		me.graphics.lineTo(me.x-hexWidth*0.5, me.y-size*0.25);
+		me.graphics.lineTo(me.x,              me.y-size*0.5);
 
 		me.graphics.endFill();
 

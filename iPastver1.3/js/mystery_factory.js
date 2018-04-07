@@ -29,7 +29,7 @@ function mysteryFactory () {
 	me.nan = function() {};
 
 	me.loadMystery = function(index, isAdd) {
-		
+
 		if (isAdd) me.selection.push(index);
 		else for (var i = 0; i < me.selection.length; i++) {
 			if (me.selection[i] === index) {
@@ -113,7 +113,7 @@ function mysteryFactory () {
 	//	Powers Of 2
 	me.powersof2 = function () {
 		powersof();
-		
+		// write specific text
 		var rr = me.selection[me.selection.length-1].row;
 		var a = "";
 		var c = 1;
@@ -133,7 +133,7 @@ function mysteryFactory () {
 	//	Powers Of 11
 	me.powersof11 = function () {
 		powersof();
-		
+		// write specific text
 		var rr = me.selection[me.selection.length-1].row;
 		var b = [];
 		var ctr = 1;

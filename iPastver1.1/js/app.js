@@ -14,26 +14,26 @@ var renderer = PIXI.autoDetectRenderer($(be).innerWidth(), $(be).innerWidth(), {
 	antialias: true
 });
 
-document.getElementById('display').appendChild(renderer.view);
-
 var stage = new PIXI.Container();
-stage.interactive = true;
 
 var pascal = new pascal();
-
-
-
 pascal.renderX = $(be).innerWidth()/2;
-console.log(pascal.renderX);
+pascal.side = $(be).innerWidth();
+
+stage.addChild(pascal.container);
 
 var lastTime = 0;
 var frameskip = 5;
 var framecounter;
 
+document.getElementById('display').appendChild(renderer.view);
+
 PIXI.loader.load(setup);
 
+var zoom = 1.0;
+
 function setup() {
-	pascal.setup(10, stage);
+	pascal.setup(localStorage.getItem('height'), stage);
 	framecounter = 0;
 
 	animate(0);
@@ -48,6 +48,8 @@ function animate(time) {
 		return;
 	}
 	framecounter = 0;
+	zoom *= 0.5;
+	pascal.setZoom(zoom);
 
 	var delta = time - lastTime; // in ms
 	lastTime = time;

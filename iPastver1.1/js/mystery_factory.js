@@ -76,6 +76,7 @@ function mysteryFactory () {
 	*** MYSTERIES
 	**/
 
+	//	Symmetry
 	me.symmetry = function () {
 		reset();
 		
@@ -95,6 +96,7 @@ function mysteryFactory () {
 		reset();
 
 		var len = me.selection.length;
+		
 		for (var i = 0; i < len-1; i++) {
 			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
 			me.selection.splice(i,1);
@@ -107,15 +109,67 @@ function mysteryFactory () {
 			me.triangle[trg.row][j].setAlternative(true);
 		}
 	};
-
+	
+	//	Powers Of 2
 	me.powersof2 = function () {
 		powersof();
 		// write specific text
+		var rr = me.selection[me.selection.length-1].row;
+		var a = "";
+		var c = 1;
+		var sum = 1;
+		for(var i = 0; i < (rr + 1); i++){
+			if(i<rr){
+				a += c + " + ";
+			} else {
+				a += c;
+			}
+			c = parseInt(c*((rr+1)-(i+1))/(i+1));
+			sum = sum + c;
+		}
+		alert("The sum of this row is equal to 2 raised to " + rr +" i.e: " + a + " = "+sum);
 	};
 
+	//	Powers Of 11
 	me.powersof11 = function () {
 		powersof();
 		// write specific text
+		var rr = me.selection[me.selection.length-1].row;
+		var b = [];
+		var ctr = 1;
+		if(rr == 8 || rr == 9){
+			ctr = 2;
+		}
+		
+		var c = 1;
+		var sum = 1;
+		for(var i = 0; i < (rr + 1); i++){
+			b[i] = c;
+			if(parseInt(b[i]/10) > 0){
+				ctr++;
+			}
+			c = parseInt(c*((rr+1)-(i+1))/(i+1));
+			sum = sum + c;
+		}
+		
+		var p11 = "";
+		var tmp = 0;
+		while(ctr > 0){
+			for(var i = 0; i < (rr + 1); i++){
+				p11 += b[i] + " ";
+			}
+			p11 += '\n';
+			for(var i = rr+1; i >= 0; i--){
+				if(parseInt(b[i]/10)){
+					tmp = parseInt(b[i]/10);
+					b[i] = b[i]%10;
+					b[i-1] = b[i-1] + tmp;
+					break;
+				}
+			}
+			ctr--;
+		}
+		alert("This row represents 11 raised to "+ rr + " i.e:\n" + p11);
 	};
 
 	me.divisiblebyprime = function () {
@@ -135,6 +189,48 @@ function mysteryFactory () {
 		}
 		// write specific text
 	};
+	
+	me.hockey = function () {
+		reset();
+		var len = me.selection.length;
+		var row = me.selection[me.selection.length-1].row;
+		var col = me.selection[me.selection.length-1].column;
+		var hexas = [];
+		for (var i = 0; i < len-1; i++) {
+			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
+			me.selection.splice(i,1);
+		}
+		if(row/2<col){
+			hexas.push([row-1,col-1]);
+			var i = 0;
+			while(row-i-1!=col-1){
+				i++;
+				hexas.push([row-i-1,col-1]);
+			}
+		}else{
+			hexas.push([row-1,col]);
+			var i = 0;
+			while(hexas[i][1]!=0){
+				i++;
+				hexas.push([row-i-1,col-i]);
+			}
+		}
+		for(i = 0;i<hexas.length;i++){
+			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
+		}
+	}
+	
+	me.combi = function (){
+		reset();
+		var len = me.selection.length;
+		for (var i = 0; i < len-1; i++) {
+			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
+			me.selection.splice(i,1);
+		}
+		var row = me.selection[me.selection.length-1].row;
+		var col = me.selection[me.selection.length-1].column;
+		alert("this cell is the value of "+row+" taken "+col);
+	}
 
 
 }

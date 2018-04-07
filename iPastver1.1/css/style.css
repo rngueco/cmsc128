@@ -1,7 +1,22 @@
 #display{
 	border: 1px dotted black;
 }
+
 #sidebar-wrapper .sidebar-brand, .navbar-brand{
 	font-family: 'Lucida Console';
 	font-weight: bold;
+}
+
+
+#flavor-text {
+	position: fixed;
+	margin: 2rem;
+	background: #cceeff;
+	border-radius: 1rem;
+	left: 0;
+	right: 0;
+	padding: 1.5rem;
+	box-shadow: 0 0 0.5rem rgba(0,0,0,0.3);
+	bottom: 0;
+	text-align: center;
 }

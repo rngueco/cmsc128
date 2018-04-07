@@ -12,11 +12,12 @@ function hexindex() {
 	};
 }
 
-
-
 function pascal() {
 	var me = this;
 	var hexagons = [];
+
+	me.container = new PIXI.Container();
+	me.container.interactive = true;
 
 	me.renderX = 0;
 
@@ -24,7 +25,7 @@ function pascal() {
 
 	me.mystery = new mysteryFactory();
 
-	me.setup = function(n, stage) {
+	me.setup = function(n) {
 		
 		var size = me.size;
 		var fWid = n*size;
@@ -64,7 +65,7 @@ function pascal() {
 			hexagons.push(row);
 		}
 
-		me.mystery.setup('symmetry', hexagons);
+		me.mystery.setup(localStorage.getItem('mode'), hexagons);
 	};
 
 	me.update = function(delta) {
@@ -75,7 +76,10 @@ function pascal() {
 		}
 	};
 
-	
+	me.setZoom = function(value) {
+		me.container.scale = new PIXI.Point(value, value);
+		me.container.updateTransform();
+	};
 
 	me.notify = function(index, isAdd) {
 		me.mystery.loadMystery(index, isAdd);
