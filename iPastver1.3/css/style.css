@@ -5,3 +5,13 @@
 	font-family: 'Lucida Console';
 	font-weight: bold;
 }
+
+#message{
+	background: white;
+	border: solid 0.2rem green;
+	border-radius: 5px;
+	min-width: 200px;
+	padding: 0.5rem;
+
+
+}

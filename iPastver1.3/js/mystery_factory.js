@@ -28,6 +28,10 @@ function mysteryFactory () {
 
 	me.nan = function() {};
 
+	me.selectionEmpty = function() {
+		return me.selection.length <= 0;
+	};
+
 	me.loadMystery = function(index, isAdd) {
 
 		if (isAdd) me.selection.push(index);
@@ -36,7 +40,7 @@ function mysteryFactory () {
 				me.selection.splice(i,1);
 			}
 		}
-		me[me.mystery]();
+		return me[me.mystery]();
 	};
 
 	me.setup = function (mystery, triangle) {
@@ -70,7 +74,7 @@ function mysteryFactory () {
 		}
 	};
 
-
+	
 
 	/**
 	*** MYSTERIES
@@ -127,7 +131,7 @@ function mysteryFactory () {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		alert("The sum of this row is equal to 2 raised to " + rr +" i.e: " + a + " = "+sum);
+		return "The sum of this row is equal to 2 raised to " + rr +" i.e: " + a + " = "+sum;
 	};
 
 	//	Powers Of 11
@@ -170,7 +174,7 @@ function mysteryFactory () {
 			}
 			ctr--;
 		}
-		alert("This row represents 11 raised to "+ rr + " i.e:\n" + p11);
+		return "This row represents 11 raised to "+ rr + " i.e:\n" + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -220,7 +224,7 @@ function mysteryFactory () {
 		for(i = 0;i<hexas.length;i++){
 			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
 		}
-	}
+	};
 	
 	me.combi = function (){
 		reset();
@@ -232,8 +236,8 @@ function mysteryFactory () {
 		}
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
-		alert("this cell is the value of "+row+" taken "+col);
-	}
+		return "this cell is the value of "+row+" taken "+col;
+	};
 
 
 }

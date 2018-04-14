@@ -68,9 +68,6 @@ function animate(time) {
 	// console.log((1000/delta)+' fps');
 }
 
-
-
-
 var zoomDiff = 0.1;
 var zoomValue = 1.0;
 

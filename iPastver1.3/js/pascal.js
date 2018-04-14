@@ -27,11 +27,48 @@ function pascal() {
 	me.container = new PIXI.Container();
 	me.container.interactive = true;
 
+	var background = new PIXI.Graphics();
+	background.interactive = true;
+
 	me.renderX = 0;
 
 	me.size = 100;
 
 	me.mystery = new mysteryFactory();
+
+	me.container
+	    .on('pointerdown', onDragStart)
+	    .on('pointerup', onDragEnd)
+	    .on('pointerupoutside', onDragEnd)
+	    .on('pointermove', onDragMove);
+
+
+	function onDragStart(event) {
+	    this.data = event.data;
+	    var position = event.data.getLocalPosition(this);
+	    this.position.x += (position.x-me.container.pivot.x)*me.container.scale.x;
+	    this.position.y += (position.y-me.container.pivot.y)*me.container.scale.y;
+	    this.pivot.x = position.x;
+	    this.pivot.y = position.y;
+
+	    this.dragging = true;
+	}
+
+	function onDragEnd() {
+		this.interactiveChildren = true;
+	    this.dragging = false;
+	    delete this.data;
+	}
+
+	function onDragMove() {
+	    if (this.dragging) {
+	    	this.interactiveChildren = false;
+	    	var newPosition = this.data.getLocalPosition(this.parent);
+	    	this.position.x = newPosition.x;
+	    	this.position.y = newPosition.y;
+	    }
+	}
+
 
 	me.setup = function(n) {
 		
@@ -90,44 +127,27 @@ function pascal() {
 	};
 
 	me.notify = function(index, isAdd) {
-		me.mystery.loadMystery(index, isAdd);
-		// Send to mystery factory
+		var result = me.mystery.loadMystery(index, isAdd); // Send to mystery factory
+		
+		var a = me.container.toGlobal(new PIXI.Point(0,0));
+		var hexp = hexagons[index.row][index.column];
+		var x = a.x + hexp.x * me.container.scale.x;
+		var y = a.y + hexp.y * me.container.scale.y;
+
+		// offset position
+		y += me.size/2;
+
+		// Display message on html
+		var messagebox = $('#message');
+		if (me.mystery.selectionEmpty() )
+			messagebox.hide();
+		else if (result) {
+			messagebox.html(result);
+			messagebox.css('top', y).css('left', x).show();
+		}
 	};
 
-	me.container
-	    .on('pointerdown', onDragStart)
-	    .on('pointerup', onDragEnd)
-	    .on('pointerupoutside', onDragEnd)
-	    .on('pointermove', onDragMove);
-
-
-	function onDragStart(event) {
-	    this.data = event.data;
-	    var position = event.data.getLocalPosition(this);
-	    this.position.x += (position.x-me.container.pivot.x)*me.container.scale.x;
-	    this.position.y += (position.y-me.container.pivot.y)*me.container.scale.y;
-	    this.pivot.x = position.x;
-	    this.pivot.y = position.y;
-
-	    this.dragging = true;
-	}
-
-	function onDragEnd() {
-		this.interactiveChildren = true;
-	    this.dragging = false;
-	    delete this.data;
-
-	    console.log('drag-end');
-	}
-
-	function onDragMove() {
-	    if (this.dragging) {
-	    	this.interactiveChildren = false;
-	    	var newPosition = this.data.getLocalPosition(this.parent);
-	    	this.position.x = newPosition.x;
-	    	this.position.y = newPosition.y;
-	    }
-	}
+	
 
 	// me.requestTexture = function(texture) {
 
