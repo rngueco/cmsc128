@@ -3,7 +3,7 @@ function mysteryFactory () {
 
 	me.selection = [];
 	me.triangle = null;
-	me.mystery = 'nan';
+	me.mystery = '';
 
 	var reset = function() {
 		for (var i = 0; i<me.triangle.length; i++) {
@@ -26,8 +26,6 @@ function mysteryFactory () {
 		return ret;
 	};
 
-	me.nan = function() {};
-
 	me.selectionEmpty = function() {
 		return me.selection.length <= 0;
 	};
@@ -40,7 +38,9 @@ function mysteryFactory () {
 				me.selection.splice(i,1);
 			}
 		}
-		return me[me.mystery]();
+
+		if (me[me.mystery])
+			return me[me.mystery]();
 	};
 
 	me.setup = function (mystery, triangle) {
@@ -92,7 +92,8 @@ function mysteryFactory () {
 
 			me.triangle[rowLast][select].setAlternative(true);
 			
-			console.log('select '+select+' '+me.triangle[rowLast][select].value);
+			// find selection
+			// console.log('select '+select+' '+me.triangle[rowLast][select].value);
 		}
 	};
 
@@ -117,7 +118,9 @@ function mysteryFactory () {
 	//	Powers Of 2
 	me.powersof2 = function () {
 		powersof();
-		// write specific text
+
+		if (me.selection.length === 0) return;
+
 		var rr = me.selection[me.selection.length-1].row;
 		var a = "";
 		var c = 1;
@@ -131,7 +134,7 @@ function mysteryFactory () {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to 2 raised to " + rr +" i.e: " + a + " = "+sum;
+		return "The sum of this row is equal to 2 raised to " + rr +"\ni.e: " + a + " = "+sum;
 	};
 
 	//	Powers Of 11

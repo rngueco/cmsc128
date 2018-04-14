@@ -3,18 +3,26 @@
 <head>
   <meta charset="utf-8">
   <title>iPasT</title>
+
+  <link href="css/fontawesome-all.min.css" rel="stylesheet">
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
-  <script src="js/start.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript">
+    function begin(){
+      var inp = $("#input").val();
+      window.location.href = "main.html?height="+inp;
+    }
+  </script>
 </head>
 <body>
     <div id="slide-up">
       <h1>iPasT</h1><hr>
       <sub>An application geared towards understanding Pascal's Triangle.</sub><hr>
-      <h2><input class="form-control" id="id" placeholder="enter number of rows" type="number"></input></h2>
+      <h2><input class="form-control" id="input" placeholder="enter number of rows" type="number"></input></h2>
       <a onclick="begin()">
             Start Application<br />
-            <span class="glyphicon glyphicon-menu-down"></span>
+            <i class="fas fa-chevron-down"></i>
       </a>
     </div>
 </body>

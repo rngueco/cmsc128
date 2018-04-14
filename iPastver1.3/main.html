@@ -2,76 +2,93 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>iPasT</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/simple-sidebar.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
-	<script type="text/javascript" src="js/pixi.min.js"></script>
-	<script type="text/javascript" src="js/mystery_factory.js"></script>
-	<script type="text/javascript" src="js/pascal.js"></script>
-	<script type="text/javascript" src="js/hexagon.js"></script>
-	<script type="text/javascript" src="js/start.js"></script>
+	<link href="css/fontawesome-all.min.css" rel="stylesheet">
 </head>
 <body>
 	<div id="wrapper">
-		
-		<div id="sidebar-wrapper">
-    		<ul class="sidebar-nav">
-        		<li class="sidebar-brand">
-            		<a href="#">
-		                iPasT
-		            </a>
-		        </li>
-		        <li>
-		            <a href="index.html">Home</a>
-		        </li>
-		        <li>
-		            <a href="#recordsNav" data-toggle="collapse">Create New Triangle <span class="glyphicon glyphicon-menu-down"></span></a>
-		            <div id="recordsNav" class="collapse">
-						<input id="id" type="number" ></input>
-		                <a onclick="CHeight()">&nbsp;&nbsp;&nbsp;New Triangle</a>
-		            </div>
-		        </li>
-		        <li>
-		            <a href="#intakeNav" data-toggle="collapse">Mysteries <span class="glyphicon glyphicon-menu-down"></span></a>
-		            <div id="intakeNav" class="collapse">
-		                <a onclick="CMode('symmetry')">&nbsp;&nbsp;&nbsp;Symmetry</a>
-						<a onclick="CMode('powersof2')">&nbsp;&nbsp;&nbsp;Powers Of 2</a>
-						<a onclick="CMode('powersof11')">&nbsp;&nbsp;&nbsp;Powers Of 11</a>
-						<a onclick="CMode('divisiblebyprime')">&nbsp;&nbsp;&nbsp;Divisible By Prime</a>
-						<a onclick="CMode('hockey')">&nbsp;&nbsp;&nbsp;Hockey Stick</a>
-						<a onclick="CMode('combi')">&nbsp;&nbsp;&nbsp;Combinatorial</a>
-						<!--<a onclick="CMode('fibonacci')">&nbsp;&nbsp;&nbsp;Fibonacci Sequence</a>-->
-		            </div>
-		        </li>
-		    </ul>
-		</div>
+		<header>
+			<div id="navbarInfo" class="bg-light collapse">
+				<div class="container py-3">
+					<strong>
+						iPasT
+					</strong>
+					An application geared towards understanding Pascal's Triangle.
+				</div>
+			</div>
+			
+			<nav class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
+	            <div class="container">
+	                <a href="index.html" class="navbar-brand">iPasT</a>
+	                <div class="navbar-right">
+	                	<span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
+	                	<button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+	                	<button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
 
-		<nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <a href="#menu-toggle" class="navbar-brand" id="menu-toggle"><span class="glyphicon glyphicon-menu-hamburger"></span> iPasT</a>
-                <p class="navbar-text navbar-right">A Pascal's Triangle Application 
-        			
-                </p>
-            </div>
+		                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-cog"></i></button>
+		                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarInfo" aria-controls="navbarInfo" aria-expanded="false" aria-label="Toggle info"><i class="fas fa-info"></i></button>
+	                </div>
+	            </div>
 
-        </nav>
-        <a href="#" onclick="framezoom(true)"><span class="glyphicon glyphicon-plus-sign"></span></a>
-    				<a href="#" onclick="framezoom(false)"><span class="glyphicon glyphicon-minus-sign"></span></a>
+	        </nav>
+	        <div id="navbarSettings" class="bg-dark collapse text-white">
+				<div class="container py-3">
+					<div class="row">
+						<div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+							<label for="modeSelect">Mystery</label>
+							<select id="modeSelect" class="form-control">
+								<option value="symmetry">Symmetry</option>
+								<option value="powersof2">Powers of 2</option>
+								<option value="powersof11">Powers of 11</option>
+								<option value="divisiblebyprime">Divisible By Prime</option>
+								<option value="hockey">Hockey Stick</option>
+								<option value="combi">Combinatorial</option>
+							</select>
+						</div>
+						<div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+							<label for="heightInput">Triangle Height</label>
+							<input id="heightInput" type="number" name="heightInput" class="form-control">
+						</div>
+						<div class="col-sm-12 col-md-4 col-lg-2 mt-1">
+							<label>&nbsp;</label>
+							<button class="btn btn-primary d-block" onclick="applySettings()">Apply</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+        <div>
+        	
+        </div>
         <div id="page-content-wrapper">
         	<div class="container-fluid">
                 <div class="col-lg-12 col-md-12" id="display" style="padding:0; position: relative;">
-    				<div id="message" style="position: absolute; top:0; left:0; display: none;">Message</div>
+    				<div id="message" style="position: absolute; top:0; left:0; display: none;">
+    					Hello World!
+    				</div>
+    				<!-- canvas -->
                 </div>
             </div>
         </div>
-
-        
 	</div>
 
 	<!-- Bootstrap core JavaScript -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	
+	<script type="text/javascript" src="js/popper.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+
+	<script type="text/javascript" src="js/pixi.min.js"></script>
+
+	
+	<script type="text/javascript" src="js/mystery_factory.js"></script>
+	<script type="text/javascript" src="js/pascal.js"></script>
+	<script type="text/javascript" src="js/hexagon.js"></script>
+	
 
     <!-- Menu Toggle Script -->
 	<script>
@@ -80,7 +97,7 @@
 		$("#wrapper").toggleClass("toggled");
 	});
 	</script>
-	
+	<script type="text/javascript" src="js/functions.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>

@@ -40,8 +40,6 @@ function hexagon () {
 	me.graphics = new PIXI.Graphics();
 	me.graphics.interactive = true;
 
-	// me.sprite = new PIXI.Sprite();
-
 	me.text = new PIXI.Text();
 	me.text.anchor.x = 0.5;
 	me.text.anchor.y = 0.5;
@@ -54,8 +52,7 @@ function hexagon () {
 
 	// disabled
 
-	// Some animation
-
+	// For animation
 	me.future = {};
 	me.futureTime = null;
 
@@ -139,23 +136,6 @@ function hexagon () {
 		me.changed = true;
 	};
 
-	// animate value transition
-	me._animate = function(delta) {
-		var set = me.futureTime-delta <= 0;
-
-		for (var key in me.future) {
-
-			if (me.future[key] !== null && me.future[key] !== undefined) {
-				if (set)
-					me[key] = me.future[key];
-				else {
-					me[key] += delta*(me.future[key]-me[key])/me.futureTime;
-				}
-			}
-		}
-		me.futureTime -= delta;
-	};
-
 	me.setIndex = function(y,x) {
 		me.index.row = y;
 		me.index.column = x;
@@ -181,9 +161,26 @@ function hexagon () {
 		me.changed = true;
 	};
 
+
 	me.setDisabled = function(bool) {
 		me.disabled = bool;
 		if (bool) me.state = 0;
 		me.changed = true;
+	};
+
+	// animate value transition
+	me._animate = function(delta) {
+		var set = me.futureTime-delta <= 0;
+
+		for (var key in me.future) {
+			if (me.future[key] !== null && me.future[key] !== undefined) {
+				if (set)
+					me[key] = me.future[key];
+				else {
+					me[key] += delta*(me.future[key]-me[key])/me.futureTime;
+				}
+			}
+		}
+		me.futureTime -= delta;
 	};
 }

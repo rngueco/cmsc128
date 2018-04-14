@@ -16,14 +16,6 @@ function pascal() {
 	var me = this;
 	var hexagons = [];
 
-	// me.optimize = false;
-	// var textures = [];
-
-	/**
-	Generate textures about now
-
-	**/
-
 	me.container = new PIXI.Container();
 	me.container.interactive = true;
 
@@ -36,41 +28,7 @@ function pascal() {
 
 	me.mystery = new mysteryFactory();
 
-	me.container
-	    .on('pointerdown', onDragStart)
-	    .on('pointerup', onDragEnd)
-	    .on('pointerupoutside', onDragEnd)
-	    .on('pointermove', onDragMove);
-
-
-	function onDragStart(event) {
-	    this.data = event.data;
-	    var position = event.data.getLocalPosition(this);
-	    this.position.x += (position.x-me.container.pivot.x)*me.container.scale.x;
-	    this.position.y += (position.y-me.container.pivot.y)*me.container.scale.y;
-	    this.pivot.x = position.x;
-	    this.pivot.y = position.y;
-
-	    this.dragging = true;
-	}
-
-	function onDragEnd() {
-		this.interactiveChildren = true;
-	    this.dragging = false;
-	    delete this.data;
-	}
-
-	function onDragMove() {
-	    if (this.dragging) {
-	    	this.interactiveChildren = false;
-	    	var newPosition = this.data.getLocalPosition(this.parent);
-	    	this.position.x = newPosition.x;
-	    	this.position.y = newPosition.y;
-	    }
-	}
-
-
-	me.setup = function(n) {
+	me.setup = function(n, mystery) {
 		
 		var size = me.size;
 		var fWid = n*size;
@@ -110,7 +68,11 @@ function pascal() {
 			hexagons.push(row);
 		}
 
-		me.mystery.setup(localStorage.getItem('mode'), hexagons);
+		me.mystery.setup(mystery, hexagons);
+	};
+
+	me.setMystery = function(mystery) {
+		me.mystery.mystery = mystery;
 	};
 
 	me.update = function(delta) {
@@ -128,6 +90,13 @@ function pascal() {
 
 	me.notify = function(index, isAdd) {
 		var result = me.mystery.loadMystery(index, isAdd); // Send to mystery factory
+
+		var messagebox = $('#message');
+
+		if (me.mystery.selectionEmpty() ) {
+			messagebox.hide();
+			return;
+		}
 		
 		var a = me.container.toGlobal(new PIXI.Point(0,0));
 		var hexp = hexagons[index.row][index.column];
@@ -135,21 +104,21 @@ function pascal() {
 		var y = a.y + hexp.y * me.container.scale.y;
 
 		// offset position
-		y += me.size/2;
+		y += me.size * me.container.scale.y / 2;
 
 		// Display message on html
-		var messagebox = $('#message');
-		if (me.mystery.selectionEmpty() )
-			messagebox.hide();
-		else if (result) {
+		if (result) {
+			var minwidth = parseInt(messagebox.css('min-width'),10);
+			var windowWidth = messagebox.parent().innerWidth();
+
+			console.log('canvas: '+minwidth);
+
+			if (x+minwidth>windowWidth)
+				x = windowWidth-minwidth;
+
 			messagebox.html(result);
 			messagebox.css('top', y).css('left', x).show();
 		}
 	};
 
-	
-
-	// me.requestTexture = function(texture) {
-
-	// };
 }
