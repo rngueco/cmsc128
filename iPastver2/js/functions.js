@@ -119,6 +119,15 @@ function getQueryParams(qs) {
     return params;
 }
 
+function formatHexColor(value) {
+	var a = parseInt(value).toString(16);
+	var p = "";
+	for (var i = 0; i < 6-a.length; i++) 
+		p += '0';
+	a = '#' + p + a;
+	return a;
+}
+
 function loadPascalParameters() {
 	var query = getQueryParams();
 	pascal.loadSettings(query);
@@ -129,12 +138,12 @@ function loadPascalParameters() {
 	$('#heightInput').val(s.height);
 
 	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
-	$('#bgColorInput').val('#'+s.bgColor.toString(16));
-	$('#txtColorInput').val('#'+s.textColor.toString(16));
-	$('#strkColorInput').val('#'+s.lineColor.toString(16));
-	$('#slctColorInput').val('#'+s.highlightColor.toString(16));
-	$('#altColorInput').val('#'+s.altColor.toString(16));
-	$('#disColorInput').val('#'+s.disabledColor.toString(16));
+	$('#bgColorInput').val(formatHexColor(s.bgColor));
+	$('#txtColorInput').val(formatHexColor(s.textColor));
+	$('#strkColorInput').val(formatHexColor(s.lineColor));
+	$('#slctColorInput').val(formatHexColor(s.highlightColor));
+	$('#altColorInput').val(formatHexColor(s.altColor));
+	$('#disColorInput').val(formatHexColor(s.disabledColor));
 
 	console.log(s);
 }
@@ -162,10 +171,10 @@ function restart() {
 
 // Load new settings 
 function applySettings() {
-	var nextMode = $('#modeSelect').val();
-	var nextHeight = $('#heightInput').val();
+	pascal.settings.mystery = $('#modeSelect').val();
+	pascal.settings.height = $('#heightInput').val();
 
-	restart(nextMode, nextHeight);
+	restart();
 }
 
 // The LOOP

@@ -36,7 +36,7 @@ function pascal(settings) {
 		lineWidth: 5,
 
 		height: 0,
-		mystery: ''
+		mystery: 'symmetry'
 	}, settings);
 	me.container = new PIXI.Container();
 	me.renderX = 0;
