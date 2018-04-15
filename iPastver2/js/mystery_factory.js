@@ -1,5 +1,7 @@
-function mysteryFactory () {
+function mysteryFactory (delegate) {
 	var me = this;
+
+	me.delegate = delegate;
 
 	me.selection = [];
 	me.triangle = null;
@@ -33,21 +35,25 @@ function mysteryFactory () {
 	me.loadMystery = function(index, isAdd) {
 
 		if (isAdd) me.selection.push(index);
-		else for (var i = 0; i < me.selection.length; i++) {
-			if (me.selection[i] === index) {
-				me.selection.splice(i,1);
+		else 
+			for (var i = 0; i < me.selection.length; i++) {
+				if (me.selection[i] === index) {
+					me.selection.splice(i,1);
+				}
 			}
-		}
 
-		if (me[me.mystery])
-			return me[me.mystery]();
+		var mystery = me.delegate.settings.mystery;
+
+		if (me[mystery])
+			return me[mystery]();
 	};
 
-	me.setup = function (mystery, triangle) {
-		me.mystery = mystery;
+	me.setup = function (triangle) {
+		var mystery = me.delegate.settings.mystery;
 		me.triangle = triangle;
 
 		switch (mystery) {
+
 			case 'divisiblebyprime':
 			// Disable specific
 			var allow = [1,2,3,5,7,11,13,17,19];
@@ -64,13 +70,10 @@ function mysteryFactory () {
 				}
 			}
 			break;
+
 			default:
 			// Remove disables
-			for (var y = 0; y<triangle.length; y++) {
-				for (var z = 0; z<triangle[y].length; z++) {
-					triangle[y][z].setDisabled(false);
-				}
-			}
+			reset();
 		}
 	};
 

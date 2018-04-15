@@ -9,30 +9,19 @@ p6 = offset, offset+hexSize*0.25;
 **/
 
 
-function hexagon () {
+function hexagon (delegate) {
 
 	var me = this;
 
-	// Settings
-	me.textColor = 0xffffff;
 	me.value = 1;
 
-	me.bgColor = 0x222222;
-	me.highlightColor = 0x000fff;
-	me.altColor = 0xaaafff;
-	me.disabledColor = 0x777777;
-	me.lineColor = 0xff0000;
-	me.size = 100;
-	me.lineWidth = 5;
-
-	me.fontSize = 15;
 	me.x = 0;
 	me.y = 0;
 
 	me.index = new hexindex();
 
 	// Delegate
-	me.delegate = null;
+	me.delegate = delegate;
 
 	me.changed = true;
 
@@ -46,12 +35,6 @@ function hexagon () {
 
 	me.state = 0;
 
-	// 0 normal
-	// 2 selected
-	// 1 alternative
-
-	// disabled
-
 	// For animation
 	me.future = {};
 	me.futureTime = null;
@@ -64,32 +47,34 @@ function hexagon () {
 		if (delta === undefined)
 			delta = 0;
 
-		if (me.futureTime !== null)
+		if (me.futureTime !== null){
 			me._animate(delta);
-		else 
-			if (!me.changed)
-				return;
-		
-		if (me.futureTime < 0) 
-			me.futureTime = null;
+			if (me.futureTime < 0) me.futureTime = null;
+		}
 
-		var size = me.size;
+		if (!me.delegate.forceRender && !me.changed)
+			return;
 
-		me.graphics.clear();
+		var settings = me.delegate.settings;
+		var size = settings.size;
 
 		var hexWidth = size*0.866;
 
-		me.graphics.lineStyle(me.lineWidth, me.lineColor);
+		me.graphics.clear();
+		me.graphics.lineStyle(settings.lineWidth, settings.lineColor);
 
 		var color = null;
-		if (me.disabled && me.state != 1) color = me.disabledColor;
-		else switch (me.state) {
-			case 0: color = me.bgColor;
-			break;
-			case 1: color = me.altColor;
-			break;
-			case 2: color = me.highlightColor;
-		}
+
+		if (me.disabled && me.state != 1)
+			color = settings.disabledColor;
+		else
+			switch (me.state) {
+				case 0: color = settings.bgColor;
+				break;
+				case 1: color = settings.altColor;
+				break;
+				case 2: color = settings.highlightColor;
+			}
 
 		me.graphics.beginFill(color);
 
@@ -104,8 +89,8 @@ function hexagon () {
 		me.graphics.endFill();
 
 		me.text.text = me.value;
-		me.text.style.fill = me.textColor;
-		me.text.style.fontSize = me.fontSize;
+		me.text.style.fill = settings.textColor;
+		me.text.style.fontSize = parseInt(settings.fontsize, 10);
 		me.text.x = me.x;
 		me.text.y = me.y;
 
@@ -139,7 +124,6 @@ function hexagon () {
 	me.setIndex = function(y,x) {
 		me.index.row = y;
 		me.index.column = x;
-		me.changed = true;
 	};
 
 	me.setAlternative = function(bool) {
@@ -160,7 +144,6 @@ function hexagon () {
 
 		me.changed = true;
 	};
-
 
 	me.setDisabled = function(bool) {
 		me.disabled = bool;

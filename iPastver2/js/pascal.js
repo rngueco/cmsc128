@@ -1,5 +1,6 @@
 function hexindex() {
 	var me = this;
+
 	// Location
 	me.row = 0;
 	me.column = 0;
@@ -12,46 +13,52 @@ function hexindex() {
 	};
 }
 
-function pascal() {
+function pascal(settings) {
+
+	// Private Properties
 	var me = this;
 	var hexagons = [];
-
-	me.container = new PIXI.Container();
-	me.container.interactive = true;
-
 	var background = new PIXI.Graphics();
-	background.interactive = true;
 
+	// Public Properties
+	me.settings = $.extend(
+	{
+		size: 100,
+
+		textColor: 0xffffff,
+		bgColor: 0x222222,
+		highlightColor: 0x000fff,
+		altColor: 0xaaafff,
+		disabledColor: 0x777777,
+		lineColor: 0xff0000,
+
+		fontsize: 15,
+		lineWidth: 5,
+
+		height: 0,
+		mystery: ''
+	}, settings);
+	me.container = new PIXI.Container();
 	me.renderX = 0;
+	me.forceRender = false;
+	me.mystery = new mysteryFactory(this);
 
-	me.size = 100;
+	// Functions
+	me.setup = function(a, b) {
 
-	me.mystery = new mysteryFactory();
+		var n = a?a:me.settings.height;
+		var mystery = b?b:me.settings.mystery;
 
-	me.setup = function(n, mystery) {
+		hexagons = [];
 		
-		var size = me.size;
-		var fWid = n*size;
-
-		var offX = me.renderX-size/2;
-		var offY = size/2;
-
-		var tempX = offX;
 		for (var i = 0; i<=n; i++) {
 			var row = [];
 			var c = 1;
 
-			offX = tempX-(i-1)*size/2;
-
 			for (var j = 0; j<=i; j++) {
-				var newhex = new hexagon();
+				var newhex = new hexagon(this);
+
 				newhex.setup(me.container);
-				newhex.size = size;
-
-				newhex.x = offX;
-				newhex.y = offY;
-
-				newhex.delegate = me;
 
 				newhex.setIndex(i,j);
 
@@ -59,28 +66,55 @@ function pascal() {
 				c = parseInt(c*((i+1)-(j+1))/(j+1));
 
 				row.push(newhex);
+			}
+
+			hexagons.push(row);
+		}
+
+		me.settings.mystery = mystery;
+		me.mystery.setup(hexagons);
+	};
+
+	me.loadSettings = function(settings) {
+		me.settings = $.extend(me.settings, settings);
+	};
+
+	me.update = function(delta) {
+		var size = parseInt(me.settings.size);
+		var half = size/2;
+
+		var offX = me.renderX-half;
+		var offY = half;
+
+		var tempX = offX;
+
+		for (var i = 0; i<hexagons.length; i++) {
+
+			offX = tempX-(i-1)*half;
+
+			for (var j = 0; j<hexagons[i].length; j++) {
+				var hex = hexagons[i][j];
+
+				hex.x = offX;
+				hex.y = offY;
+
+				hex.update(delta);
 
 				offX += size;
 			}
 
 			offY += size-10; // better make this editable
-
-			hexagons.push(row);
 		}
-
-		me.mystery.setup(mystery, hexagons);
+		me.forceRender = false;
 	};
 
 	me.setMystery = function(mystery) {
-		me.mystery.mystery = mystery;
+		me.settings.mystery = mystery;
 	};
 
-	me.update = function(delta) {
-		for (var i = 0; i<hexagons.length; i++) {
-			for (var j = 0; j<hexagons[i].length; j++) {
-				hexagons[i][j].update(delta);
-			}
-		}
+	me.setColor = function(tag, color) {
+		me.settings[tag+'Color'] = color;
+		me.forceRender = true;
 	};
 
 	me.setZoom = function(value) {
@@ -104,14 +138,12 @@ function pascal() {
 		var y = a.y + hexp.y * me.container.scale.y;
 
 		// offset position
-		y += me.size * me.container.scale.y / 2;
+		y += me.settings.size * me.container.scale.y / 2;
 
 		// Display message on html
 		if (result) {
 			var minwidth = parseInt(messagebox.css('min-width'),10);
 			var windowWidth = messagebox.parent().innerWidth();
-
-			console.log('canvas: '+minwidth);
 
 			if (x+minwidth>windowWidth)
 				x = windowWidth-minwidth;
@@ -119,6 +151,11 @@ function pascal() {
 			messagebox.html(result);
 			messagebox.css('top', y).css('left', x).show();
 		}
+
+
 	};
 
+	// Initialize
+	me.container.interactive = true;
+	background.interactive = true;
 }
