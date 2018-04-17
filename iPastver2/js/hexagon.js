@@ -56,7 +56,7 @@ function hexagon (delegate) {
 			return;
 
 		var settings = me.delegate.settings;
-		var size = settings.size;
+		var size = parseInt(settings.size);
 
 		var hexWidth = size*0.866;
 
@@ -76,6 +76,8 @@ function hexagon (delegate) {
 				case 2: color = settings.highlightColor;
 			}
 
+		color = parseInt(color);
+
 		me.graphics.beginFill(color);
 
 		me.graphics.moveTo(me.x,              me.y-size*0.5);
@@ -88,11 +90,12 @@ function hexagon (delegate) {
 
 		me.graphics.endFill();
 
-		me.text.text = me.value;
-		me.text.style.fill = settings.textColor;
 		me.text.style.fontSize = parseInt(settings.fontsize, 10);
+		me.text.style.fill = parseInt(settings.textColor);
+		
 		me.text.x = me.x;
 		me.text.y = me.y;
+		me.text.text = me.value;
 
 		me.changed = false;
 	};
