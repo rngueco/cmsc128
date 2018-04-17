@@ -137,7 +137,7 @@ function mysteryFactory (delegate) {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to 2 raised to " + rr +"\ni.e: " + a + " = "+sum;
+		return "The sum of this row is equal to 2 raised to " + rr +"<br/>i.e: " + a + " = "+sum;
 	};
 
 	//	Powers Of 11
@@ -169,7 +169,7 @@ function mysteryFactory (delegate) {
 			for(var i = 0; i < (rr + 1); i++){
 				p11 += b[i] + " ";
 			}
-			p11 += '\n';
+			p11 += '<br/>';
 			for(var i = rr+1; i >= 0; i--){
 				if(parseInt(b[i]/10)){
 					tmp = parseInt(b[i]/10);
@@ -180,7 +180,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents 11 raised to "+ rr + " i.e:\n" + p11;
+		return "This row represents 11 raised to "+ rr + " i.e:<br/>" + p11;
 	};
 
 	me.divisiblebyprime = function () {
