@@ -70,7 +70,40 @@ function mysteryFactory (delegate) {
 				}
 			}
 			break;
-
+			
+			case 'countingNum':
+			for (var i = 0; i < me.triangle.length; i++) {
+				for(var j = 0; j< i-1; j++){
+					triangle[i][j].setDisabled(true);
+				}
+				me.triangle[i][i].setDisabled(true);
+			}
+			break;
+			
+			case 'triangularNum':
+			for (var i = 0; i < me.triangle.length; i++) {
+				for(var j = 0; j< i-2; j++){
+					triangle[i][j].setDisabled(true);
+				}
+				triangle[i][i].setDisabled(true);
+				if(i>0)
+					triangle[i][i-1].setDisabled(true);
+			}
+			break;
+			
+			case 'tetrahedralNum':
+			for (var i = 0; i < me.triangle.length; i++) {
+				for(var j = 0; j< i-3; j++){
+					triangle[i][j].setDisabled(true);
+				}
+				triangle[i][i].setDisabled(true);
+				if(i>0)
+					triangle[i][i-1].setDisabled(true);
+				if(i>1)
+					triangle[i][i-2].setDisabled(true);
+			}
+			break;
+			
 			default:
 			// Remove disables
 			reset();
@@ -169,7 +202,7 @@ function mysteryFactory (delegate) {
 			for(var i = 0; i < (rr + 1); i++){
 				p11 += b[i] + " ";
 			}
-			p11 += '<br/>';
+			p11 += "<br/>";
 			for(var i = rr+1; i >= 0; i--){
 				if(parseInt(b[i]/10)){
 					tmp = parseInt(b[i]/10);
@@ -199,6 +232,39 @@ function mysteryFactory (delegate) {
 			me.triangle[trg.row][j].setAlternative(true);
 		}
 		// write specific text
+	};
+	
+	var specialNum = function () {
+		reset();
+		var rowLast = me.selection[me.selection.length-1].row;
+		for (var i = 0; i < me.selection.length-1; i++) {
+			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
+			me.selection.splice(i,1);
+		}
+	};
+	
+	me.countingNum = function () {
+		if (me.selection.length === 0) return;
+		specialNum();
+		rowLast = me.selection[me.selection.length-1].row;
+		var value = rowLast*(rowLast+1)/2;
+		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)]/2 = "+value;
+	};
+	
+	me.triangularNum = function () {
+		if (me.selection.length === 0) return;
+		specialNum();
+		rowLast = me.selection[me.selection.length-1].row-1;
+		var value = rowLast*(rowLast+1)*(rowLast+2)/6;
+		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)]/6 = "+value;
+	};
+	
+	me.tetrahedralNum = function () {
+		if (me.selection.length === 0) return;
+		specialNum();
+		rowLast = me.selection[me.selection.length-1].row-2;
+		var value = rowLast*(rowLast+1)*(rowLast+2)*(rowLast+3)/24;
+		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)]/24 = "+value;
 	};
 	
 	me.hockey = function () {
@@ -242,7 +308,7 @@ function mysteryFactory (delegate) {
 		}
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
-		return "this cell is the value of "+row+" taken "+col;
+		return "This cell is the value of "+row+" taken "+col;
 	};
 
 
