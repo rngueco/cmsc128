@@ -13,7 +13,7 @@ var stage = new PIXI.Container();
 var pascal = new pascal();
 
 var lastTime = 0;
-var frameskip = 1;
+var frameskip = 0;
 var framecounter;
 
 var zoom = 1.0;

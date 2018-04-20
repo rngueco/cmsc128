@@ -242,7 +242,7 @@ function mysteryFactory (delegate) {
 		}
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
-		return "this cell is the value of "+row+" taken "+col;
+		return "This cell is the value of "+row+" taken "+col;
 	};
 
 
