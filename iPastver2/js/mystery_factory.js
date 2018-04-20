@@ -104,6 +104,15 @@ function mysteryFactory (delegate) {
 			}
 			break;
 			
+			case 'fibonacci':
+			for (var i = 0; i < me.triangle.length; i++){
+				for (var j = 0; j <= i; j++){
+					if (i+j>me.triangle.length-1)
+						triangle[i][j].setDisabled(true);
+				}
+			}
+			break;
+			
 			default:
 			// Remove disables
 			reset();
@@ -296,6 +305,46 @@ function mysteryFactory (delegate) {
 		for(i = 0;i<hexas.length;i++){
 			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
 		}
+	};
+	
+	me.fibonacci = function () {
+		reset();
+		if (me.selection.length === 0) return;
+		var len = me.selection.length;
+		var row = me.selection[me.selection.length-1].row;
+		var col = me.selection[me.selection.length-1].column;
+		var cont = ""+me.triangle[row][col].value+"";
+		var hexas = [];
+		var sum = me.triangle[row][col].value;
+		for (var i = 0; i < len-1; i++) {
+			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
+			me.selection.splice(i,1);
+		}
+		//left of selection
+		col--; row++;
+		while(col>=0){
+			hexas.push([row,col]);
+			cont = me.triangle[row][col].value+" + "+cont;
+			sum += me.triangle[row][col].value;
+			col--;
+			row++;
+		}
+		var row = me.selection[me.selection.length-1].row;
+		var col = me.selection[me.selection.length-1].column;
+		row--; col++;
+		//right of selection
+		while(row>=col){
+			hexas.push([row,col]);
+			cont = cont+" + "+me.triangle[row][col].value;
+			sum += me.triangle[row][col].value;
+			col++;
+			row--;
+		}
+		cont =  "The "+(me.selection[me.selection.length-1].row+me.selection[me.selection.length-1].column)+"th in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
+		for(i = 0;i<hexas.length;i++){
+			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
+		}
+		return cont;
 	};
 	
 	me.combi = function (){
