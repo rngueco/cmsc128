@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div id="wrapper">
-		<header>
+		<header id="masthead">
 			<!-- About -->
 			<div id="navbarInfo" class="bg-light collapse">
 				<div class="container py-3">
@@ -27,7 +27,9 @@
 	            <div class="container">
 	                <a href="index.html" class="navbar-brand">iPasT</a>
 	                <div class="navbar-right">
+	                	<span id="posValue" class="mr-1 text-white">(x, y)</span>
 	                	<span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
+	                	
 	                	<button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
 	                	<button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
 
@@ -99,23 +101,19 @@
 							<label>&nbsp;</label>
 							<button class="btn btn-primary d-block" onclick="applySettings()">Apply</button>
 						</div>
+						<div class="col-12 mt-1">
+							<label>&nbsp;</label>
+							<button class="btn btn-primary d-block" onclick="resetPosition()">Reset Position</button>
+						</div>
 					</div>
 				</div>
 			</div>
-
 		</header>
-        <div>
-        	
-        </div>
-        <div id="page-content-wrapper">
-        	<div class="container-fluid">
-                <div class="col-lg-12 col-md-12" id="display" style="padding:0; position: relative;">
-    				<div id="message" style="position: absolute; top:0; left:0; display: none;">
-    					Hello World!
-    				</div>
-    				<!-- canvas -->
-                </div>
-            </div>
+        <div id="display" style="padding:0; position: relative;">
+			<div id="message" style="position: absolute; top:0; left:0; display: none;">
+				Hello World!
+			</div>
+			<!-- canvas -->
         </div>
 	</div>
 

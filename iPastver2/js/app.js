@@ -31,4 +31,5 @@ $(renderer.view).mousedown(unbubble).mousemove(unbubble);
 $(window).resize(adjustRenderSize);
 
 PIXI.loader.load(setup);
+updatePosDisplay();
 

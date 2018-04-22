@@ -38,6 +38,8 @@ function onDragStart(event) {
 }
 
 function onDragEnd() {
+
+
 	var here = pascal.container;
 
     here.dragging = false;
@@ -45,6 +47,8 @@ function onDragEnd() {
     if (moved)
     	$('#message').hide();
     moved = false;
+
+    updatePosDisplay();
 }
 
 function onDragMove() {
@@ -55,7 +59,27 @@ function onDragMove() {
     	var newPosition = here.data.getLocalPosition(here.parent);
     	here.position.x = newPosition.x;
     	here.position.y = newPosition.y;
+
+    	updatePosDisplay();
     }
+}
+
+function updatePosDisplay() {
+	var x = pascal.container.position.x - pascal.container.pivot.x;
+	var y = pascal.container.position.y - pascal.container.pivot.y;
+	$('#posValue').html('('+x.toFixed(0)+', '+y.toFixed(0)+')');
+}
+
+function resetPosition() {
+	pascal.container.position.x = 0;
+	pascal.container.position.y = 0;
+
+	pascal.container.pivot.x = 0;
+	pascal.container.pivot.y = 0;
+
+	pascal.container.updateTransform();
+
+	updatePosDisplay();
 }
 
 function applyColors() {
