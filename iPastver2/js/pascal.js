@@ -72,7 +72,7 @@ function pascal(settings) {
 		}
 
 		me.settings.mystery = mystery;
-		me.mystery.setup(hexagons);
+		me.mystery.setup(hexagons,me);
 	};
 
 	me.loadSettings = function(settings) {
