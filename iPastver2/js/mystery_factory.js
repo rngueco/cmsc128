@@ -113,6 +113,29 @@ function mysteryFactory (delegate) {
 			}
 			break;
 			
+			case 'modular':
+			var mod = 4;
+			for (var i = 0; i < me.triangle.length; i++){
+				for (var j = 0; j <= i; j++){
+					triangle[i][j].setDisabled(true);
+					me.triangle[i][j].x = (display.innerWidth()/2)-50-(i-1)*50+j*100;
+					me.triangle[i][j].y = 50+i*90;
+					if(me.triangle[i][j].value%mod==0){
+						pascal.settings.disabledColor = 0xff0000;
+					}else if(me.triangle[i][j].value%mod==1){
+						me.delegate.settings.disabledColor = 0x000000;
+					}else if(me.triangle[i][j].value%mod==2){
+						me.delegate.settings.disabledColor = 0x00ff00;
+					}else if(me.triangle[i][j].value%mod==3){
+						me.delegate.settings.disabledColor = 0x0000ff;
+					}else{
+						me.delegate.settings.disabledColor = 0xffff00;
+					}
+					me.triangle[i][j].update(100);
+				}
+			}
+			break;
+			
 			default:
 			// Remove disables
 			reset();
@@ -358,6 +381,10 @@ function mysteryFactory (delegate) {
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
 		return "This cell is the value of "+row+" taken "+col;
+	};
+	
+	me.modular = function (){
+		
 	};
 
 
