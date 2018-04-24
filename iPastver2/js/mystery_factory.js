@@ -288,7 +288,7 @@ function mysteryFactory (delegate) {
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-1;
 		var value = rowLast*(rowLast+1)*(rowLast+2)/6;
-		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)]/6 = "+value;
+		return "The sum of the first "+rowLast+" triangular numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)]/6 = "+value;
 	};
 	
 	me.tetrahedralNum = function () {
@@ -296,7 +296,7 @@ function mysteryFactory (delegate) {
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-2;
 		var value = rowLast*(rowLast+1)*(rowLast+2)*(rowLast+3)/24;
-		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)]/24 = "+value;
+		return "The sum of the first "+rowLast+" tetrahedral numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)]/24 = "+value;
 	};
 	
 	me.hockey = function () {
