@@ -202,7 +202,7 @@ function mysteryFactory (delegate) {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to 2 raised to " + rr +"<br/>i.e: " + a + " = "+sum;
+		return "The sum of this row is equal to 2 <sup>" + (rr+1) +"-1</sup><br/>i.e: " + a + " = "+sum;
 	};
 
 	//	Powers Of 11
@@ -245,7 +245,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents 11 raised to "+ rr + " i.e:<br/>" + p11;
+		return "This row represents 11<sup>"+ (rr+1) + "-1</sup> i.e:<br/>" + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -363,7 +363,23 @@ function mysteryFactory (delegate) {
 			col++;
 			row--;
 		}
-		cont =  "The "+(me.selection[me.selection.length-1].row+me.selection[me.selection.length-1].column)+"th in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
+		var tmp = (me.selection[me.selection.length-1].row+me.selection[me.selection.length-1].column+1);
+		var preFix = "The "+tmp;
+		switch(tmp%10){
+			case 1:
+				preFix += "st";
+				break;
+			case 2:
+				preFix += "nd";
+				break;
+			case 3:
+				preFix += "rd";
+				break;
+			default:
+				preFix += "th";
+		}
+		
+		cont =  preFix+" in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
 		for(i = 0;i<hexas.length;i++){
 			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
 		}
@@ -380,7 +396,7 @@ function mysteryFactory (delegate) {
 		}
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
-		return "This cell is the value of "+row+" taken "+col;
+		return "This cell is the value of <font size='+1'><sub>"+row+"</sub>C<sub>"+col+"</sub></font>";
 	};
 	
 	me.modular = function (){

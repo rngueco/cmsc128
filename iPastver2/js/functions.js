@@ -197,8 +197,9 @@ function restart() {
 function applySettings() {
 	pascal.settings.mystery = $('#modeSelect').val();
 	pascal.settings.height = $('#heightInput').val();
-
+	
 	restart();
+	return false;
 }
 
 // The LOOP
