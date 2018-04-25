@@ -6,9 +6,7 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/fontawesome-all.min.css" rel="stylesheet">
 	<link href="css/huebee.css" rel="stylesheet">
-
 	<link href="css/style.css" rel="stylesheet">
-	
 </head>
 <body>
 	<div id="wrapper">
@@ -78,6 +76,7 @@
 	        <!-- Settings -->
 	        <div id="navbarSettings" class="bg-dark collapse text-white">
 				<div class="container py-3">
+					<form onsubmit="return applySettings()">
 					<div class="row">
 						<div class="col-sm-12 col-md-4 col-lg-5 mt-1">
 							<label for="modeSelect">Mystery</label>
@@ -85,13 +84,13 @@
 								<option value="symmetry">Symmetry</option>
 								<option value="powersof2">Powers of 2</option>
 								<option value="powersof11">Powers of 11</option>
-								<option value="divisiblebyprime">Divisible By Prime</option>
+								<option value="divisiblebyprime">Divisibility By Prime</option>
 								<option value="countingNum">Counting Numbers</option>
 								<option value="triangularNum">Triangular Numbers</option>
 								<option value="tetrahedralNum">Tetrahedral Numbers</option>
-								<option value="hockey">Hockey Stick</option>
-								<option value="fibonacci">Fibonacci</option>
-								<option value="combi">Combinatorial</option>
+								<option value="hockey">Hockey Stick Pattern</option>
+								<option value="fibonacci">Fibonacci Numbers</option>
+								<option value="combi">Combinatorics</option>
 								<option value="modular">Modular Arithmetic</option>
 							</select>
 						</div>
@@ -108,6 +107,7 @@
 							<button class="btn btn-primary d-block" onclick="resetPosition()">Reset Position</button>
 						</div>
 					</div>
+					</form>
 				</div>
 			</div>
 		</header>

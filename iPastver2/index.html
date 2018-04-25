@@ -14,6 +14,7 @@
     function begin(){
       var inp = $("#input").val();
       window.location.href = "main.html?height="+inp;
+	  return false;
     }
   </script>
 </head>
@@ -21,6 +22,7 @@
     <div id="slide-up">
       <h1>iPasT</h1><hr>
       <sub>An application geared towards understanding Pascal's Triangle.</sub><hr>
+	  <form onsubmit="return begin()">
       <h2><input class="form-control" id="input" placeholder="enter number of rows" type="number"></input></h2>
       <a onclick="begin()">
             Start Application<br />
