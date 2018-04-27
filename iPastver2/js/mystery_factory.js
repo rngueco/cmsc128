@@ -251,7 +251,7 @@ function mysteryFactory (delegate) {
 
 	me.divisiblebyprime = function () {
 		reset();
-
+		var row = me.selection[me.selection.length-1].row;
 		var len = me.selection.length;
 		for (var i = 0; i < len-1; i++) {
 			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
@@ -264,7 +264,7 @@ function mysteryFactory (delegate) {
 		for (var j = 1; j < me.triangle[trg.row].length-1; j++) {
 			me.triangle[trg.row][j].setAlternative(true);
 		}
-		// write specific text
+		return "All cells in this row is divisible by "+row;
 	};
 	
 	var specialNum = function () {
