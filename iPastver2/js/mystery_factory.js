@@ -179,7 +179,7 @@ function mysteryFactory (delegate) {
 	me.powersof2 = function () {
 		powersof();
 
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
 
 		var rr = me.selection[me.selection.length-1].row;
 		var a = "";
@@ -200,7 +200,7 @@ function mysteryFactory (delegate) {
 	//	Powers Of 11
 	me.powersof11 = function () {
 		powersof();
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
 		// write specific text
 		var rr = me.selection[me.selection.length-1].row;
 		var b = [];
@@ -243,6 +243,8 @@ function mysteryFactory (delegate) {
 
 	me.divisiblebyprime = function () {
 		reset();
+		if (me.selection.length <= 0) return;
+
 		var row = me.selection[me.selection.length-1].row;
 		var len = me.selection.length;
 		for (var i = 0; i < len-1; i++) {
@@ -269,7 +271,7 @@ function mysteryFactory (delegate) {
 	};
 	
 	me.countingNum = function () {
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row;
 		var value = rowLast*(rowLast+1)/2;
@@ -277,7 +279,7 @@ function mysteryFactory (delegate) {
 	};
 	
 	me.triangularNum = function () {
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-1;
 		var value = rowLast*(rowLast+1)*(rowLast+2)/6;
@@ -285,7 +287,7 @@ function mysteryFactory (delegate) {
 	};
 	
 	me.tetrahedralNum = function () {
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-2;
 		var value = rowLast*(rowLast+1)*(rowLast+2)*(rowLast+3)/24;
@@ -294,7 +296,8 @@ function mysteryFactory (delegate) {
 	
 	me.hockey = function () {
 		reset();
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
+
 		var len = me.selection.length;
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
@@ -325,7 +328,8 @@ function mysteryFactory (delegate) {
 	
 	me.fibonacci = function () {
 		reset();
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
+
 		var len = me.selection.length;
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
@@ -381,7 +385,8 @@ function mysteryFactory (delegate) {
 	
 	me.combi = function (){
 		reset();
-		if (me.selection.length === 0) return;
+		if (me.selection.length <= 0) return;
+		
 		var len = me.selection.length;
 		for (var i = 0; i < len-1; i++) {
 			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
