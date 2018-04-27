@@ -115,15 +115,23 @@ function mysteryFactory (delegate) {
 			
 			case 'modular':
 			var mod = 4;
-			var colors = new Array(mod);
-			for (var z = 0; z < mod; z++) {
-				colors[z] = hslToRgb(z/mod, 1, 0.5);
-			}
 			for (var i = 0; i < me.triangle.length; i++){
 				for (var j = 0; j <= i; j++){
 					triangle[i][j].setDisabled(true);
-					var value = me.triangle[i][j].value%mod;
-					me.triangle[i][j].custom(colors[value]);
+					me.triangle[i][j].x = (display.innerWidth()/2)-50-(i-1)*50+j*100;
+					me.triangle[i][j].y = 50+i*90;
+					if (me.triangle[i][j].value%mod==0){
+						me.triangle[i][j].custom(0xff0000);
+					} else if(me.triangle[i][j].value%mod==1){
+						me.triangle[i][j].custom(0x000000);
+					} else if(me.triangle[i][j].value%mod==2){
+						me.triangle[i][j].custom(0x00ff00);
+					} else if(me.triangle[i][j].value%mod==3){
+						me.triangle[i][j].custom(0x0000ff);
+					} else{
+						me.triangle[i][j].custom(0xffff00);
+					}
+					me.triangle[i][j].update();
 				}
 			}
 			break;
@@ -194,7 +202,7 @@ function mysteryFactory (delegate) {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to 2 <sup>" + (rr+1) +"-1</sup><br/>i.e: " + a + " = "+sum;
+		return "The sum of this row is equal to $2^{" + (rr+1) +"-1}$ i.e:$$" + a + " = "+sum+"$$";
 	};
 
 	//	Powers Of 11
@@ -223,10 +231,11 @@ function mysteryFactory (delegate) {
 		var p11 = "";
 		var tmp = 0;
 		while(ctr > 0){
+			p11 += "$$";
 			for(var i = 0; i < (rr + 1); i++){
-				p11 += b[i] + " ";
+				p11 += b[i] + "\\ ";
 			}
-			p11 += "<br/>";
+			p11 += "$$";
 			for(var i = rr+1; i >= 0; i--){
 				if(parseInt(b[i]/10)){
 					tmp = parseInt(b[i]/10);
@@ -237,7 +246,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents 11<sup>"+ (rr+1) + "-1</sup> i.e:<br/>" + p11;
+		return "This row represents $11^{"+ (rr+1) + "-1}$ i.e: " + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -272,7 +281,7 @@ function mysteryFactory (delegate) {
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row;
 		var value = rowLast*(rowLast+1)/2;
-		return "The sum of the first "+rowLast+" counting numbers is<br/> ["+rowLast+"("+rowLast+"+1)]/2 = "+value;
+		return "The sum of the first "+rowLast+" counting numbers is $$\\frac{"+rowLast+"("+rowLast+"+1)}{2} = "+value+"$$";
 	};
 	
 	me.triangularNum = function () {
@@ -280,7 +289,7 @@ function mysteryFactory (delegate) {
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-1;
 		var value = rowLast*(rowLast+1)*(rowLast+2)/6;
-		return "The sum of the first "+rowLast+" triangular numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)]/6 = "+value;
+		return "The sum of the first "+rowLast+" triangular numbers is $$\\frac{"+rowLast+"("+rowLast+"+1)("+rowLast+"+2)}{6} = "+value+"$$";
 	};
 	
 	me.tetrahedralNum = function () {
@@ -288,7 +297,7 @@ function mysteryFactory (delegate) {
 		specialNum();
 		rowLast = me.selection[me.selection.length-1].row-2;
 		var value = rowLast*(rowLast+1)*(rowLast+2)*(rowLast+3)/24;
-		return "The sum of the first "+rowLast+" tetrahedral numbers is<br/> ["+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)]/24 = "+value;
+		return "The sum of the first "+rowLast+" tetrahedral numbers is $$ \\frac{"+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)}{24} = "+value+"$$";
 	};
 	
 	me.hockey = function () {
@@ -356,7 +365,7 @@ function mysteryFactory (delegate) {
 			row--;
 		}
 		var tmp = (me.selection[me.selection.length-1].row+me.selection[me.selection.length-1].column+1);
-		var preFix = "The ["+tmp;
+		var preFix = "The $"+tmp+"^{";
 		switch(tmp%10){
 			case 1:
 				preFix += "st";
@@ -371,7 +380,7 @@ function mysteryFactory (delegate) {
 				preFix += "th";
 		}
 		
-		cont =  preFix+"] in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
+		cont =  preFix+"}$ in the Fibonacci sequence is:$$"+cont+"$$ $$ = "+sum+"$$";
 		for(i = 0;i<hexas.length;i++){
 			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
 		}
@@ -388,7 +397,8 @@ function mysteryFactory (delegate) {
 		}
 		var row = me.selection[me.selection.length-1].row;
 		var col = me.selection[me.selection.length-1].column;
-		return "This cell is the value of <font size='+1'><sub>"+row+"</sub>C<sub>"+col+"</sub></font>";
+		return "This cell is the value of $\\left( \\begin{array}{c}"+(row+1)+"-1\\\\"+(col+1)+"-1\\end{array} \\right)$";
+		//return "This cell is the value of $\\binom{"+row+"}{"+col+"}$";
 	};
 	
 	me.modular = function (){
