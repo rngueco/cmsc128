@@ -188,7 +188,6 @@ function setup() {
 
 // Reload
 function restart() {
-
 	var str = $.param(pascal.settings);
 	window.location.href = 'main.html?'+str;
 }
@@ -216,7 +215,7 @@ function hslToRgb(h, s, l){
         b = hue2rgb(p, q, h - 1/3);
     }
 
-    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    return Math.round(r * 255)*256*256+Math.round(g * 255)*256+Math.round(b * 255);
 }
 
 // Load new settings 
