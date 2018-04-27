@@ -115,7 +115,6 @@ function mysteryFactory (delegate) {
 			
 			case 'modular':
 			var mod = 4;
-			
 			for (var i = 0; i < me.triangle.length; i++){
 				for (var j = 0; j <= i; j++){
 					triangle[i][j].setDisabled(true);
