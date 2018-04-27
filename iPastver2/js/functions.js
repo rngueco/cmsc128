@@ -224,7 +224,6 @@ function applySettings() {
 	pascal.settings.height = $('#heightInput').val();
 	
 	restart();
-	return false;
 }
 
 // The LOOP

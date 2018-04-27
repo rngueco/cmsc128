@@ -42,8 +42,10 @@ function mysteryFactory (delegate) {
 		for (var i = 0; i<me.triangle.length; i++) {
 			for (var j = 0; j<me.triangle[i].length; j++) {
 				var hexagon = me.triangle[i][j];
-				if (hexagon.is(hexagon.stateType.ALTERNATIVE))
+				if (hexagon.is(hexagon.stateType.ALTERNATIVE)){
+					hexagon.setDisabled(false);
 					hexagon.setNormal();
+				}
 			}
 		}
 	};

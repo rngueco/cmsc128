@@ -4,17 +4,16 @@
   <meta charset="utf-8">
   <title>iPasT</title>
 
-  <link href="css/fontawesome-all.min.css" rel="stylesheet">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
+  <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   
   <link href="css/index.css" rel="stylesheet">
 
-  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="plugins/jquery.min.js"></script>
   <script type="text/javascript">
-    function begin(){
+    function begin() {
       var inp = $("#input").val();
       window.location.href = "main.html?height="+inp;
-	  return false;
     }
   </script>
 </head>
@@ -22,12 +21,16 @@
     <div id="slide-up">
       <h1>iPasT</h1><hr>
       <sub>An application geared towards understanding Pascal's Triangle.</sub><hr>
-	  <form onsubmit="return begin()">
-      <h2><input class="form-control" id="input" placeholder="enter number of rows" type="number"></input></h2>
-      <a onclick="begin()">
-            Start Application<br />
-            <i class="fas fa-chevron-down"></i>
-      </a>
+    	  <form id="form" onsubmit="begin(); return false;">
+            <h2>
+              <input class="form-control" id="input" placeholder="enter number of rows" type="number" required></input>
+            </h2>
+            <a onclick="$('#form').submit()">
+                  Start Application<br />
+                  <i class="fas fa-chevron-down"></i>
+            </a>
+        </form>
     </div>
+
 </body>
 </html>
