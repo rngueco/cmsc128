@@ -127,7 +127,7 @@ function pascal(settings) {
 
 		var messagebox = $('#message');
 
-		if (me.mystery.selectionEmpty() ) {
+		if (me.mystery.selectIsEmpty() ) {
 			messagebox.hide();
 			return;
 		}

@@ -7,20 +7,57 @@ function mysteryFactory (delegate) {
 	me.triangle = null;
 	me.mystery = '';
 
-	var reset = function() {
+	var select = function(index, bool) {
+		var hexagon = me.triangle[index.row][index.column];
+		if (bool) hexagon.setSelected();
+		else hexagon.setNormal();
+	}
+
+	var selectOne = function(index) {
+		if (index < 0 || index >= me.selection.length)
+			return;
+
+		var saved = me.selection[index];
+		for (var i = 0; i < me.selection.length; i++) {
+			var loc = me.selection[i];
+			if (i != index)
+				me.triangle[loc.row][loc.column].deselect();
+		}
+		me.selection = [saved];
+	};
+
+	var selectLast = function() {
+		selectOne(me.selection.length-1);
+	};
+
+	var selectNone = function() {
+		for (var i = 0; i < me.selection.length; i++) {
+			var index = me.selection[i];
+			me.triangle[index.row][index.column].deselect();
+		}
+		me.selection = [];
+	}
+
+	var alterReset = function() {
 		for (var i = 0; i<me.triangle.length; i++) {
 			for (var j = 0; j<me.triangle[i].length; j++) {
-				me.triangle[i][j].setAlternative(false);
+				var hexagon = me.triangle[i][j];
+				if (hexagon.is(hexagon.stateType.ALTERNATIVE))
+					hexagon.setNormal();
 			}
 		}
 	};
 
-	var forceGetSelect = function() {
+	me.selectIsEmpty = function() {
+		return me.selection.length <= 0;
+	};
+
+	var selectRebuild = function() {
 		var ret = [];
 
 		for (var i = 0; i<me.triangle.length; i++) {
 			for (var j = 0; j<me.triangle[i].length; j++) {
-				if (me.triangle[i][j].state == 2)
+				if (me.triangle[i][j].state == me.triangle[i][j].stateType.ALTERNATIVE)
 					ret.push(me.triangle[i][j].index);
 			}
 		}
@@ -28,22 +65,23 @@ function mysteryFactory (delegate) {
 		return ret;
 	};
 
-	me.selectionEmpty = function() {
-		return me.selection.length <= 0;
-	};
-
 	me.loadMystery = function(index, isAdd) {
 
-		if (isAdd) me.selection.push(index);
-		else 
+		if (isAdd) {
+			select(index, true);
+			me.selection.push(index);
+		} else {
 			for (var i = 0; i < me.selection.length; i++) {
 				if (me.selection[i] === index) {
 					me.selection.splice(i,1);
 				}
 			}
+			select(index, false);
+		}
 
+		alterReset();
+		
 		var mystery = me.delegate.settings.mystery;
-
 		if (me[mystery])
 			return me[mystery]();
 	};
@@ -62,7 +100,6 @@ function mysteryFactory (delegate) {
 				if (allow[0] == i) {
 					disrow = false;
 					allow.splice(0,1);
-					console.log('for '+i);
 				}
 				for (var j = 0; j<triangle[i].length; j++) {
 					var disable = disrow || j===0 || j==triangle[i].length-1;
@@ -130,7 +167,7 @@ function mysteryFactory (delegate) {
 			
 			default:
 			// Remove disables
-			reset();
+			alterReset();
 		}
 	};
 
@@ -142,7 +179,6 @@ function mysteryFactory (delegate) {
 
 	//	Symmetry
 	me.symmetry = function () {
-		reset();
 		
 		for (var i = 0; i < me.selection.length; i++) {
 			var rowLast = me.selection[i].row;
@@ -157,18 +193,9 @@ function mysteryFactory (delegate) {
 		}
 	};
 
-	var powersof = function () {
-		reset();
+	var rowSelect = function () {
 
-		var len = me.selection.length;
-		
-		for (var i = 0; i < len-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
-
-		if (me.selection.length <= 0) return;
-
+		selectLast();
 		var trg = me.selection[0];
 		for (var j = 0; j < me.triangle[trg.row].length; j++) {
 			me.triangle[trg.row][j].setAlternative(true);
@@ -177,9 +204,9 @@ function mysteryFactory (delegate) {
 	
 	//	Powers Of 2
 	me.powersof2 = function () {
-		powersof();
 
-		if (me.selection.length <= 0) return;
+		if (me.selectIsEmpty()) return;
+		rowSelect();
 
 		var rr = me.selection[me.selection.length-1].row;
 		var a = "";
@@ -199,9 +226,10 @@ function mysteryFactory (delegate) {
 
 	//	Powers Of 11
 	me.powersof11 = function () {
-		powersof();
-		if (me.selection.length <= 0) return;
-		// write specific text
+
+		if (me.selectIsEmpty()) return;
+		rowSelect();
+
 		var rr = me.selection[me.selection.length-1].row;
 		var b = [];
 		var ctr = 1;
@@ -242,70 +270,80 @@ function mysteryFactory (delegate) {
 	};
 
 	me.divisiblebyprime = function () {
-		reset();
-		if (me.selection.length <= 0) return;
-
-		var row = me.selection[me.selection.length-1].row;
-		var len = me.selection.length;
-		for (var i = 0; i < len-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
 
 		if (me.selection.length <= 0) return;
+		selectLast();
 
 		var trg = me.selection[0];
 		for (var j = 1; j < me.triangle[trg.row].length-1; j++) {
-			me.triangle[trg.row][j].setAlternative(true);
+			me.triangle[trg.row][j].setAlternative();
 		}
 		return "All cells in this row is divisible by "+row;
 	};
 	
-	var specialNum = function () {
-		reset();
-		var rowLast = me.selection[me.selection.length-1].row;
-		for (var i = 0; i < me.selection.length-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
-	};
-	
 	me.countingNum = function () {
 		if (me.selection.length <= 0) return;
-		specialNum();
-		rowLast = me.selection[me.selection.length-1].row;
-		var value = rowLast*(rowLast+1)/2;
-		return "The sum of the first "+rowLast+" counting numbers is $$\\frac{"+rowLast+"("+rowLast+"+1)}{2} = "+value+"$$";
+		selectLast();
+
+		var index = me.selection[0];
+		var i = index.row;
+		var j = index.column;
+
+		while (i >= 0 && j >= 0) {
+			me.triangle[i][j].setAlternative();
+			i--;
+			j--;
+		}
+
+		var value = index.row*(index.row+1)/2;
+		return "The sum of the first "+index.row+" counting numbers is $$\\frac{"+index.row+"("+index.row+"+1)}{2} = "+value+"$$";
 	};
 	
 	me.triangularNum = function () {
 		if (me.selection.length <= 0) return;
-		specialNum();
-		rowLast = me.selection[me.selection.length-1].row-1;
-		var value = rowLast*(rowLast+1)*(rowLast+2)/6;
-		return "The sum of the first "+rowLast+" triangular numbers is $$\\frac{"+rowLast+"("+rowLast+"+1)("+rowLast+"+2)}{6} = "+value+"$$";
+		selectLast();
+
+		var index = me.selection[0];
+		var i = index.row;
+		var j = index.column;
+
+		while (i >= 0 && j >= 0) {
+			me.triangle[i][j].setAlternative();
+			i--;
+			j--;
+		}
+
+		var value = index.row*(index.row+1)*(index.row+2)/6;
+		return "The sum of the first "+index.row+" triangular numbers is $$\\frac{"+index.row+"("+index.row+"+1)("+index.row+"+2)}{6} = "+value+"$$";
 	};
 	
 	me.tetrahedralNum = function () {
 		if (me.selection.length <= 0) return;
-		specialNum();
-		rowLast = me.selection[me.selection.length-1].row-2;
-		var value = rowLast*(rowLast+1)*(rowLast+2)*(rowLast+3)/24;
-		return "The sum of the first "+rowLast+" tetrahedral numbers is $$ \\frac{"+rowLast+"("+rowLast+"+1)("+rowLast+"+2)("+rowLast+"+3)}{24} = "+value+"$$";
+		selectLast();
+
+		var index = me.selection[0];
+		var i = index.row;
+		var j = index.column;
+
+		while (i >= 0 && j >= 0) {
+			me.triangle[i][j].setAlternative();
+			i--;
+			j--;
+		}
+
+		var value = index.row*(index.row+1)*(index.row+2)*(index.row+3)/24;
+		return "The sum of the first "+index.row+" tetrahedral numbers is $$ \\frac{"+index.row+"("+index.row+"+1)("+index.row+"+2)("+index.row+"+3)}{24} = "+value+"$$";
 	};
 	
 	me.hockey = function () {
-		reset();
 		if (me.selection.length <= 0) return;
+		selectLast();
 
 		var len = me.selection.length;
-		var row = me.selection[me.selection.length-1].row;
-		var col = me.selection[me.selection.length-1].column;
+		var row = me.selection[0].row;
+		var col = me.selection[0].column;
 		var hexas = [];
-		for (var i = 0; i < len-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
+
 		if(row/2<col){
 			hexas.push([row-1,col-1]);
 			var i = 0;
@@ -322,24 +360,21 @@ function mysteryFactory (delegate) {
 			}
 		}
 		for(i = 0;i<hexas.length;i++){
-			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
+			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative();
 		}
 	};
 	
 	me.fibonacci = function () {
-		reset();
 		if (me.selection.length <= 0) return;
+		selectLast();
 
 		var len = me.selection.length;
-		var row = me.selection[me.selection.length-1].row;
-		var col = me.selection[me.selection.length-1].column;
+		var row = me.selection[0].row;
+		var col = me.selection[0].column;
 		var cont = ""+me.triangle[row][col].value+"";
 		var hexas = [];
 		var sum = me.triangle[row][col].value;
-		for (var i = 0; i < len-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
+
 		//left of selection
 		col--; row++;
 		while(col>=0){
@@ -384,16 +419,12 @@ function mysteryFactory (delegate) {
 	};
 	
 	me.combi = function (){
-		reset();
 		if (me.selection.length <= 0) return;
-		
+		selectLast();
+
 		var len = me.selection.length;
-		for (var i = 0; i < len-1; i++) {
-			me.triangle[me.selection[i].row][me.selection[i].column].deselect();
-			me.selection.splice(i,1);
-		}
-		var row = me.selection[me.selection.length-1].row;
-		var col = me.selection[me.selection.length-1].column;
+		var row = me.selection[0].row;
+		var col = me.selection[0].column;
 		return "This cell is the value of $\\left( \\begin{array}{c}"+(row+1)+"-1\\\\"+(col+1)+"-1\\end{array} \\right)$";
 		//return "This cell is the value of $\\binom{"+row+"}{"+col+"}$";
 	};

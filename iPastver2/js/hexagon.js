@@ -91,20 +91,21 @@ function hexagon (delegate) {
 	/**
 	Set to program highlighted state otherwise reset
 	*/
-	me.setAlternative = function(isAlternative) {
+	me.setAlternative = function() {
+		if (!me.is(me.stateType.SELECTED))
+			me.setState(me.stateType.ALTERNATIVE);
+	};
 
-		if (isAlternative) {
-			if (me.state == me.stateType.NORMAL) {
+	/**
+	*/
+	me.setNormal = function() {
+		me.setState(me.stateType.NORMAL);
+	};
 
-				me.setState(me.stateType.ALTERNATIVE);
-			}
-		} else {
-			if (me.state == me.stateType.ALTERNATIVE) {
-
-				me.disabled = false;
-				me.setState(me.stateType.NORMAL);
-			}
-		}
+	/**
+	*/
+	me.setSelected = function() {
+		me.setState(me.stateType.SELECTED);
 	};
 
 	/**
@@ -114,6 +115,10 @@ function hexagon (delegate) {
 		me.disabled = isDisabled;
 		me.hasChanged();
 	};
+
+	me.is = function(state) {
+		return me.state == state;
+	}
 
 	/**
 	Set custom color
@@ -207,14 +212,8 @@ function hexagon (delegate) {
 	me.graphics.click = function(ev) {
 		if (me.disabled) return;
 
-		// notify delegate
-		me.changed = true;
-
-		if (me.state != 2) me.state = 2;
-		else me.state = 0;
-
 		if (me.delegate)
-			me.delegate.notify(me.index, me.state == 2);
+			me.delegate.notify(me.index, !me.is(me.stateType.SELECTED));
 	};
 
 	/**
