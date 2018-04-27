@@ -137,7 +137,7 @@ function pascal(settings) {
 		var x = a.x + hexp.x * me.container.scale.x;
 		var y = a.y + hexp.y * me.container.scale.y;
 
-		// offset position
+		// Offset position
 		y += me.settings.size * me.container.scale.y / 2;
 
 		// Display message on html

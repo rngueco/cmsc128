@@ -8,7 +8,6 @@ p5 = offset, offset+hexSize*0.75;
 p6 = offset, offset+hexSize*0.25;
 **/
 
-
 function hexagon (delegate) {
 
 	var me = this;
@@ -26,59 +25,161 @@ function hexagon (delegate) {
 	me.changed = true;
 
 	// Renderable
+	//    Graphics
 	me.graphics = new PIXI.Graphics();
 	me.graphics.interactive = true;
-
+	//    Text
 	me.text = new PIXI.Text();
 	me.text.anchor.x = 0.5;
 	me.text.anchor.y = 0.5;
 
+	me.stateType = {
+		CUSTOM: -1,
+		NORMAL: 0,
+		ALTERNATIVE: 1,
+		SELECTED: 2
+	};
+
+	// States
 	me.state = 0;
+	me.disabled = false;
+	me.customColor = 0;
 
 	// For animation
 	me.future = {};
-	me.futureTime = null;
+	me.futureTime = 0;
 
-	me.disabled = false;
+	/**
+	Setup to given stage
+	*/
+	me.setup = function(stage) {
+		stage.addChild(me.graphics);
+		stage.addChild(me.text);
+	};
 
-	// Updater
-	me.update = function(delta) {
+	/**
+	Allow rerendering next time
+	*/
+	me.hasChanged = function() {
+		me.changed = true;
+	}
 
-		if (delta === undefined)
-			delta = 0;
+	/**
+	Change property triggering render
+	*/
+	me.set = function(prop, val) {
+		me[prop] = val;
+		me.hasChanged();
+	};
 
-		if (me.futureTime !== null){
-			me._animate(delta);
-			if (me.futureTime < 0) me.futureTime = null;
+	/**
+	Change state
+	*/
+	me.setState = function(state) {
+		me.state = state;
+		me.hasChanged();
+	}
+
+	/**
+	Store the hexagon position in the triangle
+	*/
+	me.setIndex = function(y,x) {
+		me.index.row = y;
+		me.index.column = x;
+	};
+
+	/**
+	Set to program highlighted state otherwise reset
+	*/
+	me.setAlternative = function(isAlternative) {
+
+		if (isAlternative) {
+			if (me.state == me.stateType.NORMAL) {
+
+				me.setState(me.stateType.ALTERNATIVE);
+			}
+		} else {
+			if (me.state == me.stateType.ALTERNATIVE) {
+
+				me.disabled = false;
+				me.setState(me.stateType.NORMAL);
+			}
+		}
+	};
+
+	/**
+	Disable hexagon from interaction
+	*/
+	me.setDisabled = function(isDisabled) {
+		me.disabled = isDisabled;
+		me.hasChanged();
+	};
+
+	/**
+	Set custom color
+	*/
+	me.custom = function(color) {
+		if (color == null) {
+			me.state = me.stateType.NORMAL;
+		} else {
+			me.customColor = color;
+			me.state = me.stateType.CUSTOM;
 		}
 
-		if (!me.delegate.forceRender && !me.changed)
-			return;
+		me.hasChanged();
+	}
+ 
+ 	/**
+ 	Reset the state
+ 	*/
+	me.deselect = function() {
+		me.disabled = false;
+		me.state = me.stateType.NORMAL;
 
-		var settings = me.delegate.settings;
-		var size = parseInt(settings.size);
+		me.hasChanged();
+	};
 
-		var hexWidth = size*0.866;
+	/**
+	Render the hexagon
+	*/
+	me.update = function(delta) {
 
-		me.graphics.clear();
+		if (!delta) delta = 0; // Check if delta is good
+		if (me.futureTime !== 0) animate(delta); // Animate values
+		if (!me.delegate.forceRender && !me.changed) return; // Skip rendering if not required
+
+		var settings = me.delegate.settings; // Point to settings
+
+		var size = parseInt(settings.size); // Resolve size
+
+		var hexWidth = size*0.866; // Calculate the supposed width
+
+		me.graphics.clear(); // Clear the graphics instance
+
+		// Set Stroke
 		me.graphics.lineStyle(settings.lineWidth, settings.lineColor);
 
+		// Resolve background color
 		var color = null;
-
-		if (me.disabled && me.state != 1)
+		var override = me.state == me.stateType.ALTERNATIVE || me.state == me.stateType.CUSTOM;
+		if (me.disabled && !override)
 			color = settings.disabledColor;
 		else
 			switch (me.state) {
-				case 0: color = settings.bgColor;
+				case me.stateType.NORMAL:
+					color = settings.bgColor;
 				break;
-				case 1: color = settings.altColor;
+				case me.stateType.ALTERNATIVE:
+					color = settings.altColor;
 				break;
-				case 2: color = settings.highlightColor;
+				case me.stateType.SELECTED:
+					color = settings.highlightColor;
+				break;
+				default:
+					color = me.customColor;
 			}
-
 		color = parseInt(color);
-
-		me.graphics.beginFill(color);
+		me.graphics.beginFill(color); // Set Fill
 
 		me.graphics.moveTo(me.x,              me.y-size*0.5);
 		me.graphics.lineTo(me.x+hexWidth*0.5, me.y-size*0.25);
@@ -100,6 +201,9 @@ function hexagon (delegate) {
 		me.changed = false;
 	};
 
+	/**
+	Handle clicks
+	*/
 	me.graphics.click = function(ev) {
 		if (me.disabled) return;
 
@@ -113,50 +217,11 @@ function hexagon (delegate) {
 			me.delegate.notify(me.index, me.state == 2);
 	};
 
-	me.setup = function(stage) {
-		stage.addChild(me.graphics);
-		stage.addChild(me.text);
-	};
-
-	// set values after first render
-	me.set = function(prop, val) {
-		me[prop] = val;
-		me.changed = true;
-	};
-
-	me.setIndex = function(y,x) {
-		me.index.row = y;
-		me.index.column = x;
-	};
-
-	me.setAlternative = function(bool) {
-		if (bool && me.state === 0) {
-			me.state = 1;
-			me.changed = true;
-		} else if (!bool && me.state == 1) {
-			me.disabled = false;
-			me.state = 0;
-
-			me.changed = true;
-		}
-	};
-
-	me.deselect = function() {
-		me.disabled = false;
-		me.state = 0;
-
-		me.changed = true;
-	};
-
-	me.setDisabled = function(bool) {
-		me.disabled = bool;
-		if (bool) me.state = 0;
-		me.changed = true;
-	};
-
-	// animate value transition
-	me._animate = function(delta) {
-		var set = me.futureTime-delta <= 0;
+	/**
+	Handle animating values
+	*/
+	var animate = function(delta) {
+		var set = delta <= 0 || me.futureTime-delta <= 0;
 
 		for (var key in me.future) {
 			if (me.future[key] !== null && me.future[key] !== undefined) {
@@ -167,6 +232,12 @@ function hexagon (delegate) {
 				}
 			}
 		}
-		me.futureTime -= delta;
+
+		if (set) 
+			me.futureTime = 0;
+		else
+			me.futureTime -= delta;
+
+		me.hasChanged();
 	};
 }

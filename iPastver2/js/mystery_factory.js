@@ -120,18 +120,18 @@ function mysteryFactory (delegate) {
 					triangle[i][j].setDisabled(true);
 					me.triangle[i][j].x = (display.innerWidth()/2)-50-(i-1)*50+j*100;
 					me.triangle[i][j].y = 50+i*90;
-					if(me.triangle[i][j].value%mod==0){
-						pascal.settings.disabledColor = 0xff0000;
-					}else if(me.triangle[i][j].value%mod==1){
-						me.delegate.settings.disabledColor = 0x000000;
-					}else if(me.triangle[i][j].value%mod==2){
-						me.delegate.settings.disabledColor = 0x00ff00;
-					}else if(me.triangle[i][j].value%mod==3){
-						me.delegate.settings.disabledColor = 0x0000ff;
-					}else{
-						me.delegate.settings.disabledColor = 0xffff00;
+					if (me.triangle[i][j].value%mod==0){
+						me.triangle[i][j].custom(0xff0000);
+					} else if(me.triangle[i][j].value%mod==1){
+						me.triangle[i][j].custom(0x000000);
+					} else if(me.triangle[i][j].value%mod==2){
+						me.triangle[i][j].custom(0x00ff00);
+					} else if(me.triangle[i][j].value%mod==3){
+						me.triangle[i][j].custom(0x0000ff);
+					} else{
+						me.triangle[i][j].custom(0xffff00);
 					}
-					me.triangle[i][j].update(100);
+					me.triangle[i][j].update();
 				}
 			}
 			break;
