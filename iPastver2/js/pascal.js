@@ -149,7 +149,13 @@ function pascal(settings) {
 				x = windowWidth-minwidth;
 
 			messagebox.html(result);
-			messagebox.css('top', y).css('left', x).show();
+			MathJax.Hub.queue.Push(
+				["Typeset",MathJax.Hub],
+				function() {
+					messagebox.css('top', y).css('left', x).show();
+				}
+			);
+
 		}
 
 

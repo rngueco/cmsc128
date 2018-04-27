@@ -7,8 +7,21 @@
 	<link href="css/fontawesome-all.min.css" rel="stylesheet">
 	<link href="css/huebee.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
+
+	<script src="plugins/MathJax/MathJax.js">
+		MathJax.Hub.Config({
+		  extensions: ["tex2jax.js"],
+          jax: ["input/TeX","output/HTML-CSS"],
+		  tex2jax: {
+		    inlineMath: [['$','$'],['\\(','\\)']],
+		    displayMath: [ ['$$','$$'], ['\[','\]'] ],
+		    processClass: "mathjax",
+		    ignoreClass: "no-mathjax"
+		  }
+		});
+	</script>
 </head>
-<body>
+<body class="no-mathjax">
 	<div id="wrapper">
 		<header id="masthead">
 			<!-- About -->
@@ -112,7 +125,7 @@
 			</div>
 		</header>
         <div id="display" style="padding:0; position: relative;">
-			<div id="message" style="position: absolute; top:0; left:0; display: none;">
+			<div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none;">
 				Hello World!
 			</div>
 			<!-- canvas -->
