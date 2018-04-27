@@ -115,6 +115,7 @@ function mysteryFactory (delegate) {
 			
 			case 'modular':
 			var mod = 4;
+			
 			for (var i = 0; i < me.triangle.length; i++){
 				for (var j = 0; j <= i; j++){
 					triangle[i][j].setDisabled(true);
@@ -364,7 +365,7 @@ function mysteryFactory (delegate) {
 			row--;
 		}
 		var tmp = (me.selection[me.selection.length-1].row+me.selection[me.selection.length-1].column+1);
-		var preFix = "The "+tmp;
+		var preFix = "The ["+tmp;
 		switch(tmp%10){
 			case 1:
 				preFix += "st";
@@ -379,7 +380,7 @@ function mysteryFactory (delegate) {
 				preFix += "th";
 		}
 		
-		cont =  preFix+" in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
+		cont =  preFix+"] in the Fibonacci sequence is:<br/> "+cont+"<br/> = "+sum;
 		for(i = 0;i<hexas.length;i++){
 			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative(true);
 		}
