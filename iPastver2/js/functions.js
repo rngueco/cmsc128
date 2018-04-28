@@ -82,23 +82,7 @@ function resetPosition() {
 	updatePosDisplay();
 }
 
-function applyColors() {
-	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
 
-	var bg =   readColor( $('#bgColorInput').val() );
-	var txt =  readColor( $('#txtColorInput').val() );
-	var strk = readColor( $('#strkColorInput').val() );
-	var slct = readColor( $('#slctColorInput').val() );
-	var alt =  readColor( $('#altColorInput').val() );
-	var dis =  readColor( $('#disColorInput').val() );
-
-	pascal.setColor('bg', bg);
-	pascal.setColor('text', txt);
-	pascal.setColor('highlight', slct);
-	pascal.setColor('alt', alt);
-	pascal.setColor('disabled', dis);
-	pascal.setColor('line', strk);
-}
 
 function readColor(string) {
 	var colorString = string;
@@ -218,12 +202,46 @@ function hslToRgb(h, s, l){
     return Math.round(r * 255)*256*256+Math.round(g * 255)*256+Math.round(b * 255);
 }
 
+function validateSuccess(runnable, form) {
+	if (form) {
+		if ( $(form).isValid({},{},false) ) {
+			runnable();
+		}
+	} else runnable();
+
+}
+
+function applyColors(form) {
+	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
+	var run = function() {
+		var bg =   readColor( $('#bgColorInput').val() );
+		var txt =  readColor( $('#txtColorInput').val() );
+		var strk = readColor( $('#strkColorInput').val() );
+		var slct = readColor( $('#slctColorInput').val() );
+		var alt =  readColor( $('#altColorInput').val() );
+		var dis =  readColor( $('#disColorInput').val() );
+
+		pascal.setColor('bg', bg);
+		pascal.setColor('text', txt);
+		pascal.setColor('highlight', slct);
+		pascal.setColor('alt', alt);
+		pascal.setColor('disabled', dis);
+		pascal.setColor('line', strk);
+	}
+		
+	validateSuccess(run, form);
+}
+
 // Load new settings 
-function applySettings() {
-	pascal.settings.mystery = $('#modeSelect').val();
-	pascal.settings.height = $('#heightInput').val();
-	
-	restart();
+function applySettings(form) {
+	var run = function() {
+		pascal.settings.mystery = $('#modeSelect').val();
+		pascal.settings.height = $('#heightInput').val();
+		
+		restart();
+	}
+
+	validateSuccess(run, form);
 }
 
 // The LOOP

@@ -6,31 +6,38 @@
 
   <link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
   <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script type="text/javascript" src="plugins/jquery.min.js"></script>
+  <script type="text/javascript" src="plugins/jquery.form-validator.min.js"></script>
   
   <link href="css/index.css" rel="stylesheet">
 
-  <script type="text/javascript" src="plugins/jquery.min.js"></script>
   <script type="text/javascript">
-    function begin() {
-      var inp = $("#input").val();
-      window.location.href = "main.html?height="+inp;
+    function begin(form) {
+      if ($(form).isValid({},{},false)) {
+        var inp = $("#input").val();
+        window.location.href = "main.html?height="+inp;
+      }
     }
   </script>
+  
 </head>
 <body>
     <div id="slide-up">
       <h1>iPasT</h1><hr>
       <sub>An application geared towards understanding Pascal's Triangle.</sub><hr>
-    	  <form id="form" onsubmit="begin(); return false;">
-            <h2>
-              <input class="form-control" id="input" placeholder="enter number of rows" type="number" required></input>
+    	  <form id="form" onsubmit="begin(this); event.preventDefault()">
+            <h2 class="pb-2">
+              <input class="form-control" data-validation="number" id="input" placeholder="enter number of rows" type="number" required></input>
             </h2>
-            <a onclick="$('#form').submit()">
+            <button type="submit">
                   Start Application<br />
                   <i class="fas fa-chevron-down"></i>
-            </a>
+            </button>
         </form>
+        
     </div>
-
+    <script type="text/javascript">
+      $.validate();
+    </script>
 </body>
 </html>

@@ -153,7 +153,7 @@ function mysteryFactory (delegate) {
 			break;
 			
 			case 'modular':
-			var mod = 4;
+			var mod = 8;
 			var colors = new Array(mod);
 			for (var z = 0; z < mod; z++) {
 				colors[z] = hslToRgb(z/mod, 1, 0.5);

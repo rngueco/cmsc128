@@ -37,6 +37,27 @@ input{
    font-variant: small-caps; 
 }
 
+button {
+	border: none;
+	background: none;
+	color: inherit;
+}
+
+form h2 {
+	line-height: 0.5;
+
+}
+
+#input {
+	margin: 0;
+}
+
+.form-error {
+	color: #dc3545;
+	font-size: 0.8rem;
+	margin: 0;
+}
+
 
 sub{
 	font-size: 20px;

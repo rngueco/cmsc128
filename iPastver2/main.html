@@ -1,155 +1,160 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>iPasT</title>
-	<link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
-	<link href="plugins/huebee/huebee.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>iPasT</title>
+  <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
+  <link href="plugins/huebee/huebee.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-	<script src="plugins/mathJax/core/MathJax.js">
-		MathJax.Hub.Config({
-		  extensions: ["tex2jax.js"],
+  <script src="plugins/mathJax/core/MathJax.js">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
           jax: ["input/TeX","output/HTML-CSS"],
-		  tex2jax: {
-		    inlineMath: [['$','$']],
-		    displayMath: [ ['$$','$$'], ['\[','\]'] ],
-		    processClass: "mathjax",
-		    ignoreClass: "no-mathjax"
-		  }
-		});
-	</script>
+      tex2jax: {
+        inlineMath: [['$','$']],
+        displayMath: [ ['$$','$$'], ['\[','\]'] ],
+        processClass: "mathjax",
+        ignoreClass: "no-mathjax"
+      }
+    });
+  </script>
 </head>
 <body class="no-mathjax">
-	<div id="wrapper">
-		<header id="masthead">
-			<!-- About -->
-			<div id="navbarInfo" class="bg-light collapse">
-				<div class="container py-3">
-					<strong>
-						iPasT
-					</strong>
-					An application geared towards understanding Pascal's Triangle.
-				</div>
-			</div>
-			
-			<nav class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
-	            <div class="container">
-	                <a href="index.html" class="navbar-brand">iPasT</a>
-	                <div class="navbar-right">
-	                	<span id="posValue" class="mr-1 text-white">(x, y)</span>
-	                	<span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
-	                	
-	                	<button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
-	                	<button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
-
-	                	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColors" aria-controls="navbarColors" aria-expanded="false" aria-label="Toggle color"><i class="fas fa-eye-dropper"></i></button>
-		                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle settings"><i class="fas fa-cog"></i></button>
-		                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarInfo" aria-controls="navbarInfo" aria-expanded="false" aria-label="Toggle info"><i class="fas fa-info"></i></button>
-	                </div>
-	            </div>
-	        </nav>
-
-	        <form onsubmit="applyColors(); return false;">
-		        <div id="navbarColors" class="bg-dark collapse text-white">
-		        	<div class="container py-3">
-		        		<div class="row">
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="bgColorInput">Fill</label>
-								<input id="bgColorInput" type="text" name="bgColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="txtColorInput">Text</label>
-								<input id="txtColorInput" type="text" name="txtColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="strkColorInput">Stroke</label>
-								<input id="strkColorInput" type="text" name="strkColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="slctColorInput">Select</label>
-								<input id="slctColorInput" type="text" name="slctColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="altColorInput">Highlight</label>
-								<input id="altColorInput" type="text" name="altColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-lg-2 col-md-4 col-sm-12">
-		        				<label for="disColorInput">Disabled</label>
-								<input id="disColorInput" type="text" name="disColorInput" class="form-control color-input">
-		        			</div>
-		        			<div class="col-12">
-		        				<label>&nbsp;</label>
-								<button type="submit" class="btn btn-primary d-block">Apply</button>
-		        			</div>
-		        		</div>
-		        	</div>
-		        </div>
-		    </form>
-
-	        <!-- Settings -->
-	        <div id="navbarSettings" class="bg-dark collapse text-white">
-				<div class="container py-3">
-					<form onsubmit="applySettings(); return false;">
-						<div class="row">
-							<div class="col-sm-12 col-md-4 col-lg-5 mt-1">
-								<label for="modeSelect">Mystery</label>
-								<select id="modeSelect" class="form-control">
-									<option value="symmetry">Symmetry</option>
-									<option value="powersof2">Powers of 2</option>
-									<option value="powersof11">Powers of 11</option>
-									<option value="divisiblebyprime">Divisibility By Prime</option>
-									<option value="countingNum">Counting Numbers</option>
-									<option value="triangularNum">Triangular Numbers</option>
-									<option value="tetrahedralNum">Tetrahedral Numbers</option>
-									<option value="hockey">Hockey Stick Pattern</option>
-									<option value="fibonacci">Fibonacci Numbers</option>
-									<option value="combi">Combinatorics</option>
-									<option value="modular">Modular Arithmetic</option>
-								</select>
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-5 mt-1">
-								<label for="heightInput">Triangle Height</label>
-								<input id="heightInput" type="number" name="heightInput" class="form-control">
-							</div>
-							<div class="col-sm-12 col-md-4 col-lg-2 mt-1">
-								<label>&nbsp;</label>
-								<button type="submit" class="btn btn-primary d-block">Apply</button>
-							</div>
-							<div class="col-12 mt-1">
-								<label>&nbsp;</label>
-								<button class="btn btn-primary d-block" onclick="resetPosition()">Reset Position</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</header>
-        <div id="display" style="padding:0; position: relative;">
-			<div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none;">
-				Hello World!
-			</div>
-			<!-- canvas -->
+  <div id="wrapper">
+    <header id="masthead">
+      <!-- About -->
+      <div id="navbarInfo" class="bg-light collapse">
+        <div class="container py-3">
+          <strong>
+            iPasT
+          </strong>
+          An application geared towards understanding Pascal's Triangle.
         </div>
-	</div>
+      </div>
+      
+      <nav class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
+              <div class="container">
+                  <a href="index.html" class="navbar-brand">iPasT</a>
+                  <div class="navbar-right">
+                    <span id="posValue" class="mr-1 text-white">(x, y)</span>
+                    <span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
+                    
+                    <button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+                    <button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
 
-	<!-- Bootstrap core JavaScript -->
-	<script type="text/javascript" src="plugins/jquery.min.js"></script>
-	
-	<script type="text/javascript" src="plugins/popper/popper.min.js"></script>
-	<script type="text/javascript" src="plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColors" aria-controls="navbarColors" aria-expanded="false" aria-label="Toggle color"><i class="fas fa-eye-dropper"></i></button>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle settings"><i class="fas fa-cog"></i></button>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarInfo" aria-controls="navbarInfo" aria-expanded="false" aria-label="Toggle info"><i class="fas fa-info"></i></button>
+                  </div>
+              </div>
+          </nav>
 
-	<script type="text/javascript" src="plugins/huebee/huebee.pkgd.min.js"></script>
+          <form onsubmit="applyColors(this); event.preventDefault()">
+            <div id="navbarColors" class="bg-dark collapse text-white">
+              <div class="container py-3">
+                <div class="row">
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="bgColorInput">Fill</label>
+                    <input id="bgColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="bgColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="txtColorInput">Text</label>
+                    <input id="txtColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="txtColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="strkColorInput">Stroke</label>
+                    <input id="strkColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="strkColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="slctColorInput">Select</label>
+                    <input id="slctColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="slctColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="altColorInput">Highlight</label>
+                    <input id="altColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="altColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-lg-2 col-md-4 col-sm-12">
+                    <label for="disColorInput">Disabled</label>
+                    <input id="disColorInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="disColorInput" class="form-control color-input">
+                  </div>
+                  <div class="col-12">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-primary d-block">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
 
-	<script type="text/javascript" src="plugins/pixiJS/pixi.min.js"></script>
-	
-	<script type="text/javascript" src="js/mystery_factory.js"></script>
-	<script type="text/javascript" src="js/pascal.js"></script>
-	<script type="text/javascript" src="js/hexagon.js"></script>
-	
-	<script type="text/javascript" src="js/functions.js"></script>
-	<script type="text/javascript" src="js/app.js"></script>
+          <!-- Settings -->
+          <div id="navbarSettings" class="bg-dark collapse text-white">
+        <div class="container py-3">
+          <form onsubmit="applySettings(this); event.preventDefault()">
+            <div class="row">
+              <div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+                <label for="modeSelect">Mystery</label>
+                <select id="modeSelect" class="form-control">
+                  <option value="symmetry">Symmetry</option>
+                  <option value="powersof2">Powers of 2</option>
+                  <option value="powersof11">Powers of 11</option>
+                  <option value="divisiblebyprime">Divisibility By Prime</option>
+                  <option value="countingNum">Counting Numbers</option>
+                  <option value="triangularNum">Triangular Numbers</option>
+                  <option value="tetrahedralNum">Tetrahedral Numbers</option>
+                  <option value="hockey">Hockey Stick Pattern</option>
+                  <option value="fibonacci">Fibonacci Numbers</option>
+                  <option value="combi">Combinatorics</option>
+                  <option value="modular">Modular Arithmetic</option>
+                </select>
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+                <label for="heightInput">Triangle Height</label>
+                <input id="heightInput" type="number" data-validation="number" name="heightInput" class="form-control">
+              </div>
+              <div class="col-sm-12 col-md-4 col-lg-2 mt-1">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary d-block">Apply</button>
+              </div>
+              <div class="col-12 mt-1">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary d-block" onclick="resetPosition()">Reset Position</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </header>
+        <div id="display" style="padding:0; position: relative;">
+      <div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none;">
+        Hello World!
+      </div>
+      <!-- canvas -->
+        </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="plugins/jquery.min.js"></script>
+  <script type="text/javascript" src="plugins/jquery.form-validator.min.js"></script>
+  
+  <script type="text/javascript" src="plugins/popper/popper.min.js"></script>
+  <script type="text/javascript" src="plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script type="text/javascript" src="plugins/huebee/huebee.pkgd.min.js"></script>
+
+  <script type="text/javascript" src="plugins/pixiJS/pixi.min.js"></script>
+  
+  <script type="text/javascript" src="js/mystery_factory.js"></script>
+  <script type="text/javascript" src="js/pascal.js"></script>
+  <script type="text/javascript" src="js/hexagon.js"></script>
+  
+  <script type="text/javascript" src="js/functions.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+
+  <script type="text/javascript">
+      $.validate();
+    </script>
 </body>
 </html>

@@ -3,6 +3,11 @@
 	overflow: hidden;
 }
 
+.form-error {
+	font-size: 0.8rem;
+	white-space: nowrap;
+}
+
 .collapse {
 	max-height: 100%;
 }
