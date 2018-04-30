@@ -6,6 +6,7 @@
   <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
   <link href="plugins/huebee/huebee.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="plugins/sk-wandering-cubes.css">
   <link href="css/style.css" rel="stylesheet">
 
   <script src="plugins/mathJax/core/MathJax.js">
@@ -34,21 +35,26 @@
         </div>
       </div>
       
-      <nav class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
-              <div class="container">
-                  <a href="index.html" class="navbar-brand">iPasT</a>
-                  <div class="navbar-right">
-                    <span id="posValue" class="mr-1 text-white">(x, y)</span>
-                    <span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
-                    
-                    <button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
-                    <button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+          <nav id="mainNav" class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
+            <div class="container">
+              <span>
+                <a href="index.html" id="logo" class="navbar-brand">iPasT</a>
+                <a href="index.html" id="brand" class="navbar-brand" style="display: none; font-family: sans-serif;"></a>
+              </span>
+              
+              <div class="navbar-right">
+                <span id="posValue" class="mr-1 text-white">(x, y)</span>
+                <span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
+                
+                <button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+                <button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColors" aria-controls="navbarColors" aria-expanded="false" aria-label="Toggle color"><i class="fas fa-eye-dropper"></i></button>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle settings"><i class="fas fa-cog"></i></button>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarInfo" aria-controls="navbarInfo" aria-expanded="false" aria-label="Toggle info"><i class="fas fa-info"></i></button>
-                  </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColors" aria-controls="navbarColors" aria-expanded="false" aria-label="Toggle color"><i class="fas fa-eye-dropper"></i></button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle settings"><i class="fas fa-cog"></i></button>
+                <button id="helpToggle" class="navbar-toggler" type="button" onclick="toggleHelp()" aria-expanded="false"><i class="fas fa-question"></i></button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarInfo" aria-controls="navbarInfo" aria-expanded="false" aria-label="Toggle info"><i class="fas fa-info"></i></button>
               </div>
+            </div>
           </nav>
 
           <form onsubmit="applyColors(this); event.preventDefault()">
@@ -86,54 +92,77 @@
                 </div>
               </div>
             </div>
-        </form>
+          </form>
 
           <!-- Settings -->
           <div id="navbarSettings" class="bg-dark collapse text-white">
         <div class="container py-3">
           <form onsubmit="applySettings(this); event.preventDefault()">
             <div class="row">
-              <div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+              <div class="col-sm-12 col-md-4 col-lg-5 form-group">
                 <label for="modeSelect">Mystery</label>
                 <select id="modeSelect" class="form-control">
-                  <option value="symmetry">Symmetry</option>
-                  <option value="powersof2">Powers of 2</option>
-                  <option value="powersof11">Powers of 11</option>
-                  <option value="divisiblebyprime">Divisibility By Prime</option>
-                  <option value="countingNum">Counting Numbers</option>
-                  <option value="triangularNum">Triangular Numbers</option>
-                  <option value="tetrahedralNum">Tetrahedral Numbers</option>
-                  <option value="hockey">Hockey Stick Pattern</option>
-                  <option value="fibonacci">Fibonacci Numbers</option>
-                  <option value="combi">Combinatorics</option>
-                  <option value="modular">Modular Arithmetic</option>
                 </select>
               </div>
-              <div class="col-sm-12 col-md-4 col-lg-5 mt-1">
+              <div class="col-sm-12 col-md-4 col-lg-5 form-group">
                 <label for="heightInput">Triangle Height</label>
                 <input id="heightInput" type="number" data-validation="number" name="heightInput" class="form-control">
               </div>
-              <div class="col-sm-12 col-md-4 col-lg-2 mt-1">
+              <div class="col-sm-12 col-md-4 col-lg-2 form-group">
                 <label>&nbsp;</label>
                 <button type="submit" class="btn btn-primary d-block">Apply</button>
               </div>
-              <div class="col-12 mt-1">
-                <label>&nbsp;</label>
-                <button class="btn btn-primary d-block" onclick="resetPosition()">Reset Position</button>
+              <div class="col-12 form-group">
+                <button type="button" class="btn btn-primary" onclick="resetPosition()">Reset Position</button>
+                <span class="form-check ml-3" style="display: inline-block;">
+                  <input class="form-check-input" type="checkbox" id="labeledCheckbox" onchange="applyLabels();">
+                  <label class="form-check-label" for="labeledCheckbox">
+                    Show Row Labels
+                  </label>
+                </span>
               </div>
             </div>
           </form>
         </div>
       </div>
     </header>
-        <div id="display" style="padding:0; position: relative;">
-      <div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none;">
+    
+    <div id="loading">
+      <div class="sk-wandering-cubes">
+        <div class="sk-cube">
+        </div>
+        <div class="sk-cube sk-cube2">
+        </div>
+      </div>
+      <div class="font-weight-bold">
+        Generating...
+      </div>
+    </div>
+    <div id="display" style="padding:0; position: relative">
+      <div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none">
         Hello World!
       </div>
       <!-- canvas -->
-        </div>
-  </div>
+    </div>
+    <div id="help" class="bg-dark text-white m-4 shadow">
+      <div class="p-3" style="position: relative;">
+        <button onclick="toggleHelp()" class="bg-white helpclose round shadow-sm">
+          <i class="fas fa-fw fa-times"></i>
+        </button>
+        <div class="d-flex flex-row">
+          <span class="d-inline-block pr-4">
+            <div class="title"><i class="fas fa-fw fa-question"></i></div>
+          </span>
+          <div id="helpMessage" class="mathjax d-inline-block">
+            Lorem ipsum dolor sit amet, qui prima suavitate salutatus an, cu per solet officiis delicata. Propriae dissentiet voluptatibus id qui, ei fugit prompta epicurei est, alii affert erroribus usu id. Eu posse placerat oportere duo, pro in nominati molestiae efficiantur. Eum in delenit definiebas, sea no oporteat facilisi maluisset. Sit ex quaestio consetetur, ei porro percipit sea, usu ex nostro labores mnesarchum. Ad summo dicunt aeterno mel, vim augue melius antiopam ad, cu cum hinc falli consul. Usu populo doming ei.
 
+            Mea ad vocibus delicata assentior, te iudico commodo his, duo novum equidem fastidii et. Pri possim omnium id, eum persius sadipscing definitiones ne. Tollit consequat sea et, cu duo possim vocibus dissentiet. Eripuit perfecto mel ad, vidit posidonium ea nec, adhuc consequat urbanitas id est. Ei mel dicunt nonumes, tation forensibus eloquentiam eu vim, no reque vocibus indoctum sit.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" src="plugins/jquery.min.js"></script>
   <script type="text/javascript" src="plugins/jquery.form-validator.min.js"></script>
@@ -153,8 +182,5 @@
   <script type="text/javascript" src="js/functions.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 
-  <script type="text/javascript">
-      $.validate();
-    </script>
 </body>
 </html>

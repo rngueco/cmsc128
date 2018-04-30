@@ -1,4 +1,7 @@
 
+body {
+}
+
 #display {
 	overflow: hidden;
 }
@@ -28,5 +31,54 @@
 
 #wrapper {
 	height: 100%;
+}
+
+#mainNav {
+	z-index: 9999;
+}
+
+#loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+#display {
+	background: white;
+	opacity: 0;
+	transition: 1s ease-out;
+}
+
+.navbar-toggler[aria-expanded="false"] {
+	color: white;
+}
+
+#help {
+	border-radius: 0.5rem;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+}
+
+#help .title {
+	font-size: 1.5rem;
+	padding: 0.5rem;
+	border: dashed 0.1rem white;
+	border-radius: 9999px;
+}
+
+button.round {
+	border: none;
+	border-radius: 9999px;
+}
+
+.helpclose {
+	position: absolute;
+	top: 0;
+	right: 0;
+	transform: translate(50%,-50%);
 }
 

@@ -18,7 +18,12 @@ function pascal(settings) {
 	// Private Properties
 	var me = this;
 	var hexagons = [];
+	var labels = [];
 	var background = new PIXI.Graphics();
+
+	var spaceY = -10;
+
+	var labelSpace = 20;
 
 	// Public Properties
 	me.settings = $.extend(
@@ -36,7 +41,8 @@ function pascal(settings) {
 		lineWidth: 5,
 
 		height: 0,
-		mystery: 'symmetry'
+		mystery: 'symmetry',
+		labeled: true
 	}, settings);
 	me.container = new PIXI.Container();
 	me.renderX = 0;
@@ -67,6 +73,12 @@ function pascal(settings) {
 
 				row.push(newhex);
 			}
+
+			var text = new PIXI.Text();
+			text.anchor.y = 0.5;
+
+			me.container.addChild(text);
+			labels.push(text);
 
 			hexagons.push(row);
 		}
@@ -103,7 +115,21 @@ function pascal(settings) {
 				offX += size;
 			}
 
-			offY += size-10; // better make this editable
+			var text = labels[i];
+			if (me.settings.labeled) {
+				
+				text.style.fontSize = parseInt(me.settings.fontsize, 10);
+				text.style.fill = parseInt(me.settings.lineColor);
+
+				text.x = offX - size/2 + labelSpace;
+				text.y = offY;
+
+				text.text = 'Row '+i;
+			} else {
+				text.text = '';
+			}
+
+			offY += size+spaceY;
 		}
 		me.forceRender = false;
 	};
@@ -118,46 +144,29 @@ function pascal(settings) {
 	};
 
 	me.setZoom = function(value) {
+
 		me.container.scale.x = me.container.scale.y = value;
 		me.container.updateTransform();
 	};
 
 	me.notify = function(index, isAdd) {
 		var result = me.mystery.loadMystery(index, isAdd); // Send to mystery factory
+		var x = 0;
+		var y = 0;
 
-		var messagebox = $('#message');
+		if ( !me.mystery.selectIsEmpty() ) {
+			var a = me.container.toGlobal(new PIXI.Point(0,0));
+			var hexp = hexagons[index.row][index.column];
+			x = a.x + hexp.x * me.container.scale.x;
+			y = a.y + hexp.y * me.container.scale.y;
 
-		if (me.mystery.selectIsEmpty() ) {
-			messagebox.hide();
-			return;
-		}
-		
-		var a = me.container.toGlobal(new PIXI.Point(0,0));
-		var hexp = hexagons[index.row][index.column];
-		var x = a.x + hexp.x * me.container.scale.x;
-		var y = a.y + hexp.y * me.container.scale.y;
-
-		// Offset position
-		y += me.settings.size * me.container.scale.y / 2;
-
-		// Display message on html
-		if (result) {
-			var minwidth = parseInt(messagebox.css('min-width'),10);
-			var windowWidth = messagebox.parent().innerWidth();
-
-			if (x+minwidth>windowWidth)
-				x = windowWidth-minwidth;
-
-			messagebox.html(result);
-			MathJax.Hub.queue.Push(
-				["Typeset",MathJax.Hub],
-				function() {
-					messagebox.css('top', y).css('left', x).show();
-				}
-			);
-
+			// Offset position
+			y += me.settings.size * me.container.scale.y / 2;
+		} else {
+			result = null;
 		}
 
+		writeMessage(result, x, y);
 
 	};
 

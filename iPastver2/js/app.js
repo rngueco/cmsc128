@@ -6,7 +6,10 @@ if(!PIXI.utils.isWebGLSupported()){
 
 PIXI.utils.sayHello(type);
 
+loadMysteryMenu();
 loadPascalParameters();
+
+$.validate();
 
 pascal.renderX = display.innerWidth()/2;
 pascal.side = display.innerWidth();

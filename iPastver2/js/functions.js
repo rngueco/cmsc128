@@ -23,6 +23,18 @@ var zoomValue = 1.0;
 
 var moved = false;
 
+
+function loadMysteryMenu() {
+	var menu = '#modeSelect';
+
+	var html = "";
+	for (mystery in mysteries) {
+		var title = mysteries[mystery].title;
+		html += '<option value=\"'+mystery+'\">'+title+'</option>';
+	}
+	$(menu).append(html);
+}
+
 function onDragStart(event) {
 	var here = pascal.container;
 
@@ -65,8 +77,8 @@ function onDragMove() {
 }
 
 function updatePosDisplay() {
-	var x = pascal.container.position.x - pascal.container.pivot.x;
-	var y = pascal.container.position.y - pascal.container.pivot.y;
+	var x = pascal.container.position.x - pascal.container.pivot.x * pascal.container.scale.x;
+	var y = pascal.container.position.y - pascal.container.pivot.y * pascal.container.scale.y;
 	$('#posValue').html('('+x.toFixed(0)+', '+y.toFixed(0)+')');
 }
 
@@ -121,7 +133,17 @@ function getQueryParams(qs) {
         re = /[?&]([^?=]+)=([^?&#]*)/g;
 
     while (tokens = re.exec(qs)) {
-        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+    	var value = decodeURIComponent(tokens[2]);
+        switch (value) {
+        	case 'true':
+        	params[decodeURIComponent(tokens[1])] = true;
+        	break;
+        	case 'false':
+        	params[decodeURIComponent(tokens[1])] = false;
+        	break;
+        	default:
+        	params[decodeURIComponent(tokens[1])] = value;
+        }
     }
 
     return params;
@@ -153,6 +175,8 @@ function loadPascalParameters() {
 	$('#altColorInput').val(formatHexColor(s.altColor));
 	$('#disColorInput').val(formatHexColor(s.disabledColor));
 
+	$('#labeledCheckbox').prop('checked', s.labeled);
+
 	console.log(s);
 }
 
@@ -168,6 +192,14 @@ function setup() {
 	framecounter = 0;
 
 	animate(0);
+
+	$('#display').css('opacity', '1');
+	$('#loading').fadeOut(1000);
+
+	$('#brand').html(mysteries[pascal.settings.mystery].title);
+	$('#logo').fadeOut(1000, function() {
+		$('#brand').fadeIn(1000);
+	});
 }
 
 // Reload
@@ -242,6 +274,44 @@ function applySettings(form) {
 	}
 
 	validateSuccess(run, form);
+}
+
+function applyLabels() {
+	pascal.settings.labeled = $('#labeledCheckbox').is(":checked");
+}
+
+function writeMessage(result, x, y) {
+	var messagebox = $('#message');
+	if (result) {
+		var minwidth = parseInt(messagebox.css('min-width'),10);
+		var windowWidth = messagebox.parent().innerWidth();
+
+		if (x+minwidth>windowWidth)
+			x = windowWidth-minwidth;
+
+		messagebox.html(result);
+		MathJax.Hub.queue.Push(
+			["Typeset",MathJax.Hub],
+			function() {
+				messagebox.css('top', y).css('left', x).show();
+			}
+		);
+	} else {
+		messagebox.hide();
+	}
+}
+
+function toggleHelp() {
+	var isHidden = $('#help').is(':hidden');
+	$('#helpToggle').attr('aria-expanded', isHidden?'true':'false');
+	$('#help').fadeToggle(200);
+}
+
+function setHelp(message) {
+	$('#helpMessage').html(message);
+	MathJax.Hub.queue.Push(
+		["Typeset",MathJax.Hub]
+	);
 }
 
 // The LOOP

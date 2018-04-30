@@ -1,3 +1,39 @@
+var mysteries = {
+	symmetry: {
+		title: 'Symmetry',
+		help: '' },
+	powersof2: {
+		title: 'Powers of 2',
+		help: '' },
+	powersof11: {
+		title: 'Powers of 11',
+		help: '' },
+	divisiblebyprime: {
+		title: 'Divisibility By Prime',
+		help: '' },
+	countingNum: {
+		title: 'Counting Numbers',
+		help: '' },
+	triangularNum: {
+		title: 'Triangular Numbers',
+		help: '' },
+	tetrahedralNum: {
+		title: 'Tetrahedral Numbers',
+		help: '' },
+	hockey: {
+		title: 'Hockey Stick Pattern',
+		help: '' },
+	fibonacci: {
+		title: 'Fibonacci Numbers',
+		help: '' },
+	combi: {
+		title: 'Combinatorics',
+		help: '' },
+	modular: {
+		title: 'Modular Arithmetic',
+		help: '' }
+}
+
 function mysteryFactory (delegate) {
 	var me = this;
 
@@ -171,6 +207,8 @@ function mysteryFactory (delegate) {
 			// Remove disables
 			alterReset();
 		}
+
+		setHelp(mysteries[mystery].help);
 	};
 
 	
@@ -306,8 +344,10 @@ function mysteryFactory (delegate) {
 		selectLast();
 
 		var index = me.selection[0];
-		var i = index.row;
-		var j = index.column;
+		var r = index.row-1;
+
+		var i = r;
+		var j = index.column-1;
 
 		while (i >= 0 && j >= 0) {
 			me.triangle[i][j].setAlternative();
@@ -315,8 +355,8 @@ function mysteryFactory (delegate) {
 			j--;
 		}
 
-		var value = index.row*(index.row+1)*(index.row+2)/6;
-		return "The sum of the first "+index.row+" triangular numbers is $$\\frac{"+index.row+"("+index.row+"+1)("+index.row+"+2)}{6} = "+value+"$$";
+		var value = r*(r+1)*(r+2)/6;
+		return "The sum of the first "+r+" triangular numbers is $$\\frac{"+r+"("+r+"+1)("+r+"+2)}{6} = "+value+"$$";
 	};
 	
 	me.tetrahedralNum = function () {
@@ -324,8 +364,10 @@ function mysteryFactory (delegate) {
 		selectLast();
 
 		var index = me.selection[0];
-		var i = index.row;
-		var j = index.column;
+		var r = index.row-2;
+
+		var i = index.row-1;
+		var j = index.column-1;
 
 		while (i >= 0 && j >= 0) {
 			me.triangle[i][j].setAlternative();
@@ -333,8 +375,8 @@ function mysteryFactory (delegate) {
 			j--;
 		}
 
-		var value = index.row*(index.row+1)*(index.row+2)*(index.row+3)/24;
-		return "The sum of the first "+index.row+" tetrahedral numbers is $$ \\frac{"+index.row+"("+index.row+"+1)("+index.row+"+2)("+index.row+"+3)}{24} = "+value+"$$";
+		var value = r*(r+1)*(r+2)*(r+3)/24;
+		return "The sum of the first "+r+" tetrahedral numbers is $$ \\frac{"+r+"("+r+"+1)("+r+"+2)("+r+"+3)}{24} = "+value+"$$";
 	};
 	
 	me.hockey = function () {
@@ -427,7 +469,7 @@ function mysteryFactory (delegate) {
 		var len = me.selection.length;
 		var row = me.selection[0].row;
 		var col = me.selection[0].column;
-		return "This cell is the value of $\\left( \\begin{array}{c}"+(row+1)+"-1\\\\"+(col+1)+"-1\\end{array} \\right)$";
+		return "This cell is the value of $\\left( \\begin{array}{c}"+(row)+"\\\\"+(col)+"\\end{array} \\right)$";
 		//return "This cell is the value of $\\binom{"+row+"}{"+col+"}$";
 	};
 	
