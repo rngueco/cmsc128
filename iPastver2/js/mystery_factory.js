@@ -28,7 +28,7 @@ var mysteries = {
 		help: 'The <b>$n^{th}$ Fibonacci number</b> can be seen by taking the sum of the $n^{th}$ leftmost 1 and all numbers moving diagonally rightwards. To see this pattern, click any cell.' },
 	combi: {
 		title: 'Combinatorics',
-		help: 'In the Pascal\'s Triangle, each number is equivalent to <b>$n$C$e$</b> where $n$ is the row number and $e$ is the element placement of the cell. Clicking a cell reveals this formula.' },
+		help: 'In the Pascal\'s Triangle, each number is equivalent to <b>$n$C$e$</b> where $n$ is the row number and $e$ is the element placement of the cell. Clicking a cell reveals this formula. The placement of the cell is counted from $0$ to $n$ in each row.' },
 	modular: {
 		title: 'Modular Arithmetic',
 		help: 'Using <b>modular arithmetic</b> in the Pascal\'s Triangle reveals an art. This happens when each cell is colored according to their corresponding answers, i.e. using mod 3 addition generates three answers: 0, 1, and 2; thus, assigning colors to these answers reveal a pattern.',
@@ -283,7 +283,7 @@ function mysteryFactory (delegate) {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to $2^{" + (rr+1) +"-1}$ i.e:$$" + a + " = "+sum+"$$";
+		return "The sum of this row is equal to $2^{" + (rr) +"}$ i.e:$$" + a + " = "+sum+"$$";
 	};
 
 	//	Powers Of 11
@@ -328,7 +328,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents $11^{"+ (rr+1) + "-1}$ i.e: " + p11;
+		return "This row represents $11^{"+ (rr) + "}$ i.e: " + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -340,7 +340,8 @@ function mysteryFactory (delegate) {
 		for (var j = 1; j < me.triangle[trg.row].length-1; j++) {
 			me.triangle[trg.row][j].setAlternative();
 		}
-		return "All cells in this row is divisible by "+row;
+		console.log('trigger');
+		return "The selected cells in this row is divisible by "+trg.row;
 	};
 	
 	me.countingNum = function () {
@@ -425,9 +426,17 @@ function mysteryFactory (delegate) {
 				hexas.push([row-i-1,col-i]);
 			}
 		}
+
+		var arr = "";
 		for(i = 0;i<hexas.length;i++){
-			me.triangle[hexas[i][0]][hexas[i][1]].setAlternative();
+			var hexa = me.triangle[hexas[i][0]][hexas[i][1]];
+			hexa.setAlternative();
+			arr =  hexa.value + (i==0?'':'+') + arr;
 		}
+
+		return "The value of this cell is the sum of previous cells e.g.$$"+arr+"="+me.triangle[row][col].value+"$$";
+
+
 	};
 	
 	me.fibonacci = function () {

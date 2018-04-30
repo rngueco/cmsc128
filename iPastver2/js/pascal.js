@@ -31,11 +31,11 @@ function pascal(settings) {
 		size: 100,
 
 		textColor: 0xffffff,
-		bgColor: 0x222222,
-		highlightColor: 0x000fff,
-		altColor: 0xaaafff,
-		disabledColor: 0x777777,
-		lineColor: 0xff0000,
+		bgColor: 0x343a40,
+		highlightColor: 0x007bff,
+		altColor: 0x28a745,
+		disabledColor: 0x6c757d,
+		lineColor: 0x17a2b8,
 
 		fontsize: 15,
 		lineWidth: 5,
