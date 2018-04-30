@@ -200,6 +200,8 @@ function setup() {
 	$('#logo').fadeOut(1000, function() {
 		$('#brand').fadeIn(1000);
 	});
+
+	$.validate();
 }
 
 // Reload
@@ -312,6 +314,10 @@ function setHelp(message) {
 	MathJax.Hub.queue.Push(
 		["Typeset",MathJax.Hub]
 	);
+}
+
+function setExtraSettings(html) {
+	$('#extraSettings').html(html);
 }
 
 // The LOOP

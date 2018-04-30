@@ -31,7 +31,18 @@ var mysteries = {
 		help: '' },
 	modular: {
 		title: 'Modular Arithmetic',
-		help: '' }
+		help: '',
+		extra: '<div class="col-sm-12 col-md-8 col-lg-8 form-group">'
+			  +'<label for="modularInput">Modulo</label>'
+			  +'<input id="modularInput" name="modularInput" type="number" data-validation="number" class="form-control"></div>'
+			  +'<div class="col-sm-12 col-md-4 col-lg-4 form-group">'
+			  +'<label>&nbsp;</label>'
+			  +'<button class="btn btn-secondary d-block" onclick="pascal.extra()">Apply Modulo</button></div>', // html to be added
+		apply: function(settings) {
+			settings.extra = parseInt($('#modularInput').val() );
+			restart();
+		 } // function that process the input
+		}
 }
 
 function mysteryFactory (delegate) {
@@ -103,6 +114,13 @@ function mysteryFactory (delegate) {
 		return ret;
 	};
 
+	me.runExtra = function() {
+		var settings = me.delegate.settings;
+		var run = mysteries[settings.mystery].apply;
+		if (run) 
+			run(settings);
+	}
+
 	me.loadMystery = function(index, isAdd) {
 
 		if (isAdd) {
@@ -128,9 +146,23 @@ function mysteryFactory (delegate) {
 		var mystery = me.delegate.settings.mystery;
 		me.triangle = triangle;
 
-		switch (mystery) {
+		if (mysteries[mystery]) {
+			var extra = mysteries[mystery].extra;
+			if (extra)
+				setExtraSettings(extra);
+		}
+		
+		var setup = me.setupFunctions[mystery];
+		if (setup)
+			setup(triangle);
+		else
+			alterReset();
 
-			case 'divisiblebyprime':
+		setHelp(mysteries[mystery].help);
+	};
+
+	me.setupFunctions = {
+		divisiblebyprime: function(triangle) {
 			// Disable specific
 			var allow = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199];
 			for (var i = 0; i<triangle.length; i++) {
@@ -144,19 +176,17 @@ function mysteryFactory (delegate) {
 					triangle[i][j].setDisabled(disable);
 				}
 			}
-			break;
-			
-			case 'countingNum':
-			for (var i = 0; i < me.triangle.length; i++) {
+		},
+		countingNum: function(triangle) {
+			for (var i = 0; i < triangle.length; i++) {
 				for(var j = 0; j< i-1; j++){
 					triangle[i][j].setDisabled(true);
 				}
-				me.triangle[i][i].setDisabled(true);
+				triangle[i][i].setDisabled(true);
 			}
-			break;
-			
-			case 'triangularNum':
-			for (var i = 0; i < me.triangle.length; i++) {
+		},
+		triangularNum: function(triangle) {
+			for (var i = 0; i < triangle.length; i++) {
 				for(var j = 0; j< i-2; j++){
 					triangle[i][j].setDisabled(true);
 				}
@@ -164,10 +194,9 @@ function mysteryFactory (delegate) {
 				if(i>0)
 					triangle[i][i-1].setDisabled(true);
 			}
-			break;
-			
-			case 'tetrahedralNum':
-			for (var i = 0; i < me.triangle.length; i++) {
+		},
+		tetrahedralNum: function(triangle) {
+			for (var i = 0; i < triangle.length; i++) {
 				for(var j = 0; j< i-3; j++){
 					triangle[i][j].setDisabled(true);
 				}
@@ -177,39 +206,32 @@ function mysteryFactory (delegate) {
 				if(i>1)
 					triangle[i][i-2].setDisabled(true);
 			}
-			break;
-			
-			case 'fibonacci':
-			for (var i = 0; i < me.triangle.length; i++){
+		},
+		fibonacci: function(triangle) {
+			for (var i = 0; i < triangle.length; i++){
 				for (var j = 0; j <= i; j++){
-					if (i+j>me.triangle.length-1)
+					if (i+j>triangle.length-1)
 						triangle[i][j].setDisabled(true);
 				}
 			}
-			break;
-			
-			case 'modular':
-			var mod = 8;
+		},
+		modular: function(triangle) {
+			var mod = parseInt(me.delegate.settings.extra);
+			$('#modularInput').val(mod);
+
 			var colors = new Array(mod);
 			for (var z = 0; z < mod; z++) {
 				colors[z] = hslToRgb(z/mod, 1, 0.5);
 			}
-			for (var i = 0; i < me.triangle.length; i++){
+			for (var i = 0; i < triangle.length; i++){
 				for (var j = 0; j <= i; j++){
 					triangle[i][j].setDisabled(true);
-					var value = me.triangle[i][j].value%mod;
-					me.triangle[i][j].custom(colors[value]);
+					var value = triangle[i][j].value%mod;
+					triangle[i][j].custom(colors[value]);
 				}
 			}
-			break;
-			
-			default:
-			// Remove disables
-			alterReset();
 		}
-
-		setHelp(mysteries[mystery].help);
-	};
+	}
 
 	
 

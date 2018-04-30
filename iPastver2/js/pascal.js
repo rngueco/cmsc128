@@ -42,6 +42,7 @@ function pascal(settings) {
 
 		height: 0,
 		mystery: 'symmetry',
+		extra: 4,
 		labeled: true
 	}, settings);
 	me.container = new PIXI.Container();
@@ -169,6 +170,10 @@ function pascal(settings) {
 		writeMessage(result, x, y);
 
 	};
+
+	me.extra = function() {
+		me.mystery.runExtra();
+	}
 
 	// Initialize
 	me.container.interactive = true;
