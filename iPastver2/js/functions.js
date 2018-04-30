@@ -318,6 +318,7 @@ function setHelp(message) {
 
 function setExtraSettings(html) {
 	$('#extraSettings').html(html);
+
 }
 
 // The LOOP

@@ -33,4 +33,3 @@ $(window).resize(adjustRenderSize);
 
 PIXI.loader.load(setup);
 updatePosDisplay();
-
