@@ -209,12 +209,13 @@ function hexagon (delegate) {
 	/**
 	Handle clicks
 	*/
-	me.graphics.click = function(ev) {
-		if (me.disabled) return;
+	me.graphics.on('pointerdown',
+		function(ev) {
+			if (me.disabled) return;
 
-		if (me.delegate)
-			me.delegate.notify(me.index, !me.is(me.stateType.SELECTED));
-	};
+			if (me.delegate)
+				me.delegate.notify(me.index, !me.is(me.stateType.SELECTED));
+		});
 
 	/**
 	Handle animating values

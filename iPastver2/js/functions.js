@@ -37,6 +37,7 @@ function loadMysteryMenu() {
 
 function onDragStart(event) {
 	var here = pascal.container;
+	this.start_data = {x: event.data.originalEvent.screenX, y: event.data.originalEvent.screenY};
 
     here.data = event.data;
 
@@ -49,12 +50,17 @@ function onDragStart(event) {
     here.dragging = true;
 }
 
-function onDragEnd() {
+function onDragEnd(event) {
 
-
+	var ev_data = event.data.originalEvent;
 	var here = pascal.container;
+	if (this.start_data) {
+        if (Math.abs(this.start_data.x - ev_data.screenX) > 2 || Math.abs(this.start_data.y - ev_data.screenY) > 2)
+            event.stopPropagation();
+    }
 
     here.dragging = false;
+    
     delete here.data;
     if (moved)
     	$('#message').hide();

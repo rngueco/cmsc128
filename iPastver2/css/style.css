@@ -49,7 +49,7 @@ body {
 	transition: 1s ease-out;
 }
 
-.navbar-toggler[aria-expanded="false"] {
+.navbar-toggler[aria-expanded="true"] {
 	color: white;
 }
 
