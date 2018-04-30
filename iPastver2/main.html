@@ -87,7 +87,7 @@
                   </div>
                   <div class="col-12">
                     <label>&nbsp;</label>
-                    <button type="submit" class="btn btn-primary d-block">Apply</button>
+                    <button type="submit" class="btn btn-secondary d-block">Change Color</button>
                   </div>
                 </div>
               </div>
@@ -99,34 +99,36 @@
         <div class="container py-3">
           <form onsubmit="applySettings(this); event.preventDefault()">
             <div class="row">
-              <div class="col-sm-12 col-md-4 col-lg-5 form-group">
-                <label for="modeSelect">Mystery</label>
-                <select id="modeSelect" class="form-control">
-                </select>
-              </div>
-              <div class="col-sm-12 col-md-4 col-lg-5 form-group">
-                <label for="heightInput">Triangle Height</label>
-                <input id="heightInput" type="number" data-validation="number" name="heightInput" class="form-control">
-              </div>
-              <div class="col-sm-12 col-md-4 col-lg-2 form-group">
-                <label>&nbsp;</label>
-                <button type="submit" class="btn btn-primary d-block">Apply</button>
-              </div>
-            </div>
-            <div id="extraSettings" class="row">
-            </div>
-            <div class="row">
-              <div class="col-12 form-group">
-                <button type="button" class="btn btn-primary" onclick="resetPosition()">Reset Position</button>
-                <span class="form-check ml-3" style="display: inline-block;">
-                  <input class="form-check-input" type="checkbox" id="labeledCheckbox" onchange="applyLabels();">
-                  <label class="form-check-label" for="labeledCheckbox">
-                    Show Row Labels
-                  </label>
-                </span>
-              </div>
+                <div class="col-sm-12 col-md-4 col-lg-5 form-group">
+                  <label for="modeSelect">Mystery</label>
+                  <select id="modeSelect" class="form-control">
+                  </select>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-5 form-group">
+                  <label for="heightInput">Triangle Height</label>
+                  <input id="heightInput" type="number" data-validation="number" name="heightInput" class="form-control">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-2 form-group">
+                  <label>&nbsp;</label>
+                  <button type="submit" class="btn btn-primary d-block">Apply</button>
+                </div>
             </div>
           </form>
+          <form onsubmit="pascal.extra(); event.preventDefault()">
+            <div id="extraSettings" class="row">
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-12 form-group">
+              <button type="button" class="btn btn-info" onclick="resetPosition()">Reset Triangle Position</button>
+              <span class="form-check ml-3" style="display: inline-block;">
+                <input class="form-check-input" type="checkbox" id="labeledCheckbox" onchange="applyLabels();">
+                <label class="form-check-label" for="labeledCheckbox">
+                  Show Row Labels
+                </label>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </header>

@@ -37,7 +37,7 @@ var mysteries = {
 			  +'<input id="modularInput" name="modularInput" type="number" data-validation="number" class="form-control"></div>'
 			  +'<div class="col-sm-12 col-md-4 col-lg-4 form-group">'
 			  +'<label>&nbsp;</label>'
-			  +'<button class="btn btn-secondary d-block" onclick="pascal.extra()">Apply Modulo</button></div>', // html to be added
+			  +'<button type="submit" class="btn btn-secondary d-block">Apply Modulo</button></div>', // html to be added
 		apply: function(settings) {
 			settings.extra = parseInt($('#modularInput').val() );
 			restart();
