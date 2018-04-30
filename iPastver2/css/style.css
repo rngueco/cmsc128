@@ -22,7 +22,6 @@ body {
 
 #message{
 	background: white;
-	border: solid 0.2rem green;
 	border-radius: 5px;
 	min-width: 200px;
 	max-width: 100%;
@@ -70,9 +69,17 @@ body {
 	border-radius: 9999px;
 }
 
-button.round {
-	border: none;
+.round {
 	border-radius: 9999px;
+	line-height: 1.9
+}
+
+.pasbordered {
+	border: solid 0.1rem #444;
+}
+
+.pasbordered.bg-dark {
+	border-color: white;
 }
 
 .helpclose {

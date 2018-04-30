@@ -34,7 +34,7 @@ var mysteries = {
 		help: '',
 		extra: '<div class="col-sm-12 col-md-8 col-lg-8 form-group">'
 			  +'<label for="modularInput">Modulo</label>'
-			  +'<input id="modularInput" name="modularInput" type="number" data-validation="number" class="form-control"></div>'
+			  +'<input id="modularInput" min="1" name="modularInput" type="number" data-validation="number" class="form-control"></div>'
 			  +'<div class="col-sm-12 col-md-4 col-lg-4 form-group">'
 			  +'<label>&nbsp;</label>'
 			  +'<button type="submit" class="btn btn-secondary d-block">Apply Modulo</button></div>', // html to be added

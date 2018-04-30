@@ -27,15 +27,14 @@
     <header id="masthead">
       <!-- About -->
       <div id="navbarInfo" class="bg-light collapse">
-        <div class="container py-3">
+        <div class="px-1">
           <strong>
             iPasT
           </strong>
           An application geared towards understanding Pascal's Triangle.
         </div>
       </div>
-      
-          <nav id="mainNav" class="navbar navbar-dark bg-dark box-shadow navbar-static-top">
+          <nav id="mainNav" class="navbar navbar-dark bg-dark box-shadow navbar-static-top" style="line-height: 2.5">
             <div class="container">
               <span>
                 <a href="index.html" id="logo" class="navbar-brand">iPasT</a>
@@ -47,7 +46,8 @@
                 <span id="zoomValue" class="font-weight-bold mr-1 text-white">1.00x</span>
                 
                 <button class="navbar-toggler" type="button" onclick="framezoom(true)" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
-                <button class="navbar-toggler mr-2" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+                <button class="navbar-toggler" type="button" onclick="framezoom(false)" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+                <button class="navbar-toggler mr-2" onclick="$('html, body').animate({scrollTop: $('#display').offset().top});" type="button"><i class="fas fa-expand"></i></button>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColors" aria-controls="navbarColors" aria-expanded="false" aria-label="Toggle color"><i class="fas fa-eye-dropper"></i></button>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSettings" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle settings"><i class="fas fa-cog"></i></button>
@@ -145,15 +145,15 @@
       </div>
     </div>
     <div id="display" style="padding:0; position: relative">
-      <div id="message" class="mathjax" style="position: absolute; top:0; left:0; display: none">
+      <div id="message" class="mathjax bg-light pasbordered shadow" style="position: absolute; top:0; left:0; display: none">
         Hello World!
       </div>
       <!-- canvas -->
     </div>
     <div id="help" class="bg-dark text-white m-4 shadow">
       <div class="p-3" style="position: relative;">
-        <button onclick="toggleHelp()" class="bg-white helpclose round shadow-sm">
-          <i class="fas fa-fw fa-times"></i>
+        <button onclick="toggleHelp()" class="bg-white helpclose round pasbordered shadow-sm">
+          <i class="fas fa-fw fa-times" style="height: 1.25rem"></i>
         </button>
         <div class="d-flex flex-row">
           <span class="d-inline-block pr-4">
@@ -164,6 +164,9 @@
         </div>
       </div>
     </div>
+    <button onclick="$('html, body').animate({ scrollTop: 0 });" class="bg-dark text-white pasbordered round shadow-sm" style="z-index: 9999; position: fixed; bottom: 0.25rem; right: 0.25rem; font-size: 1.2rem">
+      <i class="fas fa-fw fa-arrow-up" style="height: 1.25rem"></i>
+    </button>
   </div>
   
   <!-- Bootstrap core JavaScript -->
