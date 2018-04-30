@@ -1,37 +1,37 @@
 var mysteries = {
 	symmetry: {
 		title: 'Symmetry',
-		help: '' },
+		help: 'In the triangle, the numbers of the array are <b>symmetric</b>, i.e. if one were to fold the triangle across its altitude, it would be clear to the observer that the numbers match. Clicking a cell on the triangle reveals its symmetric cell.' },
 	powersof2: {
 		title: 'Powers of 2',
-		help: '' },
+		help: '<b>Powers of Two</b> can be noticed by adding the numbers in each row. Clicking a cell reveals the formula for getting $2^{n}$ where $n$ is the row number.' },
 	powersof11: {
 		title: 'Powers of 11',
-		help: '' },
+		help: '<b>Powers of Eleven</b> can be noticed by putting each number in a row together. Additional arithmetic is done for cells containing numbers greater than or equal to 10. Clicking a cell reveals the formula for getting $11^{n}$ where $n$ is the row number.' },
 	divisiblebyprime: {
 		title: 'Divisibility By Prime',
-		help: '' },
+		help: 'For any prime numbered row, or any row where the first element is a prime number, all the numbers in that row (excluding 1\'s) are <b>divisible by the prime</b>.' },
 	countingNum: {
 		title: 'Counting Numbers',
-		help: '' },
+		help: 'The second diagonal shows the sequence of <b>counting numbers</b>. Clicking a cell reveals the sum of all counting numbers up to that cell.' },
 	triangularNum: {
 		title: 'Triangular Numbers',
-		help: '' },
+		help: 'A <b>triangular number</b> is one that can be represented in the form of a triangular grid of points where the first row contains a single element and each subsequent row contains one more element than the previous one. The triangular numbers can be seen in the third diagonal. Clicking a cell reveals the sum of all triangular numbers up to that cell.' },
 	tetrahedralNum: {
 		title: 'Tetrahedral Numbers',
-		help: '' },
+		help: 'The fourth diagonal contains the sequence of <b>tetrahedral numbers</b>. Tetrahedral numbers are obtained by summing up the first $n$ triangular numbers. Clicking a cell reveals the sum of all tetrahedral numbers up to that cell.' },
 	hockey: {
 		title: 'Hockey Stick Pattern',
-		help: '' },
+		help: 'The diagonal of numbers of any length starting with any 1\'s bordering the sides of the triangle and ending on any number inside the triangle is equal to the number below the last number of the diagonal, thus forming a <b>Hockey Stick Pattern</b>. Clicking a cell reveals the diagonal of numbers corresponding to it.' },
 	fibonacci: {
 		title: 'Fibonacci Numbers',
-		help: '' },
+		help: 'The <b>$n^{th}$ Fibonacci number</b> can be seen by taking the sum of the $n^{th}$ leftmost 1 and all numbers moving diagonally rightwards. To see this pattern, click any cell.' },
 	combi: {
 		title: 'Combinatorics',
-		help: '' },
+		help: 'In the Pascal\'s Triangle, each number is equivalent to <b>$n$C$e$</b> where $n$ is the row number and $e$ is the element placement of the cell. Clicking a cell reveals this formula.' },
 	modular: {
 		title: 'Modular Arithmetic',
-		help: '',
+		help: 'Using <b>modular arithmetic</b> in the Pascal\'s Triangle reveals an art. This happens when each cell is colored according to their corresponding answers, i.e. using mod 3 addition generates three answers: 0, 1, and 2; thus, assigning colors to these answers reveal a pattern.',
 		extra: '<div class="col-sm-12 col-md-8 col-lg-8 form-group">'
 			  +'<label for="modularInput">Modulo</label>'
 			  +'<input id="modularInput" min="1" name="modularInput" type="number" data-validation="number" class="form-control"></div>'
