@@ -27,7 +27,7 @@ function loadMysteryMenu() {
 	var menu = '#modeSelect';
 
 	var html = "";
-	for (mystery in mysteries) {
+	for (var mystery in mysteries) {
 		var title = mysteries[mystery].title;
 		html += '<option value=\"'+mystery+'\">'+title+'</option>';
 	}
@@ -91,7 +91,6 @@ function onPinch(event) {
 	if (event.type == 'pinchstart') {
         initScale = zoomValue || 1;
     }
-
 	zoomValue = initScale*event.scale;
 	changeZoom(zoomValue);
 }
@@ -318,7 +317,7 @@ function writeMessage(result, x, y) {
 		MathJax.Hub.queue.Push(
 			["Typeset",MathJax.Hub],
 			function() {
-				messagebox.css('top', y).css('left', x).show();
+				messagebox.css('top', y*resolution).css('left', x*resolution).show();
 			}
 		);
 	} else {
