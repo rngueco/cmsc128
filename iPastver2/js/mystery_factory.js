@@ -216,12 +216,14 @@ function mysteryFactory (delegate) {
 			}
 		},
 		modular: function(triangle) {
+			me.delegate.settings.textColor = 0x000000;
+
 			var mod = parseInt(me.delegate.settings.extra);
 			$('#modularInput').val(mod);
 
 			var colors = new Array(mod);
 			for (var z = 0; z < mod; z++) {
-				colors[z] = hslToRgb(z/mod, 1, 0.5);
+				colors[z] = hslToRgb(z/mod, 1, 0.6);
 			}
 			for (var i = 0; i < triangle.length; i++){
 				for (var j = 0; j <= i; j++){
@@ -256,7 +258,6 @@ function mysteryFactory (delegate) {
 	};
 
 	var rowSelect = function () {
-
 		selectLast();
 		var trg = me.selection[0];
 		for (var j = 0; j < me.triangle[trg.row].length; j++) {

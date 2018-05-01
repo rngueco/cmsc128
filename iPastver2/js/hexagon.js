@@ -209,7 +209,7 @@ function hexagon (delegate) {
 	/**
 	Handle clicks
 	*/
-	me.graphics.on('pointerdown',
+	me.graphics.on('pointerup',
 		function(ev) {
 			if (me.disabled) return;
 

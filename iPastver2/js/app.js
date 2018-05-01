@@ -9,12 +9,10 @@ PIXI.utils.sayHello(type);
 loadMysteryMenu();
 loadPascalParameters();
 
-pascal.renderX = display.innerWidth()/2;
-pascal.side = display.innerWidth();
+pascal.side = display.innerWidth()/resolution;
+pascal.renderX = pascal.side/2;
 
 stage.addChild(pascal.container);
-
-$('#display').append(renderer.view);
 
 // initialize on multiple elements with jQuery
 $('.color-input').each( function( i, elem ) {
@@ -28,8 +26,14 @@ renderer.plugins.interaction.on('pointerup', onDragEnd);
 renderer.plugins.interaction.on('pointerupoutside', onDragEnd);
 renderer.plugins.interaction.on('pointermove', onDragMove);
 
+mc.add(new Hammer.Pinch({ threshold: 0 }));
+mc.on("pinchstart pinchmove", onPinch);
+
+
 $(renderer.view).mousedown(unbubble).mousemove(unbubble);
+
 $(window).resize(adjustRenderSize);
 
 PIXI.loader.load(setup);
+
 updatePosDisplay();

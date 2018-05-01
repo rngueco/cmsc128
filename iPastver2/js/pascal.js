@@ -25,6 +25,8 @@ function pascal(settings) {
 
 	var labelSpace = 20;
 
+	var nextRenderValue = false;
+
 	// Public Properties
 	me.settings = $.extend(
 	{
@@ -37,7 +39,7 @@ function pascal(settings) {
 		disabledColor: 0x6c757d,
 		lineColor: 0x17a2b8,
 
-		fontsize: 15,
+		fontsize: 20,
 		lineWidth: 5,
 
 		height: 0,
@@ -88,6 +90,10 @@ function pascal(settings) {
 		me.mystery.setup(hexagons);
 	};
 
+	me.render = function() {
+		nextRenderValue = true;
+	}
+
 	me.loadSettings = function(settings) {
 		me.settings = $.extend(me.settings, settings);
 	};
@@ -132,7 +138,8 @@ function pascal(settings) {
 
 			offY += size+spaceY;
 		}
-		me.forceRender = false;
+		me.forceRender = nextRenderValue;
+		nextRenderValue = false;
 	};
 
 	me.setMystery = function(mystery) {
@@ -141,7 +148,7 @@ function pascal(settings) {
 
 	me.setColor = function(tag, color) {
 		me.settings[tag+'Color'] = color;
-		me.forceRender = true;
+		me.render();
 	};
 
 	me.setZoom = function(value) {

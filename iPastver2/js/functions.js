@@ -1,12 +1,15 @@
-var settings = {};
+var resolution = window.screen.availWidth/window.screen.width;
 
 var display = $('#display');
 
 var renderer = PIXI.autoDetectRenderer(display.innerWidth(), $(window).height(), {
 	transparent: true,
-	resolution: 1,
+	view: $('#pascalCanvas')[0],
+	resolution: resolution,
 	antialias: true
 });
+
+var mc = new Hammer.Manager($('#pascalCanvas')[0]);
 
 var stage = new PIXI.Container();
 
@@ -16,12 +19,8 @@ var lastTime = 0;
 var frameskip = 0;
 var framecounter;
 
-var zoom = 1.0;
-
 var zoomDiff = 0.1;
-var zoomValue = 1.0;
-
-var moved = false;
+var zoomValue = 1;
 
 
 function loadMysteryMenu() {
@@ -48,6 +47,8 @@ function onDragStart(event) {
     here.pivot.y = position.y;
 
     here.dragging = true;
+
+
 }
 
 function onDragEnd(event) {
@@ -59,12 +60,14 @@ function onDragEnd(event) {
             event.stopPropagation();
     }
 
-    here.dragging = false;
-    
-    delete here.data;
-    if (moved)
+    if (!here.interactiveChildren)
     	$('#message').hide();
-    moved = false;
+
+    here.dragging = false;
+    here.interactiveChildren = true;
+
+    delete here.data;
+    
 
     updatePosDisplay();
 }
@@ -73,13 +76,24 @@ function onDragMove() {
 	var here = pascal.container;
 
     if (here.dragging) {
-    	moved = true;
+    	here.interactiveChildren = false;
+
     	var newPosition = here.data.getLocalPosition(here.parent);
     	here.position.x = newPosition.x;
     	here.position.y = newPosition.y;
 
     	updatePosDisplay();
     }
+}
+
+var initScale = 1;
+function onPinch(event) {
+	if (event.type == 'pinchstart') {
+        initScale = zoomValue || 1;
+    }
+
+	zoomValue = initScale*event.scale;
+	changeZoom(zoomValue);
 }
 
 function updatePosDisplay() {
@@ -172,6 +186,9 @@ function loadPascalParameters() {
 
 	$('#modeSelect').val(s.mystery);
 	$('#heightInput').val(s.height);
+
+	$('#sizeInput').val(s.size);
+	$('#fontsizeInput').val(s.fontsize);
 
 	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
 	$('#bgColorInput').val(formatHexColor(s.bgColor));
@@ -309,6 +326,16 @@ function writeMessage(result, x, y) {
 	}
 }
 
+function applySizes(form) {
+	var run = function() {
+		pascal.settings.size = parseInt($('#sizeInput').val() );
+		pascal.settings.fontsize = parseInt($('#fontsizeInput').val() );
+
+		pascal.render();
+	}
+	validateSuccess(run, form);
+}
+
 function toggleHelp() {
 	var isHidden = $('#help').is(':hidden');
 	$('#helpToggle').attr('aria-expanded', isHidden?'true':'false');
@@ -351,8 +378,13 @@ function animate(time) {
 
 // Zoom in and out of canvas
 function framezoom(willZoom) {
-	zoomValue += willZoom?zoomDiff:-zoomDiff;
-	pascal.setZoom(zoomValue);
+	changeZoom(zoomValue + (willZoom?zoomDiff:-zoomDiff));
+}
 
-	$('#zoomValue').html(zoomValue.toFixed(2)+'x');
+function changeZoom(zoom) {
+	zoomValue=zoom;
+
+	pascal.setZoom(zoom);
+
+	$('#zoomValue').html(zoom.toFixed(2)+'x');
 }
