@@ -131,7 +131,7 @@ function pascal(settings) {
 				text.x = offX - size/2 + labelSpace;
 				text.y = offY;
 
-				text.text = 'Row '+i;
+				text.text = 'Row '+(i+1);
 			} else {
 				text.text = '';
 			}

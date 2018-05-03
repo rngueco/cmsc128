@@ -4,13 +4,13 @@ var mysteries = {
 		help: 'In the triangle, the numbers of the array are <b>symmetric</b>, i.e. if one were to fold the triangle across its altitude, it would be clear to the observer that the numbers match. Clicking a cell on the triangle reveals its symmetric cell.' },
 	powersof2: {
 		title: 'Powers of 2',
-		help: '<b>Powers of Two</b> can be noticed by adding the numbers in each row. Clicking a cell reveals the formula for getting $2^{n}$ where $n$ is the row number.' },
+		help: '<b>Powers of Two</b> can be noticed by adding the numbers in each row. Clicking a cell reveals the formula for getting $2^{n-1}$ where $n$ is the row number.' },
 	powersof11: {
 		title: 'Powers of 11',
-		help: '<b>Powers of Eleven</b> can be noticed by putting each number in a row together. Additional arithmetic is done for cells containing numbers greater than or equal to 10. Clicking a cell reveals the formula for getting $11^{n}$ where $n$ is the row number.' },
+		help: '<b>Powers of Eleven</b> can be noticed by putting each number in a row together. Additional arithmetic is done for cells containing numbers greater than or equal to 10. Clicking a cell reveals the formula for getting $11^{n-1}$ where $n$ is the row number.' },
 	divisiblebyprime: {
 		title: 'Divisibility By Prime',
-		help: 'For any prime numbered row, or any row where the first element is a prime number, all the numbers in that row (excluding 1\'s) are <b>divisible by the prime</b>.' },
+		help: 'For any row where the second element is a prime number, all the numbers in that row (excluding 1\'s) are <b>divisible by the prime</b>.' },
 	countingNum: {
 		title: 'Counting Numbers',
 		help: 'The second diagonal shows the sequence of <b>counting numbers</b>. Clicking a cell reveals the sum of all counting numbers up to that cell.' },
