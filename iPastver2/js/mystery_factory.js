@@ -330,7 +330,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents $11^{"+ (rr+1) + "-1}$ i.e: " + p11;
+		return "This row represents $11^{"+ (rr+1) + "-1}=11^{"+ (rr) + "}$ i.e: " + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -505,7 +505,6 @@ function mysteryFactory (delegate) {
 		var row = me.selection[0].row;
 		var col = me.selection[0].column;
 		return "This cell is the value of $\\left( \\begin{array}{c}"+(row+1)+"-1\\\\"+(col+1)+"-1\\end{array} \\right)=\\left( \\begin{array}{c}"+(row)+"\\\\"+(col)+"\\end{array} \\right)$";
-		//return "This cell is the value of $\\binom{"+row+"}{"+col+"}$";
 	};
 	
 	me.modular = function (){
