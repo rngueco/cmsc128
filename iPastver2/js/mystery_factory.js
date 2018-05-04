@@ -28,7 +28,7 @@ var mysteries = {
 		help: 'The <b>$n^{th}$ Fibonacci number</b> can be seen by taking the sum of the $n^{th}$ leftmost 1 and all numbers moving diagonally rightwards. To see this pattern, click any cell.' },
 	combi: {
 		title: 'Combinatorics',
-		help: 'In the Pascal\'s Triangle, each number is equivalent to <b>$n$C$e$</b> where $n$ is the row number and $e$ is the element placement of the cell. Clicking a cell reveals this formula. The placement of the cell is counted from $0$ to $n$ in each row.' },
+		help: 'In the Pascal\'s Triangle, each number is equivalent to <b>$\\left(\\begin{array}{c} n-1 \\\\ e-1 \\end{array}\\right)$</b> where $n$ is the row number and $e$ is the element placement of the cell. Clicking a cell reveals this formula. The placement of the cell is counted from $1$ to $n$ in each row.' },
 	modular: {
 		title: 'Modular Arithmetic',
 		help: 'Using <b>modular arithmetic</b> in the Pascal\'s Triangle reveals an art. This happens when each cell is colored according to their corresponding answers, i.e. using mod 3 addition generates three answers: 0, 1, and 2; thus, assigning colors to these answers reveal a pattern.',
@@ -47,6 +47,7 @@ var mysteries = {
 
 function mysteryFactory (delegate) {
 	var me = this;
+	var next=true;
 
 	me.delegate = delegate;
 
@@ -284,7 +285,7 @@ function mysteryFactory (delegate) {
 			c = parseInt(c*((rr+1)-(i+1))/(i+1));
 			sum = sum + c;
 		}
-		return "The sum of this row is equal to $2^{" + (rr) +"}$ i.e:$$" + a + " = "+sum+"$$";
+		return "The sum of this row is equal to $2^{" + (rr+1) +"-1}=2^{" + (rr) +"}$ i.e:$$" + a + " = "+sum+"$$";
 	};
 
 	//	Powers Of 11
@@ -329,7 +330,7 @@ function mysteryFactory (delegate) {
 			}
 			ctr--;
 		}
-		return "This row represents $11^{"+ (rr) + "}$ i.e: " + p11;
+		return "This row represents $11^{"+ (rr+1) + "-1}$ i.e: " + p11;
 	};
 
 	me.divisiblebyprime = function () {
@@ -412,13 +413,14 @@ function mysteryFactory (delegate) {
 		var col = me.selection[0].column;
 		var hexas = [];
 
-		if(row/2<col){
+		if(next){
 			hexas.push([row-1,col-1]);
 			var i = 0;
 			while(row-i-1!=col-1){
 				i++;
 				hexas.push([row-i-1,col-1]);
 			}
+			next=false;
 		}else{
 			hexas.push([row-1,col]);
 			var i = 0;
@@ -426,6 +428,7 @@ function mysteryFactory (delegate) {
 				i++;
 				hexas.push([row-i-1,col-i]);
 			}
+			next=true;
 		}
 
 		var arr = "";
@@ -501,7 +504,7 @@ function mysteryFactory (delegate) {
 		var len = me.selection.length;
 		var row = me.selection[0].row;
 		var col = me.selection[0].column;
-		return "This cell is the value of $\\left( \\begin{array}{c}"+(row)+"\\\\"+(col)+"\\end{array} \\right)$";
+		return "This cell is the value of $\\left( \\begin{array}{c}"+(row+1)+"-1\\\\"+(col+1)+"-1\\end{array} \\right)=\\left( \\begin{array}{c}"+(row)+"\\\\"+(col)+"\\end{array} \\right)$";
 		//return "This cell is the value of $\\binom{"+row+"}{"+col+"}$";
 	};
 	
