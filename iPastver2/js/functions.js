@@ -5,7 +5,7 @@ var display = $('#display');
 var renderer = PIXI.autoDetectRenderer(display.innerWidth(), $(window).height(), {
 	transparent: true,
 	view: $('#pascalCanvas')[0],
-	resolution: resolution,
+	resolution: resolution || 1,
 	antialias: true
 });
 
@@ -226,10 +226,14 @@ function setup() {
 	$.validate();
 }
 
+function getURLString() {
+	var str = $.param(pascal.settings);
+	return 'main.html?'+str;
+}
+
 // Reload
 function restart() {
-	var str = $.param(pascal.settings);
-	window.location.href = 'main.html?'+str;
+	window.location.href = getURLString();
 }
 
 
@@ -286,6 +290,7 @@ function applyColors(form) {
 	}
 		
 	validateSuccess(run, form);
+	window.history.pushState(pascal.settings, document.title, getURLString());
 }
 
 // Load new settings 
