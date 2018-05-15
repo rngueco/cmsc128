@@ -10,6 +10,25 @@
   <link href="plugins/fontawesome/css/fontawesome-all.min.css" rel="stylesheet">
   <link href="plugins/huebee/huebee.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="plugins/sk-wandering-cubes.css">
+
+  <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="icons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="manifest" href="icons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
   <link href="css/style.css" rel="stylesheet">
 
   <script src="plugins/mathJax/core/MathJax.js">
@@ -63,19 +82,23 @@
           
             <div id="navbarColors" class="bg-dark collapse text-white">
               <div class="container py-3">
-                <form onsubmit="applySizes(this); event.preventDefault()">
+                <form onsubmit="applyBase(this); event.preventDefault()">
                   <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <div class="col-lg-3 col-md-3 col-sm-12 form-group">
                       <label for="sizeInput">Cell Size</label>
                       <input id="sizeInput" type="number" min="1" data-validation="number" name="sizeInput" class="form-control">
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <div class="col-lg-3 col-md-3 col-sm-12 form-group">
                       <label for="fontsizeInput">Font Size</label>
                       <input id="fontsizeInput" type="number" min="1" data-validation="number" name="fontsizeInput" class="form-control">
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 form-group">
+                    <div class="col-lg-3 col-md-3 col-sm-12 form-group">
+                      <label for="backgroundInput">Background</label>
+                      <input id="backgroundInput" data-validation="custom" data-validation-regexp="^(#[0-9a-fA-F]{3,6})$" type="text" name="backgroundInput" class="form-control color-input">
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 form-group">
                       <label class="d-block">&nbsp;</label>
-                      <button type="submit" class="btn btn-secondary d-block">Change Sizes</button>
+                      <button type="submit" class="btn btn-primary d-block">Apply Base Settings</button>
                     </div>
                   </div>
                 </form>

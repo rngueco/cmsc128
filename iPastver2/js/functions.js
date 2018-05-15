@@ -22,6 +22,15 @@ var framecounter;
 var zoomDiff = 0.1;
 var zoomValue = 1;
 
+window.onpopstate = function(event) {
+	var setting = event.state;
+
+	if (setting) {
+		pascal.settings = setting;
+		restart();
+	} else window.history.back();
+};
+
 
 function loadMysteryMenu() {
 	var menu = '#modeSelect';
@@ -47,7 +56,6 @@ function onDragStart(event) {
     here.pivot.y = position.y;
 
     here.dragging = true;
-
 
 }
 
@@ -116,7 +124,7 @@ function resetPosition() {
 
 
 function readColor(string) {
-	var colorString = string;
+	var colorString = string+"";
 
 	if (colorString.startsWith("#")) 
 		colorString = colorString.substring(1);
@@ -188,6 +196,7 @@ function loadPascalParameters() {
 
 	$('#sizeInput').val(s.size);
 	$('#fontsizeInput').val(s.fontsize);
+	$('#backgroundInput').val(formatHexColor(s.background));
 
 	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
 	$('#bgColorInput').val(formatHexColor(s.bgColor));
@@ -198,7 +207,6 @@ function loadPascalParameters() {
 	$('#disColorInput').val(formatHexColor(s.disabledColor));
 
 	$('#labeledCheckbox').prop('checked', s.labeled);
-
 	console.log(s);
 }
 
@@ -271,6 +279,10 @@ function validateSuccess(runnable, form) {
 
 }
 
+function pushSettings() {
+	window.history.pushState(pascal.settings, document.title, getURLString());
+}
+
 function applyColors(form) {
 	// bgColorInput, txtColorInput, strkColorInput, slctColorInput, altColorInput, disColorInput
 	var run = function() {
@@ -287,10 +299,10 @@ function applyColors(form) {
 		pascal.setColor('alt', alt);
 		pascal.setColor('disabled', dis);
 		pascal.setColor('line', strk);
-	}
+	};
 		
 	validateSuccess(run, form);
-	window.history.pushState(pascal.settings, document.title, getURLString());
+	pushSettings();
 }
 
 // Load new settings 
@@ -300,13 +312,14 @@ function applySettings(form) {
 		pascal.settings.height = $('#heightInput').val();
 		
 		restart();
-	}
+	};
 
 	validateSuccess(run, form);
 }
 
 function applyLabels() {
 	pascal.settings.labeled = $('#labeledCheckbox').is(":checked");
+	pushSettings();
 }
 
 function writeMessage(result, x, y) {
@@ -330,13 +343,15 @@ function writeMessage(result, x, y) {
 	}
 }
 
-function applySizes(form) {
+function applyBase(form) {
 	var run = function() {
 		pascal.settings.size = parseInt($('#sizeInput').val() );
 		pascal.settings.fontsize = parseInt($('#fontsizeInput').val() );
+		pascal.applyBackground( readColor( $('#backgroundInput').val() ) );
 
+		pushSettings();
 		pascal.render();
-	}
+	};
 	validateSuccess(run, form);
 }
 

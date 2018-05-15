@@ -72,17 +72,16 @@ a:hover{
 	color: #DDDDDD;
 	opacity: 0.5;
 }
-div{
-	height: 200px;
-    width: 400px;
+#slide-up{
+    width: 500px;
     text-align: center;
     padding: 25px;
+    margin-top: 1rem;
 
     position: fixed;
-    top: 45%;
+    top: 50%;
     left: 50%;
-    margin-top: -100px;
-    margin-left: -200px;
+    transform: translate(-50%,-50%);
 }
 #slide-up {
 	opacity: 0;
@@ -131,4 +130,20 @@ div{
 		top: 45%;
 		opacity: 1; 
 	} 
+}
+#theme-chooser {
+	color: #ddd;
+	padding-top: 0.5rem;
+	padding-bottom: 1rem;
+}
+
+.tip {
+	color: white;
+	font-size: 0.7rem;
+}
+
+.theme-select {
+	padding: 0.25rem;
+	display: inline-block;
+	cursor: pointer;
 }

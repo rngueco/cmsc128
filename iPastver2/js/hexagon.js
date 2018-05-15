@@ -62,7 +62,7 @@ function hexagon (delegate) {
 	*/
 	me.hasChanged = function() {
 		me.changed = true;
-	}
+	};
 
 	/**
 	Change property triggering render

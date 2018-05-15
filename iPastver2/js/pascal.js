@@ -39,6 +39,8 @@ function pascal(settings) {
 		disabledColor: 0x6c757d,
 		lineColor: 0x17a2b8,
 
+		background: 0xffffff,
+
 		fontsize: 20,
 		lineWidth: 5,
 
@@ -46,6 +48,7 @@ function pascal(settings) {
 		mystery: 'symmetry',
 		extra: 4,
 		labeled: true
+
 	}, settings);
 	me.container = new PIXI.Container();
 	me.renderX = 0;
@@ -92,10 +95,17 @@ function pascal(settings) {
 
 	me.render = function() {
 		nextRenderValue = true;
-	}
+	};
 
 	me.loadSettings = function(settings) {
 		me.settings = $.extend(me.settings, settings);
+		$('#display').css('background', formatHexColor(me.settings.background) );
+	};
+
+	me.applyBackground = function(background) {
+		console.log(background);
+		me.settings.background = background;
+		$('#display').css('background', formatHexColor(me.settings.background) );
 	};
 
 	me.update = function(delta) {

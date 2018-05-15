@@ -43,7 +43,7 @@ var mysteries = {
 			restart();
 		 } // function that process the input
 		}
-}
+};
 
 function mysteryFactory (delegate) {
 	var me = this;
@@ -84,7 +84,7 @@ function mysteryFactory (delegate) {
 			me.triangle[index.row][index.column].deselect();
 		}
 		me.selection = [];
-	}
+	};
 
 	var alterReset = function() {
 		for (var i = 0; i<me.triangle.length; i++) {
@@ -115,12 +115,20 @@ function mysteryFactory (delegate) {
 		return ret;
 	};
 
+	var rowSelect = function () {
+		selectLast();
+		var trg = me.selection[0];
+		for (var j = 0; j < me.triangle[trg.row].length; j++) {
+			me.triangle[trg.row][j].setAlternative(true);
+		}
+	};
+
 	me.runExtra = function() {
 		var settings = me.delegate.settings;
 		var run = mysteries[settings.mystery].apply;
 		if (run) 
 			run(settings);
-	}
+	};
 
 	me.loadMystery = function(index, isAdd) {
 
@@ -234,7 +242,7 @@ function mysteryFactory (delegate) {
 				}
 			}
 		}
-	}
+	};
 
 	
 
@@ -255,14 +263,6 @@ function mysteryFactory (delegate) {
 			
 			// find selection
 			// console.log('select '+select+' '+me.triangle[rowLast][select].value);
-		}
-	};
-
-	var rowSelect = function () {
-		selectLast();
-		var trg = me.selection[0];
-		for (var j = 0; j < me.triangle[trg.row].length; j++) {
-			me.triangle[trg.row][j].setAlternative(true);
 		}
 	};
 	
@@ -303,7 +303,8 @@ function mysteryFactory (delegate) {
 		
 		var c = 1;
 		var sum = 1;
-		for(var i = 0; i < (rr + 1); i++){
+		var i = 0;
+		for(i = 0; i < (rr + 1); i++){
 			b[i] = c;
 			if(parseInt(b[i]/10) > 0){
 				ctr++;
@@ -316,11 +317,11 @@ function mysteryFactory (delegate) {
 		var tmp = 0;
 		while(ctr > 0){
 			p11 += "$$";
-			for(var i = 0; i < (rr + 1); i++){
+			for(i = 0; i < (rr + 1); i++){
 				p11 += b[i] + "\\ ";
 			}
 			p11 += "$$";
-			for(var i = rr+1; i >= 0; i--){
+			for(i = rr+1; i >= 0; i--){
 				if(parseInt(b[i]/10)){
 					tmp = parseInt(b[i]/10);
 					b[i] = b[i]%10;
@@ -342,7 +343,7 @@ function mysteryFactory (delegate) {
 		for (var j = 1; j < me.triangle[trg.row].length-1; j++) {
 			me.triangle[trg.row][j].setAlternative();
 		}
-		console.log('trigger');
+
 		return "The selected cells in this row is divisible by "+trg.row;
 	};
 	
@@ -413,29 +414,31 @@ function mysteryFactory (delegate) {
 		var col = me.selection[0].column;
 		var hexas = [];
 
-		if(next){
-			hexas.push([row-1,col-1]);
-			var i = 0;
-			while(row-i-1!=col-1){
-				i++;
-				hexas.push([row-i-1,col-1]);
+		var startrow = row;
+		var startcol = col;
+
+		if (next){
+			startrow--;
+			while(startcol >= 0){
+				hexas.push([startrow, startcol]);
+				startrow--;
+				startcol--;
 			}
-			next=false;
-		}else{
-			hexas.push([row-1,col]);
-			var i = 0;
-			while(hexas[i][1]!=0){
-				i++;
-				hexas.push([row-i-1,col-i]);
+		} else{
+			startrow--;
+			startcol--;
+			while(startrow >= startcol){
+				hexas.push([startrow, startcol]);
+				startrow--;
 			}
-			next=true;
 		}
+		next = !next;
 
 		var arr = "";
-		for(i = 0;i<hexas.length;i++){
+		for(i = 0; i<hexas.length; i++){
 			var hexa = me.triangle[hexas[i][0]][hexas[i][1]];
 			hexa.setAlternative();
-			arr =  hexa.value + (i==0?'':'+') + arr;
+			arr =  hexa.value + (i===0?'':'+') + arr;
 		}
 
 		return "The value of this cell is the sum of previous cells e.g.$$"+arr+"="+me.triangle[row][col].value+"$$";
@@ -463,9 +466,10 @@ function mysteryFactory (delegate) {
 			col--;
 			row++;
 		}
-		var row = me.selection[me.selection.length-1].row;
-		var col = me.selection[me.selection.length-1].column;
+		row = me.selection[me.selection.length-1].row;
+		col = me.selection[me.selection.length-1].column;
 		row--; col++;
+
 		//right of selection
 		while(row>=col){
 			hexas.push([row,col]);
