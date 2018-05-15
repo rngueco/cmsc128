@@ -4,6 +4,8 @@ body{
   	color: #7FDBFF; */
 
   	/* Black and Gray */
+
+  	min-width: 500px;
 }
 h1{
 	font-family: 'Lucida Console';
