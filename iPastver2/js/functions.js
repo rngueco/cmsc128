@@ -13,6 +13,8 @@ var mc = new Hammer.Manager($('#pascalCanvas')[0]);
 
 var stage = new PIXI.Container();
 
+var dragThreshold = 5;
+
 var pascal = new pascal();
 
 var lastTime = 0;
@@ -60,13 +62,7 @@ function onDragStart(event) {
 }
 
 function onDragEnd(event) {
-
-	var ev_data = event.data.originalEvent;
 	var here = pascal.container;
-	if (this.start_data) {
-        if (Math.abs(this.start_data.x - ev_data.screenX) > 2 || Math.abs(this.start_data.y - ev_data.screenY) > 2)
-            event.stopPropagation();
-    }
 
     if (!here.interactiveChildren)
     	$('#message').hide();
@@ -80,11 +76,14 @@ function onDragEnd(event) {
     updatePosDisplay();
 }
 
-function onDragMove() {
+function onDragMove(event) {
 	var here = pascal.container;
 
     if (here.dragging) {
-    	here.interactiveChildren = false;
+
+    	var ev_data = event.data.originalEvent;
+    	if (Math.abs(this.start_data.x - ev_data.screenX) > dragThreshold || Math.abs(this.start_data.y - ev_data.screenY) > dragThreshold)
+    		here.interactiveChildren = false;
 
     	var newPosition = here.data.getLocalPosition(here.parent);
     	here.position.x = newPosition.x;
