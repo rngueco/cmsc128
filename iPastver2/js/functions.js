@@ -1,27 +1,23 @@
+
+// Tweakable Constants
 var resolution = window.screen.availWidth/window.screen.width;
-
+var frameskip = 0;
 var display = $('#display');
+var dragThreshold = 5;
+var zoomDiff = 0.1;
 
+// Renderer Variables
 var renderer = PIXI.autoDetectRenderer(display.innerWidth(), $(window).height(), {
 	transparent: true,
 	view: $('#pascalCanvas')[0],
 	resolution: resolution || 1,
 	antialias: true
 });
-
-var mc = new Hammer.Manager($('#pascalCanvas')[0]);
-
-var stage = new PIXI.Container();
-
-var dragThreshold = 5;
-
 var pascal = new pascal();
-
+var mc = new Hammer.Manager($('#pascalCanvas')[0]);
+var stage = new PIXI.Container();
 var lastTime = 0;
-var frameskip = 0;
 var framecounter;
-
-var zoomDiff = 0.1;
 var zoomValue = 1;
 
 window.onpopstate = function(event) {
@@ -82,7 +78,9 @@ function onDragMove(event) {
     if (here.dragging) {
 
     	var ev_data = event.data.originalEvent;
-    	if (Math.abs(this.start_data.x - ev_data.screenX) > dragThreshold || Math.abs(this.start_data.y - ev_data.screenY) > dragThreshold)
+    	if (here.interactiveChildren &&
+    		(  Math.abs(this.start_data.x - ev_data.screenX) > dragThreshold
+    		|| Math.abs(this.start_data.y - ev_data.screenY) > dragThreshold) )
     		here.interactiveChildren = false;
 
     	var newPosition = here.data.getLocalPosition(here.parent);
