@@ -105,8 +105,6 @@ function pascal(settings) {
 		me.container.removeChild(label);
 		label.destroy({children: true, texture:true, baseTexture:true });
 
-		console.log('perf');
-
 		row = null;
 		label = null;
 	};
@@ -139,7 +137,6 @@ function pascal(settings) {
 	};
 
 	me.applyBackground = function(background) {
-		console.log(background);
 		me.settings.background = background;
 		$('#display').css('background', formatHexColor(me.settings.background) );
 	};
