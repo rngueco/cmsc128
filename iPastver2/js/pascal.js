@@ -27,6 +27,12 @@ function pascal(settings) {
 
 	var nextRenderValue = false;
 
+	var resolve = function(i,j) {
+		return ((i+1)-(j+1))/(j+1);
+	};
+
+	
+
 	// Public Properties
 	me.settings = $.extend(
 	{
@@ -53,7 +59,57 @@ function pascal(settings) {
 	me.container = new PIXI.Container();
 	me.renderX = 0;
 	me.forceRender = false;
-	me.mystery = new mysteryFactory(this);
+	me.mystery = new mysteryFactory(me);
+
+	var addRow = function() {
+		var row = [];
+		var c = 1;
+		var i = hexagons.length;
+
+		for (var j = 0; j<=i; j++) {
+			var newhex = new hexagon(me);
+
+			newhex.setup(me.container);
+
+			newhex.setIndex(i,j);
+
+			newhex.value = c;
+			c = parseInt(c*resolve(i,j));
+
+			row.push(newhex);
+		}
+
+		var text = new PIXI.Text();
+		text.anchor.y = 0.5;
+
+		me.container.addChild(text);
+		labels.push(text);
+
+		hexagons.push(row);
+	};
+
+	var deleteRow = function() {
+		if (hexagons.length <= 0) return;
+		var i = hexagons.length-1;
+
+		var row = hexagons[i];
+		var label = labels[i];
+		hexagons.splice(i,1);
+		labels.splice(i,1);
+
+		for (var j = 0; j < row.length; j++) {
+			row[j].dispose(me.container);
+			delete row[j];
+		}
+
+		me.container.removeChild(label);
+		label.destroy({children: true, texture:true, baseTexture:true });
+
+		console.log('perf');
+
+		row = null;
+		label = null;
+	};
 
 	// Functions
 	me.setup = function(a, b) {
@@ -64,34 +120,14 @@ function pascal(settings) {
 		hexagons = [];
 		
 		for (var i = 0; i<n; i++) {
-			var row = [];
-			var c = 1;
-
-			for (var j = 0; j<=i; j++) {
-				var newhex = new hexagon(this);
-
-				newhex.setup(me.container);
-
-				newhex.setIndex(i,j);
-
-				newhex.value = c;
-				c = parseInt(c*((i+1)-(j+1))/(j+1));
-
-				row.push(newhex);
-			}
-
-			var text = new PIXI.Text();
-			text.anchor.y = 0.5;
-
-			me.container.addChild(text);
-			labels.push(text);
-
-			hexagons.push(row);
+			addRow();
 		}
 
 		me.settings.mystery = mystery;
 		me.mystery.setup(hexagons);
 	};
+
+	
 
 	me.render = function() {
 		nextRenderValue = true;
@@ -106,6 +142,35 @@ function pascal(settings) {
 		console.log(background);
 		me.settings.background = background;
 		$('#display').css('background', formatHexColor(me.settings.background) );
+	};
+
+	me.changeMystery = function(mystery) {
+		if (me.settings.mystery == mystery) return;
+		me.settings.mystery = mystery;
+		me.mystery.changed();
+
+		writeMessage();
+	};
+
+	me.changeHeight = function(height) {
+		var newheight = parseInt(height);
+		if (newheight == me.settings.height) return;
+		var i = me.settings.height;
+		var diff = newheight - i;
+		if (diff > 0) {
+
+			for (; i < newheight; i++) {
+				addRow();
+			}
+		} else {
+			for (; diff < 0; diff++) {
+				deleteRow();
+			}
+		}
+		me.settings.height = newheight;
+		me.mystery.changed();
+
+		writeMessage();
 	};
 
 	me.update = function(delta) {
@@ -190,7 +255,7 @@ function pascal(settings) {
 
 	me.extra = function() {
 		me.mystery.runExtra();
-	}
+	};
 
 	// Initialize
 	me.container.interactive = true;

@@ -59,7 +59,7 @@ function mysteryFactory (delegate) {
 		var hexagon = me.triangle[index.row][index.column];
 		if (bool) hexagon.setSelected();
 		else hexagon.setNormal();
-	}
+	};
 
 	var selectOne = function(index) {
 		if (index < 0 || index >= me.selection.length)
@@ -98,6 +98,16 @@ function mysteryFactory (delegate) {
 		}
 	};
 
+	var reset = function() {
+		me.selection = [];
+		for (var i = 0; i<me.triangle.length; i++) {
+			for (var j = 0; j<me.triangle[i].length; j++) {
+				var hexagon = me.triangle[i][j];
+				hexagon.deselect();
+			}
+		}
+	};
+
 	me.selectIsEmpty = function() {
 		return me.selection.length <= 0;
 	};
@@ -130,6 +140,15 @@ function mysteryFactory (delegate) {
 			run(settings);
 	};
 
+	me.resetTriangle = function() {
+		for (var i = 0; i<me.triangle.length; i++) {
+			for (var j = 0; j<me.triangle[i].length; j++) {
+				var hexagon = me.triangle[i][j];
+				hexagon.deselect();
+			}
+		}
+	};
+
 	me.loadMystery = function(index, isAdd) {
 
 		if (isAdd) {
@@ -157,8 +176,7 @@ function mysteryFactory (delegate) {
 
 		if (mysteries[mystery]) {
 			var extra = mysteries[mystery].extra;
-			if (extra)
-				setExtraSettings(extra);
+			setExtraSettings(extra?extra:"");
 		}
 		
 		var setup = me.setupFunctions[mystery];
@@ -168,6 +186,11 @@ function mysteryFactory (delegate) {
 			alterReset();
 
 		setHelp(mysteries[mystery].help);
+	};
+
+	me.changed  = function() {
+		reset();
+		me.setup(me.triangle);
 	};
 
 	me.setupFunctions = {
@@ -225,8 +248,6 @@ function mysteryFactory (delegate) {
 			}
 		},
 		modular: function(triangle) {
-			me.delegate.settings.textColor = 0x000000;
-
 			var mod = parseInt(me.delegate.settings.extra);
 			$('#modularInput').val(mod);
 
@@ -238,7 +259,7 @@ function mysteryFactory (delegate) {
 				for (var j = 0; j <= i; j++){
 					triangle[i][j].setDisabled(true);
 					var value = triangle[i][j].value%mod;
-					triangle[i][j].custom(colors[value]);
+					triangle[i][j].custom(colors[value], 0x000000);
 				}
 			}
 		}

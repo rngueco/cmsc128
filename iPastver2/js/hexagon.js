@@ -44,6 +44,7 @@ function hexagon (delegate) {
 	me.state = 0;
 	me.disabled = false;
 	me.customColor = 0;
+	me.customTextColor = 0;
 
 	// For animation
 	me.future = {};
@@ -78,7 +79,7 @@ function hexagon (delegate) {
 	me.setState = function(state) {
 		me.state = state;
 		me.hasChanged();
-	}
+	};
 
 	/**
 	Store the hexagon position in the triangle
@@ -118,21 +119,31 @@ function hexagon (delegate) {
 
 	me.is = function(state) {
 		return me.state == state;
-	}
+	};
+
+	me.dispose = function(stage) {
+		me.graphics.clear();
+
+		stage.removeChild(me.graphics);
+		stage.removeChild(me.text);
+		me.graphics.destroy({children: true, texture:true, baseTexture:true });
+		me.text.destroy({children: true, texture:true, baseTexture:true });
+	};
 
 	/**
 	Set custom color
 	*/
-	me.custom = function(color) {
-		if (color == null) {
+	me.custom = function(color, text) {
+		if (color === null) {
 			me.state = me.stateType.NORMAL;
 		} else {
 			me.customColor = color;
+			me.customTextColor = text;
 			me.state = me.stateType.CUSTOM;
 		}
 
 		me.hasChanged();
-	}
+	};
  
  	/**
  	Reset the state
@@ -155,7 +166,7 @@ function hexagon (delegate) {
 
 		var settings = me.delegate.settings; // Point to settings
 
-		var size = parseInt(settings.size); // Resolve size
+		var size = parseInt(me.delegate.settings.size); // Resolve size
 
 		var hexWidth = size*0.866; // Calculate the supposed width
 
@@ -166,6 +177,8 @@ function hexagon (delegate) {
 
 		// Resolve background color
 		var color = null;
+		var textcolor = parseInt(settings.textColor);
+
 		var override = me.state == me.stateType.ALTERNATIVE || me.state == me.stateType.CUSTOM;
 		if (me.disabled && !override)
 			color = settings.disabledColor;
@@ -182,6 +195,7 @@ function hexagon (delegate) {
 				break;
 				default:
 					color = me.customColor;
+					textcolor = me.customTextColor;
 			}
 		color = parseInt(color);
 		me.graphics.beginFill(color); // Set Fill
@@ -197,7 +211,7 @@ function hexagon (delegate) {
 		me.graphics.endFill();
 
 		me.text.style.fontSize = parseInt(settings.fontsize, 10);
-		me.text.style.fill = parseInt(settings.textColor);
+		me.text.style.fill = textcolor;
 		
 		me.text.x = me.x;
 		me.text.y = me.y;
