@@ -40,7 +40,7 @@ var mysteries = {
 			  +'<button type="submit" class="btn btn-secondary d-block">Apply Modulo</button></div>', // html to be added
 		apply: function(settings) {
 			settings.extra = parseInt($('#modularInput').val() );
-			restart();
+			pascal.mystery.changed();
 		 } // function that process the input
 		}
 };
