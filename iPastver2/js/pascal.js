@@ -73,8 +73,14 @@ function pascal(settings) {
 
 			newhex.setIndex(i,j);
 
+			if( j==0 || j==i ){
+				c=1;
+			}else{
+				c=hexagons[i-1][j-1].value+hexagons[i-1][j].value;
+			}
+			
 			newhex.value = c;
-			c = parseInt(c*resolve(i,j));
+			//c = parseInt(c*resolve(i,j));
 
 			row.push(newhex);
 		}
