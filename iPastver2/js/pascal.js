@@ -27,12 +27,6 @@ function pascal(settings) {
 
 	var nextRenderValue = false;
 
-	var resolve = function(i,j) {
-		return ((i+1)-(j+1))/(j+1);
-	};
-
-	
-
 	// Public Properties
 	me.settings = $.extend(
 	{
@@ -72,15 +66,9 @@ function pascal(settings) {
 			newhex.setup(me.container);
 
 			newhex.setIndex(i,j);
-
-			if( j==0 || j==i ){
-				c=1;
-			}else{
-				c=hexagons[i-1][j-1].value+hexagons[i-1][j].value;
-			}
 			
 			newhex.value = c;
-			//c = parseInt(c*resolve(i,j));
+			c = parseInt(c*(i+1)/(j+1) - c);
 
 			row.push(newhex);
 		}
