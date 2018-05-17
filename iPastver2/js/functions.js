@@ -231,6 +231,14 @@ function setup() {
 	$.validate();
 }
 
+function changeBrand() {
+	var brand = $('#brand');
+	brand.fadeOut(500, function() {
+		brand.html(mysteries[pascal.settings.mystery].title);
+		brand.fadeIn(500);
+	});
+}
+
 function getURLString() {
 	var str = $.param(pascal.settings);
 	return 'main.html?'+str;
@@ -319,6 +327,7 @@ function applySettings(form) {
 			pascal.changeMystery(newmystery);
 
 			pushSettings();
+			changeBrand();
 		}
 
 		
