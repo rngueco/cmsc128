@@ -5,6 +5,7 @@ var frameskip = 0;
 var display = $('#display');
 var dragThreshold = 5;
 var zoomDiff = 0.1;
+var changeHeightThreshold = 30;
 
 // Renderer Variables
 var renderer = PIXI.autoDetectRenderer(display.innerWidth(), $(window).height(), {
@@ -304,10 +305,23 @@ function applyColors(form) {
 // Load new settings 
 function applySettings(form) {
 	var run = function() {
-		pascal.changeHeight($('#heightInput').val());
-		pascal.changeMystery($('#modeSelect').val());
+		var newheight = $('#heightInput').val();
+		var newmystery = $('#modeSelect').val();
+		var diff = Math.abs(newheight - pascal.settings.height);
 
-		pushSettings();
+		if (diff > changeHeightThreshold) {
+			pascal.settings.height = newheight;
+			pascal.settings.mystery = newmystery;
+
+			restart();
+		} else {
+			pascal.changeHeight(newheight);
+			pascal.changeMystery(newmystery);
+
+			pushSettings();
+		}
+
+		
 	};
 
 	validateSuccess(run, form);
