@@ -1,17 +1,16 @@
 function hexindex() {
-	var me = this;
-
-	// Location
-	me.row = 0;
-	me.column = 0;
-
-	// Compare locations
-	me.compare = function(index) {
-		var i = me.row*me.row+me.column;
-		var j = index.row*index.row+index.column;
-		return i-j;
-	};
 }
+
+// Location
+hexindex.prototype.row = 0;
+hexindex.prototype.column = 0;
+
+// Compare locations
+hexindex.prototype.compare = function(index) {
+	var i = this.row*this.row+this.column;
+	var j = index.row*index.row+index.column;
+	return i-j;
+};
 
 function pascal(settings) {
 
@@ -66,7 +65,7 @@ function pascal(settings) {
 			newhex.setup(me.container);
 
 			newhex.setIndex(i,j);
-			
+
 			newhex.value = c;
 			c = parseInt(c*(i+1)/(j+1) - c);
 
@@ -110,7 +109,7 @@ function pascal(settings) {
 		var mystery = b?b:me.settings.mystery;
 
 		hexagons = [];
-		
+
 		for (var i = 0; i<n; i++) {
 			addRow();
 		}
@@ -119,7 +118,7 @@ function pascal(settings) {
 		me.mystery.setup(hexagons);
 	};
 
-	
+
 
 	me.render = function() {
 		nextRenderValue = true;
@@ -190,7 +189,7 @@ function pascal(settings) {
 
 			var text = labels[i];
 			if (me.settings.labeled) {
-				
+
 				text.style.fontSize = parseInt(me.settings.fontsize, 10);
 				text.style.fill = parseInt(me.settings.lineColor);
 
